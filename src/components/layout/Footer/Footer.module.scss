@@ -1,0 +1,92 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.footer {
+  background: $dark-light;
+  padding: $spacing-2xl 0 $spacing-lg;
+  margin-top: $spacing-2xl;
+  border-top: 1px solid $gray-dark;
+}
+
+.container {
+  @include container;
+}
+
+.grid {
+  @include grid(4, $spacing-xl);
+  margin-bottom: $spacing-xl;
+
+  @include tablet {
+    @include grid(2, $spacing-lg);
+  }
+
+  @include mobile {
+    @include grid(1, $spacing-lg);
+  }
+}
+
+.brand {
+  h3 {
+    font-size: 24px;
+    color: $primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: $gray;
+    font-size: 14px;
+  }
+}
+
+.links {
+  h4 {
+    font-size: 16px;
+    color: $white;
+    margin-bottom: $spacing-md;
+  }
+
+  a {
+    display: block;
+    color: $gray;
+    font-size: 14px;
+    padding: $spacing-xs 0;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.social {
+  h4 {
+    font-size: 16px;
+    color: $white;
+    margin-bottom: $spacing-md;
+  }
+}
+
+.socialLinks {
+  display: flex;
+  gap: $spacing-md;
+
+  a {
+    font-size: 24px;
+    transition: transform $transition-fast;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.bottom {
+  border-top: 1px solid $gray-dark;
+  padding-top: $spacing-lg;
+  text-align: center;
+
+  p {
+    color: $gray-dark;
+    font-size: 14px;
+  }
+}

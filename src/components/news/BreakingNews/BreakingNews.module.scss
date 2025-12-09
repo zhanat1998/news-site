@@ -1,0 +1,43 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.breaking {
+  background: $dark-light;
+  border-bottom: 1px solid $gray-dark;
+}
+
+.container {
+  @include container;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.item {
+  padding: $spacing-md;
+  font-size: 15px;
+  font-weight: 500;
+  color: $white;
+  border-right: 1px solid $gray-dark;
+  transition: color $transition-fast;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    color: $primary;
+  }
+
+  @include tablet {
+    border-right: none;
+    border-bottom: 1px solid $gray-dark;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

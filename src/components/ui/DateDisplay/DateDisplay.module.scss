@@ -1,0 +1,9 @@
+@use '../../../styles/variables' as *;
+
+.dateDisplay {
+  background: $dark-light;
+  padding: $spacing-sm $spacing-md;
+  font-size: 13px;
+  color: $gray;
+  border-bottom: 1px solid $gray-dark;
+}

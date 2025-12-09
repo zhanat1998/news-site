@@ -1,0 +1,93 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.sidebar {
+  background: $dark-light;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.header {
+  @include flex-between;
+  padding: $spacing-md;
+  border-bottom: 2px solid $primary;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $primary;
+}
+
+.more {
+  font-size: 20px;
+  color: $gray;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.list {
+  padding: $spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.item {
+  display: block;
+  transition: opacity $transition-fast;
+
+  &:hover {
+    opacity: 0.9;
+
+    .videoTitle {
+      color: $primary;
+    }
+  }
+}
+
+.thumbnail {
+  position: relative;
+  height: 120px;
+  border-radius: $radius-sm;
+  overflow: hidden;
+
+  img {
+    @include img-cover;
+  }
+}
+
+.playIcon {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  background: rgba($dark, 0.8);
+  color: $white;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-sm;
+  @include flex-center;
+  font-size: 12px;
+}
+
+.duration {
+  position: absolute;
+  bottom: $spacing-sm;
+  right: $spacing-sm;
+  background: rgba($dark, 0.8);
+  color: $white;
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: $radius-sm;
+}
+
+.videoTitle {
+  padding: $spacing-sm 0;
+  font-size: 13px;
+  color: $white;
+  @include ellipsis(2);
+  transition: color $transition-fast;
+}

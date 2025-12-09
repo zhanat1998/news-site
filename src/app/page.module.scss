@@ -1,0 +1,65 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.page {
+  min-height: 100vh;
+}
+
+.mainSection {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: $spacing-lg;
+  padding: $spacing-xl 0;
+
+  @include tablet {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mainLeft {
+  @include tablet {
+    grid-column: span 2;
+  }
+
+  @include mobile {
+    grid-column: span 1;
+  }
+}
+
+.mainCenter {
+  @include mobile {
+    order: 3;
+  }
+}
+
+.mainRight {
+  @include tablet {
+    grid-column: span 2;
+  }
+
+  @include mobile {
+    grid-column: span 1;
+    order: 2;
+  }
+}
+
+.moreSection {
+  padding: $spacing-xl 0;
+  border-top: 1px solid $gray-dark;
+}
+
+.newsGrid {
+  @include grid(4, $spacing-lg);
+
+  @include tablet {
+    @include grid(2, $spacing-md);
+  }
+
+  @include mobile {
+    @include grid(1, $spacing-md);
+  }
+}

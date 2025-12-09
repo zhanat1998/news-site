@@ -1,0 +1,25 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.header {
+  @include flex-between;
+  padding-bottom: $spacing-md;
+  margin-bottom: $spacing-md;
+  border-bottom: 2px solid $primary;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $primary;
+}
+
+.more {
+  font-size: 20px;
+  color: $gray;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary;
+  }
+}

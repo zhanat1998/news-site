@@ -1,0 +1,52 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.sidebar {
+  background: $dark-light;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.header {
+  @include flex-between;
+  padding: $spacing-md;
+  border-bottom: 2px solid $primary;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $primary;
+}
+
+.more {
+  font-size: 20px;
+  color: $gray;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.list {
+  padding: $spacing-sm 0;
+}
+
+.item {
+  display: block;
+  padding: $spacing-md;
+  font-size: 14px;
+  color: $light;
+  border-bottom: 1px solid $gray-dark;
+  transition: all $transition-fast;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba($white, 0.05);
+    color: $primary;
+  }
+}
