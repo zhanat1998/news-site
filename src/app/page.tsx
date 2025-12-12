@@ -7,27 +7,17 @@ import SectionHeader from '../components/ui/SectionHeader/SectionHeader';
 import NewsCard from '../components/news/NewsCard/NewsCard';
 import styles from './page.module.scss';
 import {client} from "@/sanity/lib/client";
-import {breakingNewsQuery, postsQuery} from "@/sanity/lib/queries";
+import {breakingNewsQuery, postsQuery, videosQuery} from "@/sanity/lib/queries";
 import {urlFor} from "@/sanity/lib/image";
 
-// Видео үчүн убактылуу
-const videos = [
-  {
-    title: '"Жол курулушунда ток уруп, төрт мүчөмдөн ажырадым"',
-    slug: 'road-construction',
-    thumbnail: 'https://picsum.photos/400/300?random=10',
-    duration: '5:43'
-  },
-];
+const PLACEHOLDER_IMAGE = 'https://picsum.photos/800/600?random=1'
 
 export default async function Home() {
-  const [breakingNews, posts] = await Promise.all([
+  const [breakingNews, posts, videos] = await Promise.all([
     client.fetch(breakingNewsQuery),
-    client.fetch(postsQuery)
+    client.fetch(postsQuery),
+    client.fetch(videosQuery)
   ])
-  console.log(posts,'posts')
-
-  const PLACEHOLDER_IMAGE = 'https://picsum.photos/800/600?random=1'
 
   const featuredNews = posts[0] ? {
     title: posts[0].title,
@@ -43,11 +33,18 @@ export default async function Home() {
     category: p.category || 'Жаңылык',
     date: p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('ky-KG') : ''
   }))
+
   const latestNews = posts.slice(1, 7).map((p: any) => ({
     title: p.title,
     slug: p.slug
   }))
 
+  const formattedVideos = videos.map((v: any) => ({
+    title: v.title,
+    slug: v.slug,
+    thumbnail: v.thumbnail ? urlFor(v.thumbnail).width(400).height(300).url() : PLACEHOLDER_IMAGE,
+    duration: v.duration || ''
+  }))
 
   return (
     <div className={styles.page}>
@@ -66,7 +63,7 @@ export default async function Home() {
           </div>
 
           <div className={styles.mainRight}>
-            <VideoSidebar title="NewsKG ТВ" items={videos} link="/video" />
+            <VideoSidebar title="NewsKG ТВ" items={formattedVideos} link="/video" />
           </div>
         </section>
 

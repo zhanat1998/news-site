@@ -1,37 +1,28 @@
 import Link from 'next/link';
+import {categories, name_of_site, navLinks} from "@/constants";
+import {paths} from "@/config/paths";
 import styles from './Header.module.scss';
-
-const categories = [
-  { title: 'САЯСАТ', slug: 'politics' },
-  { title: 'КООМ', slug: 'society' },
-  { title: 'ЭКОНОМИКА', slug: 'economy' },
-  { title: 'ДҮЙНӨ', slug: 'world' },
-  { title: 'МАДАНИЯТ', slug: 'culture' },
-  { title: 'СПОРТ', slug: 'sport' },
-];
+import NavLinksList from "@/components/ui/NavLinksList";
 
 export default function Header() {
+  const videoLink =
+    navLinks.find(({ href }) => href === paths.VIDEO);
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo}>
+        <Link href={paths.HOME} className={styles.logo}>
           <span className={styles.logoIcon}>N</span>
-          <span className={styles.logoText}>NewsKG</span>
+          <span className={styles.logoText}>{name_of_site}</span>
         </Link>
 
         <nav className={styles.nav}>
-          {categories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/category/${cat.slug}`}
-              className={styles.navLink}
-            >
-              {cat.title}
+          <NavLinksList className={styles.navLink}/>
+          {videoLink && (
+            <Link href={videoLink.href} className={styles.navLink}>
+              {videoLink.title}
             </Link>
-          ))}
-          <Link href="/video" className={styles.navLink}>
-            ВИДЕО
-          </Link>
+          )}
         </nav>
       </div>
     </header>
