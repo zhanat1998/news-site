@@ -9,4 +9,5 @@ export enum paths {
   CULTURE = '/category/culture',
   SPORT = '/category/sport',
   CONTACT = '/contact',
+  NEWS = '/news',
 }

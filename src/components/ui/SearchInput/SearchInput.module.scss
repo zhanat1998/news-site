@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.searchForm {
+  display: flex;
+  margin: $spacing-md;
+  border: 2px solid $gray;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  transition: border-color $transition-fast;
+
+  &:hover,
+  &:focus-within {
+    border-color: $dark;
+  }
+}
+
+
+.searchInput {
+  flex: 1;
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  font-size: 14px;
+  outline: none;
+
+  &::placeholder {
+    color: $gray;
+  }
+}
+
+.searchSubmit {
+  background: $dark;
+  border: none;
+  padding: $spacing-sm $spacing-md;
+  cursor: pointer;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    fill: $white;
+  }
+}

@@ -2,60 +2,52 @@
 @use '../../../styles/mixins' as *;
 
 .header {
-  background: $secondary;
-  padding: $spacing-md 0;
+  background: $white;
+  border-bottom: 1px solid $gray-light;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .container {
-  @include container;
-  @include flex-between;
+  margin: 0 auto;
+  height: 56px;
+  padding: 0 $spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+  color: $dark;
+  font-weight: 700;
 }
 
 .logoIcon {
-  width: 45px;
-  height: 45px;
   background: $primary;
   color: $white;
-  border-radius: $radius-md;
-  @include flex-center;
-  font-weight: 800;
-  font-size: 24px;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .logoText {
-  font-size: 28px;
-  font-weight: 800;
-  color: $white;
-
-  @include mobile {
-    display: none;
-  }
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.nav {
+.right {
+  flex: 1;
   display: flex;
-  gap: $spacing-xs;
-
-  @include tablet {
-    display: none;
-  }
-}
-
-.navLink {
-  padding: $spacing-sm $spacing-md;
-  color: $light;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: color $transition-fast;
-
-  &:hover {
-    color: $primary;
-  }
+  justify-content: flex-end;
 }

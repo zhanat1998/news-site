@@ -1,0 +1,98 @@
+// NewsCarousel.module.scss
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.section {
+  padding: $spacing-xl 0;
+  border-top: 1px solid $gray-dark;
+}
+
+.carouselWrapper {
+  position: relative;
+  overflow: visible; // visible кылабыз
+
+  // Оң жактан кесүү
+  &::after {
+    content: '';
+    position: absolute;
+    right: -16px;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, $dark 80%);
+    z-index: 5;
+    pointer-events: none;
+  }
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.3s ease;
+  overflow: visible;
+}
+
+.slide {
+  flex: 0 0 25%;
+  padding: 0 $spacing-sm;
+
+  // 5-карточка көрүнүшү
+  &:nth-child(5) {
+    opacity: 0.5;
+  }
+
+  @include tablet {
+    flex: 0 0 50%;
+  }
+
+  @include mobile {
+    flex: 0 0 100%;
+  }
+}
+
+.controls {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  transform: translateX(50%);
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+
+  @include tablet {
+    right: 45%;
+  }
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.arrow {
+  width: 100px;
+  height: 48px;
+  background: rgba($white, 0.95);
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-child {
+    color: #1a8a8a;
+  }
+
+  &:last-child {
+    color: #e85a2c;
+  }
+
+  &:hover:not(:disabled) {
+    background: $white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

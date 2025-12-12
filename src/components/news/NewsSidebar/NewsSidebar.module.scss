@@ -50,3 +50,17 @@
     color: $primary;
   }
 }
+
+.allNews {
+  display: block;
+  text-align: end;
+  padding: $spacing-md;
+  color: $primary;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: lighten($primary, 10%);
+  }
+}

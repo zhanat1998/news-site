@@ -1,0 +1,111 @@
+// MobileMenu.module.scss
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.triggers {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+
+  .menuButton {
+    path {
+      fill: $dark;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: $gray-light;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  padding: $spacing-md;
+  border-bottom: 1px solid $gray-light;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: $spacing-xs;
+  height: 36px;
+  width: 36px;
+  &:hover {
+    background: $gray-light;
+  }
+}
+
+.nav {
+  padding: $spacing-sm 0;
+}
+
+.navItem {
+  display: block;
+  padding: $spacing-md $spacing-lg;
+  color: $dark;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 1px solid $gray-light;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $gray-light;
+    color: $primary;
+  }
+}
+
+.wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  background: $white;
+  z-index: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

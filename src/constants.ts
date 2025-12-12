@@ -17,3 +17,11 @@ export const navLinks = [
   { id: 2, title: 'БИЗ ЖОНУНДО', href: paths.ABOUT },
   { id: 3, title: 'Байланыш', href: paths.CONTACT },
 ];
+
+export enum SectionTitles {
+  LATEST_NEWS = 'Соңку жаңылыктар',
+  POPULAR_NEWS = 'Популярдуу жаңылыктар',
+  NEWS = 'Жаңылыктар',
+  TOP_STORIES = 'Башкы темалар',
+  SPOTLIGHT = 'Негизги жаңылыктар',
+}

@@ -9,6 +9,9 @@ import styles from './page.module.scss';
 import {client} from "@/sanity/lib/client";
 import {breakingNewsQuery, postsQuery, videosQuery} from "@/sanity/lib/queries";
 import {urlFor} from "@/sanity/lib/image";
+import {name_of_site, SectionTitles} from "@/constants";
+import {paths} from "@/config/paths";
+import NewsCarousel from "@/components/news/NewsCarousel/NewsCarousel";
 
 const PLACEHOLDER_IMAGE = 'https://picsum.photos/800/600?random=1'
 
@@ -26,7 +29,7 @@ export default async function Home() {
     category: posts[0].category || 'Жаңылык'
   } : null
 
-  const moreNews = posts.slice(0, 4).map((p: any) => ({
+  const moreNews = posts.slice(0, 20).map((p: any) => ({
     title: p.title,
     slug: p.slug,
     image: p.mainImage ? urlFor(p.mainImage).width(400).height(300).url() : PLACEHOLDER_IMAGE,
@@ -54,27 +57,32 @@ export default async function Home() {
       <div className="container">
         <section className={styles.mainSection}>
           <div className={styles.mainLeft}>
-            <SectionHeader title="Башкы темалар" link="/news" />
+            <SectionHeader title={SectionTitles.TOP_STORIES} link="/news" />
             {featuredNews && <MainFeatured {...featuredNews} />}
           </div>
 
           <div className={styles.mainCenter}>
-            <NewsSidebar title="Жаңылыктар" items={latestNews} link="/news" />
+            <NewsSidebar title={SectionTitles.NEWS} items={latestNews} link={paths.NEWS} />
           </div>
 
           <div className={styles.mainRight}>
-            <VideoSidebar title="NewsKG ТВ" items={formattedVideos} link="/video" />
+            <VideoSidebar title={`${name_of_site} ТВ`} items={formattedVideos} link="/video" />
           </div>
         </section>
 
         <section className={styles.moreSection}>
-          <SectionHeader title="Дагы жаңылыктар" link="/news" />
+          <SectionHeader title={SectionTitles.SPOTLIGHT} link="/news" />
           <div className={styles.newsGrid}>
             {moreNews.map((news: any) => (
               <NewsCard key={news.slug} {...news} />
             ))}
           </div>
         </section>
+        <NewsCarousel
+          title={SectionTitles.SPOTLIGHT}
+          link="/news"
+          items={moreNews}
+        />
       </div>
     </div>
   );

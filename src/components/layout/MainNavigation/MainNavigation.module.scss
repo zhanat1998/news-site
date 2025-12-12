@@ -1,0 +1,55 @@
+// MainNavigation.module.scss
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.navigation {
+  background: $white;
+  border-bottom: 1px solid $gray-light;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+.mainLinks {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.link {
+  color: $dark;
+  font-size: 15px;
+  font-weight: 500;
+  padding: $spacing-md 0;
+  position: relative;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary;
+  }
+
+  &.active {
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #b80000;
+    }
+  }
+}
