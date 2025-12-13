@@ -1,0 +1,183 @@
+// components/video/VideoCarousel/VideoCarousel.module.scss
+.section {
+  background: #1a1a1a;
+  padding: 32px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 16px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.arrow {
+  font-size: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover:not(:disabled) {
+    color: #fa9000;
+  }
+
+  &:disabled {
+    color: #5a5a5a;
+    cursor: not-allowed;
+  }
+}
+
+.carouselWrapper {
+  overflow: hidden;
+  padding: 0 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.slide {
+  flex: 0 0 25%;
+  padding: 0 8px;
+  transition: opacity 0.3s ease;
+
+  @media (max-width: 1024px) {
+    flex: 0 0 33.333%;
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 50%;
+  }
+
+  @media (max-width: 480px) {
+    flex: 0 0 100%;
+  }
+}
+
+.card {
+  display: block;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  margin-bottom: 12px;
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .card:hover & img {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    height: 150px;
+  }
+}
+
+.playButton {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+
+  svg {
+    margin-left: 4px;
+  }
+
+  .card:hover & {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+.duration {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+.content {
+  padding-right: 8px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  .card:hover & {
+    text-decoration: underline;
+  }
+}
+
+.excerpt {
+  font-size: 14px;
+  color: #b0b0b0;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.category {
+  font-size: 13px;
+  color: #808080;
+}

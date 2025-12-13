@@ -25,3 +25,256 @@ export enum SectionTitles {
   TOP_STORIES = 'Башкы темалар',
   SPOTLIGHT = 'Негизги жаңылыктар',
 }
+
+export const mockVideos = [
+  {
+    title: 'Калифорнияда үй жарылган учурду эшик камерасы тартып алды',
+    slug: 'house-explosion',
+    image: 'https://picsum.photos/400/250?random=20',
+    excerpt: 'Газ түтүгү агып, үйдүн жарылуусуна алып келип, алты адамды жаралады.',
+    category: 'АКШ жана Канада',
+    duration: '2:34'
+  },
+  {
+    title: 'Катаракт операциясы чоң мышыктын көзүн сактап калды',
+    slug: 'snow-leopard',
+    image: 'https://picsum.photos/400/250?random=21',
+    excerpt: '"Уникалдуу операция" карбарстын бузулган көз линзасын жасалма менен алмаштырды.',
+    category: 'Норфолк',
+    duration: '3:15'
+  },
+  {
+    title: 'Кичинекей чип ичегиңиздин маалыматын кантип сактай алат',
+    slug: 'gut-chip',
+    image: 'https://picsum.photos/400/250?random=22',
+    excerpt: 'Жаңы орган-чип технологиясы дарыгерлерге ичеги ден соолугу үчүн жеке дарылоо түзүүгө жардам берет.',
+    category: 'Tech Now',
+    duration: '4:22'
+  },
+  {
+    title: 'Clair Obscur Game Awards сыйлыктарын тогуз жолу жеңип алды',
+    slug: 'game-awards',
+    image: 'https://picsum.photos/400/250?random=23',
+    excerpt: 'Clair Obscur: Expedition 33 быйылкы Game Awards сыйлыгында жылдын оюну деп аталды.',
+    category: 'Технология',
+    duration: '5:10'
+  },
+  {
+    title: 'Котормочу украиналык баланы Россиядагы энесине кошту',
+    slug: 'interpreter-ukraine',
+    image: 'https://picsum.photos/400/250?random=24',
+    excerpt: 'Роман Олексив, 11 жашта, орус ракетасы энесин да өлтүргөн.',
+    category: 'Европа',
+    duration: '6:45'
+  },
+  {
+    title: 'Кыргызстандын тоолорундагы жашоо',
+    slug: 'kyrgyzstan-mountains',
+    image: 'https://picsum.photos/400/250?random=25',
+    excerpt: 'Көчмөн турмуш жана салттуу маданият.',
+    category: 'Борбор Азия',
+    duration: '8:20'
+  },
+];
+
+export const categoryNewsData = [
+  {
+    title: 'Элдик экономика',
+    slug: 'economy',
+    mainNews: {
+      title: 'Кыргызстанда инфляция 10% га жетти: эксперттер эскертүү берүүдө',
+      slug: 'inflation-kyrgyzstan',
+      image: 'https://picsum.photos/400/250?random=30'
+    },
+    smallNews: [
+      {
+        title: 'Сом долларга карата 5% га начарлады: эмне күтүүгө болот',
+        slug: 'som-dollar',
+        image: 'https://picsum.photos/150/100?random=31'
+      },
+      {
+        title: 'Жаңы салык реформасы ишкерлерди кандай таасир этет',
+        slug: 'tax-reform',
+        image: 'https://picsum.photos/150/100?random=32'
+      },
+      {
+        title: 'Алтын кени: Кумтөрдөн кийинки келечек',
+        slug: 'gold-mining',
+        image: 'https://picsum.photos/150/100?random=33'
+      }
+    ]
+  },
+  {
+    title: 'Борбор Азия',
+    slug: 'central-asia',
+    mainNews: {
+      title: 'Казакстан менен Өзбекстан суу маселеси боюнча жаңы келишим түзүштү',
+      slug: 'water-deal',
+      image: 'https://picsum.photos/400/250?random=34'
+    },
+    smallNews: [
+      {
+        title: 'Тажикстанда парламенттик шайлоолор өтөт: негизги талапкерлер',
+        slug: 'tajik-elections',
+        image: 'https://picsum.photos/150/100?random=35'
+      },
+      {
+        title: 'Түркмөнстан газ экспортун Кытайга көбөйтөт',
+        slug: 'turkmen-gas',
+        image: 'https://picsum.photos/150/100?random=36'
+      },
+      {
+        title: 'Афганстан чек арасында чыңалуу: акыркы жаңылыктар',
+        slug: 'afghan-border',
+        image: 'https://picsum.photos/150/100?random=37'
+      }
+    ]
+  },
+  {
+    title: 'Иликтөө',
+    slug: 'investigation',
+    mainNews: {
+      title: 'Коррупция иши: мурдагы министрге 15 жыл түрмө жазасы суралды',
+      slug: 'corruption-case',
+      image: 'https://picsum.photos/400/250?random=38'
+    },
+    smallNews: [
+      {
+        title: 'Контрабанда тармагы: кантип миллиондор чек арадан өтөт',
+        slug: 'smuggling-network',
+        image: 'https://picsum.photos/150/100?random=39'
+      },
+      {
+        title: 'Жасалма дипломдор: билим тармагындагы көйгөй',
+        slug: 'fake-diplomas',
+        image: 'https://picsum.photos/150/100?random=40'
+      },
+      {
+        title: 'Мыйзамсыз куруулар: ким жооптуу?',
+        slug: 'illegal-construction',
+        image: 'https://picsum.photos/150/100?random=41'
+      }
+    ]
+  },
+  {
+    title: 'Өзгөчө пикир',
+    slug: 'opinion',
+    mainNews: {
+      title: 'Демократия жолунда: Кыргызстан туура багытта баратабы?',
+      slug: 'democracy-opinion',
+      image: 'https://picsum.photos/400/250?random=42'
+    },
+    smallNews: [
+      {
+        title: 'Жаштар эмне үчүн чет өлкөгө кетүүдө: социолог пикири',
+        slug: 'youth-migration',
+        image: 'https://picsum.photos/150/100?random=43'
+      },
+      {
+        title: 'Билим системасын реформалоо: эксперттин сунушу',
+        slug: 'education-reform',
+        image: 'https://picsum.photos/150/100?random=44'
+      },
+      {
+        title: 'Экология кризиси: биз эмне кыла алабыз?',
+        slug: 'ecology-crisis',
+        image: 'https://picsum.photos/150/100?random=45'
+      }
+    ]
+  }
+];
+export const sportData = {
+  bannerImage: 'https://picsum.photos/1200/400?random=50',
+  mainNews: {
+    title: 'Футбол боюнча дүйнө чемпионатына алты ай калды: FIFA World Cup 2026 жөнүндө баары',
+    slug: 'fifa-world-cup-2026',
+    image: 'https://picsum.photos/600/400?random=51',
+    excerpt: 'Дүйнөлүк футболдун эң чоң мелдеши 11-июнда башталат. FIFAнын эң чоң дүйнө чемпионатына жарым жыл калды.',
+    label: 'ТҮШҮНДҮРМӨ'
+  },
+  sideNews: [
+    {
+      title: 'Сурякумар жана Гилл Индиянын T20 дүйнө кубогундагы формасын кайтарууга даяр',
+      slug: 'india-t20',
+      image: 'https://picsum.photos/200/150?random=52'
+    },
+    {
+      title: 'Күйөрмандар FIFAны сынга алышты: 2026 дүйнө кубогунун билеттери өтө кымбат',
+      slug: 'fifa-tickets',
+      image: 'https://picsum.photos/200/150?random=53'
+    },
+    {
+      title: 'Палестина Сауд Аравиясынан FIFA Arab Cup Qatar 2025 чейрек финалында утулду',
+      slug: 'palestine-saudi',
+      image: 'https://picsum.photos/200/150?random=54'
+    },
+    {
+      title: 'Олимпиада чемпиону Мишель Гизин Швейцариядагы кырсыктан кийин тик учакка алынды',
+      slug: 'michelle-gisin',
+      image: 'https://picsum.photos/200/150?random=55'
+    }
+  ]
+};
+
+export const categoryColumnsData = [
+  {
+    title: 'Технология',
+    slug: 'tech',
+    mainNews: {
+      title: 'Жаңы курстар медициналык технология боюнча адистерди даярдайт',
+      slug: 'medical-tech-courses',
+      image: 'https://picsum.photos/400/250?random=60',
+      excerpt: 'Жаңы квалификациялар адамдарды кийилүүчү технология жана диагностикалык куралдар менен иштөөгө үйрөтөт.'
+    },
+    links: [
+      { title: 'AI терапия чатботу "эмоция менен жакшы иштейт"', slug: 'ai-therapy', isVideo: false },
+      { title: 'Быйылкы Game Awards жеңүүчүлөрү', slug: 'game-awards', isVideo: true },
+      { title: 'ScotRail AI диктор талашынан кийин жаңы үн киргизди', slug: 'scotrail-ai', isVideo: true }
+    ]
+  },
+  {
+    title: 'Илим жана Ден-соолук',
+    slug: 'science-health',
+    mainNews: {
+      title: 'Франциядан 5000 жыл мурунку деңиз түбүндөгү дубал табылды',
+      slug: 'undersea-wall',
+      image: 'https://picsum.photos/400/250?random=61',
+      excerpt: '120 метрлик дубал балык кармоочу же деңиз деңгээлинин көтөрүлүшүнөн коргоочу болгон деп археологдор эсептейт.'
+    },
+    links: [
+      { title: 'Грипп жана иш таштоолордун "кош соккусу" бейтаптарга коркунуч туудурат', slug: 'flu-strikes', isVideo: false },
+      { title: 'АКШ Европа жана Азияда колдонулган күнгө каршы ингредиент кошууну пландап жатат', slug: 'sunscreen', isVideo: false },
+      { title: 'Covid океандын үнүн кантип өзгөрттү', slug: 'covid-ocean', isVideo: false }
+    ]
+  },
+  {
+    title: 'Маданият',
+    slug: 'culture',
+    mainNews: {
+      title: 'Жазуучу Жоанна Троллоп 82 жашында дүйнөдөн кайтты',
+      slug: 'joanna-trollope',
+      image: 'https://picsum.photos/400/250?random=62',
+      excerpt: 'Жазуучу Англиянын айыл жериндеги романтика жана интригалар жөнүндөгү окуялары менен белгилүү болгон.'
+    },
+    links: [
+      { title: 'Primal Scream антисемиттик сүрөт боюнча концерт залынын кечирим сурашы', slug: 'primal-scream', isVideo: false },
+      { title: 'Комик Стэнли Бакстер 99 жашында дүйнөдөн кайтты', slug: 'stanley-baxter', isVideo: false },
+      { title: 'Eurovision жеңүүчүсү Немо Израилге каршылык билдирип трофейин кайтарды', slug: 'nemo-eurovision', isVideo: false }
+    ]
+  },
+  {
+    title: 'Искусство',
+    slug: 'arts',
+    mainNews: {
+      title: 'Кыйшык айнек мунарадан алтын балык скульптурасына - Фрэнк Геринин эң белгилүү эмгектери',
+      slug: 'frank-gehry',
+      image: 'https://picsum.photos/400/250?random=63',
+      excerpt: 'Архитектуранын эң провокациялык жана чыгармачыл күчтөрүнүн бири катары Фрэнк Гери бүткүл дүйнөдө кызыктуу имараттарды жаратты.'
+    },
+    links: [
+      { title: 'Сашико: окуялар тигүү өнөрү', slug: 'sashiko', isVideo: true },
+      { title: 'Байыркы аялдар секс жөнүндө эмне ойлошкон', slug: 'ancient-women', isVideo: false },
+      { title: '80-жылдардагы Рождество ТВ коркунучу Британияны титиретти', slug: 'christmas-horror', isVideo: false }
+    ]
+  }
+];

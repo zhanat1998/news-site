@@ -6,7 +6,6 @@ import { categories, navLinks } from '@/constants';
 import styles from './MobileMenu.module.scss';
 import {MenuIcon} from "@/components/ui/icons/menuIcon";
 import {CloseIcon} from "@/components/ui/icons/CloseIcon";
-import SearchInput from "@/components/ui/SearchInput";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +49,6 @@ export default function MobileMenu() {
                 <CloseIcon/>
               </button>
             </div>
-
-            <SearchInput/>
 
             <nav className={styles.nav}>
               <Link

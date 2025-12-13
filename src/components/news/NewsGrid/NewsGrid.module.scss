@@ -1,0 +1,67 @@
+// components/news/NewsGrid/NewsGrid.module.scss
+.section {
+  padding: 32px 0;
+  border-top: 1px solid #e6e6e6;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dot {
+  color: #fa9000;
+  font-size: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+
+  .card:hover & {
+    text-decoration: underline;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 160px;
+  min-width: 160px;
+  height: 110px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    width: 120px;
+    min-width: 120px;
+    height: 85px;
+  }
+}

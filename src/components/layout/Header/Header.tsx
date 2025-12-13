@@ -1,8 +1,9 @@
-// components/layout/Header/Header.tsx
 import Link from 'next/link';
 import styles from './Header.module.scss';
 import { name_of_site } from "@/constants";
 import MobileMenu from '../MobileMenu/MobileMenu';
+import SearchToggle from "@/components/ui/SearchToggle/SearchToggle";
+import {paths} from "@/config/paths";
 
 export default function Header() {
   return (
@@ -12,13 +13,13 @@ export default function Header() {
           <MobileMenu />
         </div>
 
-        <Link href="/" className={styles.logo}>
+        <Link href={paths.HOME} className={styles.logo}>
           <span className={styles.logoIcon}>С</span>
           <span className={styles.logoText}>{name_of_site}</span>
         </Link>
 
         <div className={styles.right}>
-          {/* Бош же кийин кирүү баттону */}
+          <SearchToggle />
         </div>
       </div>
     </header>

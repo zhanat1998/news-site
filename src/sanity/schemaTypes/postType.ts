@@ -1,3 +1,4 @@
+// sanity/schemaTypes/postType.ts
 import {DocumentTextIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
@@ -11,6 +12,7 @@ export const postType = defineType({
       name: 'title',
       title: 'Аталышы',
       type: 'string',
+      validation: (rule) => rule.required().error('Аталышы керек'),
     }),
     defineField({
       name: 'slug',
@@ -20,6 +22,14 @@ export const postType = defineType({
         source: 'title',
         maxLength: 96,
       },
+      validation: (rule) => rule.required().error('Slug керек'),
+    }),
+    defineField({
+      name: 'excerpt',
+      title: 'Кыскача сүрөттөмө',
+      type: 'text',
+      rows: 3,
+      description: 'Макаланын кыскача баяндамасы (карточкаларда көрүнөт)',
     }),
     defineField({
       name: 'author',
@@ -39,22 +49,20 @@ export const postType = defineType({
           name: 'alt',
           title: 'Альтернативдик текст',
           type: 'string',
-        })
+        }),
+        defineField({
+          name: 'caption',
+          title: 'Сүрөттүн сүрөттөмөсү',
+          type: 'string',
+        }),
       ]
     }),
     defineField({
-      name: 'categories',
-      title: 'Категориялар',
-      type: 'array',
-      of: [{type: 'string'}],
-      options: {
-        list: [
-          {title: 'Саясат', value: 'politics'},
-          {title: 'Спорт', value: 'sport'},
-          {title: 'Маданият', value: 'culture'},
-          {title: 'Экономика', value: 'economy'},
-        ],
-      },
+      name: 'category',
+      title: 'Категория',
+      type: 'reference',
+      to: {type: 'category'},
+      validation: (rule) => rule.required().error('Категория тандаңыз'),
     }),
     defineField({
       name: 'publishedAt',
@@ -64,29 +72,38 @@ export const postType = defineType({
     }),
     defineField({
       name: 'section',
-      title: 'Пост тармактарына бөлүү',
+      title: 'Секция (кайсы жерде көрүнсүн)',
       type: 'string',
       options: {
         list: [
           {title: 'Шашылыш кабар', value: 'breaking'},
-          {title: 'Башкы темалар', value: 'main_topics'},
-          {title: 'Жанылыктар', value: 'news'},
+          {title: 'Башкы темалар (Hero)', value: 'hero'},
+          {title: 'Жаңылыктар', value: 'news'},
           {title: 'Көңүл чордонунда', value: 'spotlight'},
-          {title: 'Дүйнө Сокол медианын назарында', value: 'sokol_media'},
           {title: 'Редактордун тандоосу', value: 'editor_choice'},
           {title: 'Элдик экономика', value: 'economy'},
           {title: 'Борбор Азия', value: 'central_asia'},
           {title: 'Иликтөө', value: 'investigation'},
           {title: 'Өзгөчө пикир', value: 'opinion'},
-          {title: 'Маданият', value: 'culture'},
         ],
         layout: 'dropdown',
       },
-      validation: (rule) => rule.required().error('Тармакты тандаңыз'),
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Башкы бетте көрсөтүү',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'isBreaking',
+      title: 'Шашылыш кабар',
+      type: 'boolean',
+      initialValue: false,
     }),
     defineField({
       name: 'body',
-      title: 'Негизги текст (Макаланын мазмуну)',
+      title: 'Негизги текст',
       type: 'blockContent',
     }),
   ],
@@ -95,10 +112,14 @@ export const postType = defineType({
       title: 'title',
       author: 'author.name',
       media: 'mainImage',
+      section: 'section',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const {author, section} = selection
+      return {
+        ...selection,
+        subtitle: `${section || 'Секция жок'} ${author ? '• ' + author : ''}`
+      }
     },
   },
 })

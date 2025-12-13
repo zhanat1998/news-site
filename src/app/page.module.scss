@@ -1,65 +1,403 @@
-@use '../styles/variables' as *;
-@use '../styles/mixins' as *;
-
+// app/page.module.scss
 .page {
   min-height: 100vh;
+  background: #fff;
 }
 
-.mainSection {
+// Trending Bar
+.trendingBar {
+  background: #f5f5f5;
+  padding: 12px 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.trendingInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.trendingLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.trendingLinks {
+  display: flex;
+  gap: 24px;
+}
+
+.trendingLink {
+  font-size: 14px;
+  color: #5a5a5a;
+  white-space: nowrap;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fa9000;
+  }
+}
+
+// Hero Section
+.heroSection {
   display: grid;
   grid-template-columns: 1.2fr 1fr 0.8fr;
-  gap: $spacing-lg;
-  padding: $spacing-xl 0;
+  gap: 32px;
+  padding: 32px 0;
 
-  @include tablet {
+  @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr;
   }
 
-  @include mobile {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
 
-.mainLeft {
-  @include tablet {
+// Left - Hero Main
+.heroLeft {
+  @media (max-width: 1024px) {
     grid-column: span 2;
   }
 
-  @include mobile {
+  @media (max-width: 768px) {
     grid-column: span 1;
   }
 }
 
-.mainCenter {
-  @include mobile {
-    order: 3;
+.heroMainCard {
+  display: block;
+  margin-bottom: 32px;
+}
+
+.heroMainImage {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  margin-bottom: 16px;
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .heroMainCard:hover & img {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    height: 250px;
   }
 }
 
-.mainRight {
-  @include tablet {
+.heroMainAccent {
+  width: 120px;
+  height: 6px;
+  background: #fa9000;
+  margin-bottom: 16px;
+}
+
+.heroMainTitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+
+  .heroMainCard:hover & {
+    color: #fa9000;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.heroMainExcerpt {
+  font-size: 16px;
+  color: #5a5a5a;
+  line-height: 1.6;
+}
+
+.heroSecondCard {
+  display: flex;
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.heroSecondContent {
+  flex: 1;
+}
+
+.heroSecondTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin-bottom: 8px;
+
+  .heroSecondCard:hover & {
+    text-decoration: underline;
+  }
+}
+
+.heroSecondExcerpt {
+  font-size: 14px;
+  color: #5a5a5a;
+  line-height: 1.5;
+}
+
+.heroSecondImage {
+  position: relative;
+  width: 200px;
+  min-width: 200px;
+  height: 130px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    width: 140px;
+    min-width: 140px;
+    height: 100px;
+  }
+}
+
+// Center
+.heroCenter {
+  padding-left: 24px;
+  border-left: 1px solid #e6e6e6;
+
+  @media (max-width: 1024px) {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+.centerMainCard {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.centerMainImage {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 12px;
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .centerMainCard:hover & img {
+    transform: scale(1.02);
+  }
+}
+
+.centerMainTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+
+  .centerMainCard:hover & {
+    text-decoration: underline;
+  }
+}
+
+.centerNewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 16px;
+}
+
+.centerNewsItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.centerNewsTitle {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+
+  .centerNewsItem:hover & {
+    text-decoration: underline;
+  }
+}
+
+.centerNewsImage {
+  position: relative;
+  width: 120px;
+  min-width: 120px;
+  height: 80px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.centerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.centerLink {
+  font-size: 15px;
+  color: #1a1a1a;
+  line-height: 1.4;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+// Right Sidebar
+.heroRight {
+  @media (max-width: 1024px) {
     grid-column: span 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
 
-  @include mobile {
+  @media (max-width: 768px) {
     grid-column: span 1;
-    order: 2;
+    grid-template-columns: 1fr;
   }
 }
 
-.moreSection {
-  padding: $spacing-xl 0;
-  border-top: 1px solid $gray-dark;
+.sidebarSection {
+  margin-bottom: 32px;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+  }
 }
 
-.newsGrid {
-  @include grid(4, $spacing-lg);
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
 
-  @include tablet {
-    @include grid(2, $spacing-md);
-  }
+.sidebarAccent {
+  width: 4px;
+  height: 20px;
+  background: #fa9000;
+}
 
-  @include mobile {
-    @include grid(1, $spacing-md);
+.sidebarItem {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
   }
+}
+
+.sidebarItemImage {
+  position: relative;
+  width: 100px;
+  min-width: 100px;
+  height: 70px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.sidebarItemTitle {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+
+  .sidebarItem:hover & {
+    text-decoration: underline;
+  }
+}
+
+// Opinion
+.opinionItem {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.opinionAvatar {
+  position: relative;
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.opinionContent {
+  flex: 1;
+}
+
+.opinionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin-bottom: 4px;
+
+  .opinionItem:hover & {
+    text-decoration: underline;
+  }
+}
+
+.opinionAuthor {
+  font-size: 13px;
+  color: #5a5a5a;
 }

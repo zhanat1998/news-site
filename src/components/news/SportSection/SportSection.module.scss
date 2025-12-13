@@ -1,0 +1,194 @@
+// components/news/SportSection/SportSection.module.scss
+.section {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 32px 0;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
+}
+
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+}
+
+.bannerTitle {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.bannerAccent {
+  width: 5px;
+  height: 32px;
+  background: #fa9000;
+  border-radius: 2px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+// Main News - Left
+.mainNews {
+  // container
+}
+
+.mainCard {
+  display: block;
+}
+
+.mainImage {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 16px;
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .mainCard:hover & img {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
+}
+
+.mainLabel {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.mainTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin-bottom: 12px;
+
+  .mainCard:hover & {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.mainExcerpt {
+  font-size: 15px;
+  color: #5a5a5a;
+  line-height: 1.6;
+}
+
+// Side News - Right
+.sideNews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sideCard {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.sideImage {
+  position: relative;
+  width: 140px;
+  min-width: 140px;
+  height: 90px;
+  overflow: hidden;
+  border-radius: 8px;
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .sideCard:hover & img {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 480px) {
+    width: 100px;
+    min-width: 100px;
+    height: 70px;
+  }
+}
+
+.sideTitle {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
+
+  .sideCard:hover & {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
+}
+
+// Footer
+.footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e6e6e6;
+  text-align: right;
+}
+
+.footerLink {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
