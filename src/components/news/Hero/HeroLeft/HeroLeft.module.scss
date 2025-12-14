@@ -1,0 +1,149 @@
+// ========== LEFT COLUMN ==========
+.heroLeft {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+}
+
+.heroMainCard {
+  display: block;
+  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+}
+
+.heroMainImage {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  margin-bottom: 0;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s;
+  }
+
+  .heroMainCard:hover & img {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
+}
+
+.heroMainAccent {
+  width: 100%;
+  height: 5px;
+  background: #fa9000;
+  margin-bottom: 14px;
+}
+
+.heroMainTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: #fa9000;
+
+  .heroMainCard:hover & {
+    color: #fa9000;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.heroMainExcerpt {
+  font-size: 15px;
+  color: #5a5a5a;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.heroSecondCard {
+  display: flex;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #e6e6e6;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+    padding-top: 16px;
+  }
+}
+
+.heroSecondContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.heroSecondTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin-bottom: 8px;
+
+  .heroSecondCard:hover & {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+.heroSecondExcerpt {
+  font-size: 14px;
+  color: #5a5a5a;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.heroSecondImage {
+  position: relative;
+  width: 180px;
+  min-width: 180px;
+  height: 120px;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100px;
+    min-width: 100px;
+    height: 70px;
+  }
+}

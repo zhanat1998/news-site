@@ -1,0 +1,19 @@
+// ========== RIGHT SIDEBAR ==========
+.heroRight {
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e6e6e6;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-top: 0;
+    border-top: none;
+  }
+}

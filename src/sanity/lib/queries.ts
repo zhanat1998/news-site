@@ -1,123 +1,168 @@
-// sanity/lib/queries.ts
+// src/sanity/lib/queries.ts
 import { groq } from 'next-sanity'
 
-// Шашылыш кабарлар (Breaking News)
-export const breakingNewsQuery = groq`
-  *[_type == "post" && isBreaking == true] | order(publishedAt desc)[0...5] {
-    _id,
-    title,
-    "slug": slug.current,
-    publishedAt
-  }
-`
-
-// Башкы бет үчүн Hero посттор
-export const heroPostsQuery = groq`
-  *[_type == "post" && section == "hero"] | order(publishedAt desc)[0...5] {
-    _id,
-    title,
-    excerpt,
-    "slug": slug.current,
-    mainImage,
-    publishedAt,
-    "category": category->title,
-    "categorySlug": category->slug.current
-  }
-`
-
-// Бардык посттор
+// Бардык посттор (жаңыдан эскиге)
 export const postsQuery = groq`
   *[_type == "post"] | order(publishedAt desc) {
     _id,
     title,
+    slug,
     excerpt,
-    "slug": slug.current,
-    mainImage,
     publishedAt,
-    "author": author->name,
-    "authorImage": author->image,
-    "category": category->title,
-    "categorySlug": category->slug.current,
-    section
+    section,
+    isBreaking,
+    isFeatured,
+    mainImage {
+      asset->,
+      alt,
+      caption
+    },
+    category->{
+      _id,
+      title,
+      slug
+    },
+    author->{
+      _id,
+      name,
+      image
+    }
   }
 `
 
 // Секция боюнча посттор
 export const postsBySectionQuery = groq`
-  *[_type == "post" && section == $section] | order(publishedAt desc)[0...$limit] {
+  *[_type == "post" && section == $section] | order(publishedAt desc) [0...$limit] {
     _id,
     title,
+    slug,
     excerpt,
-    "slug": slug.current,
-    mainImage,
     publishedAt,
-    "category": category->title,
-    "categorySlug": category->slug.current
+    mainImage {
+      asset->,
+      alt
+    },
+    category->{
+      title,
+      slug
+    },
+    author->{
+      name,
+      image
+    }
   }
 `
 
-// Категория боюнча посттор
-export const postsByCategoryQuery = groq`
-  *[_type == "post" && category->slug.current == $categorySlug] | order(publishedAt desc) {
+// Breaking news
+export const breakingNewsQuery = groq`
+  *[_type == "post" && isBreaking == true] | order(publishedAt desc) [0...5] {
     _id,
     title,
-    excerpt,
-    "slug": slug.current,
-    mainImage,
-    publishedAt,
-    "author": author->name,
-    "category": category->title
+    slug
   }
 `
 
-// Бир пост (Detail page үчүн)
+// Hero посттор (башкы бет үчүн)
+export const heroPostsQuery = groq`
+  *[_type == "post" && section == "hero"] | order(publishedAt desc) [0...10] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    mainImage {
+      asset->,
+      alt
+    },
+    category->{
+      title,
+      slug
+    }
+  }
+`
+
+// Акыркы посттор (лимит менен)
+export const latestPostsQuery = groq`
+  *[_type == "post"] | order(publishedAt desc) [0...$limit] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    mainImage {
+      asset->,
+      alt
+    },
+    category->{
+      title,
+      slug
+    },
+    author->{
+      name,
+      image
+    }
+  }
+`
+
+// Бир пост (slug боюнча)
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id,
     title,
+    slug,
     excerpt,
-    "slug": slug.current,
-    mainImage,
+    summary,
     publishedAt,
     body,
-    "author": author->{
+    mainImage {
+      asset->,
+      alt,
+      caption
+    },
+    category->{
+      _id,
+      title,
+      slug
+    },
+    author->{
+      _id,
       name,
       image,
       bio
     },
-    "category": category->{
-      title,
-      "slug": slug.current
-    },
-    "relatedPosts": *[_type == "post" && category._ref == ^.category._ref && slug.current != $slug][0...4] {
+    "relatedPosts": *[_type == "post" && category._ref == ^.category._ref && _id != ^._id] | order(publishedAt desc) [0...4] {
       _id,
       title,
-      "slug": slug.current,
-      mainImage,
-      publishedAt
+      slug,
+      publishedAt,
+      mainImage {
+        asset->,
+        alt
+      }
     }
+  }
+`
+
+// Категориялар
+export const categoriesQuery = groq`
+  *[_type == "category"] | order(title asc) {
+    _id,
+    title,
+    slug,
+    description
   }
 `
 
 // Видеолор
 export const videosQuery = groq`
-  *[_type == "video"] | order(publishedAt desc)[0...10] {
+  *[_type == "video"] | order(publishedAt desc) [0...10] {
     _id,
     title,
-    "slug": slug.current,
+    slug,
+    description,
     youtubeUrl,
     thumbnail,
     duration,
-    description
-  }
-`
-
-// Бардык категориялар
-export const categoriesQuery = groq`
-  *[_type == "category"] | order(title asc) {
-    _id,
-    title,
-    "slug": slug.current,
-    description
+    publishedAt
   }
 `

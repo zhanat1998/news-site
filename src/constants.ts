@@ -9,6 +9,78 @@ export const categories = [
   { id: 6, title: 'СПОРТ', href: paths.SPORT },
 ];
 
+export const CATEGORY_TITLES = {
+  POLITICS: 'САЯСАТ',
+  SOCIETY: 'КООМ',
+  ECONOMY: 'ЭКОНОМИКА',
+  WORLD: 'ДҮЙНӨ',
+  CULTURE: 'МАДАНИЯТ',
+  SPORT: 'СПОРТ',
+}
+
+// constants/categories.ts
+export const CATEGORIES = [
+  {
+    id: 'politics',
+    title: 'САЯСАТ',
+    slug: 'sayasat',
+    description: 'Кыргызстандын жана дүйнөнүн саясий жаңылыктары',
+    color: '#d32f2f',
+    keywords: ['саясат', 'политика', 'шайлоо', 'парламент', 'президент'],
+  },
+  {
+    id: 'society',
+    title: 'КООМ',
+    slug: 'koom',
+    description: 'Коомдук жаңылыктар, социалдык маселелер',
+    color: '#1976d2',
+    keywords: ['коом', 'социалдык', 'элдик', 'жашоо'],
+  },
+  {
+    id: 'economy',
+    title: 'ЭКОНОМИКА',
+    slug: 'ekonomika',
+    description: 'Экономикалык жаңылыктар, бизнес, финансы',
+    color: '#388e3c',
+    keywords: ['экономика', 'бизнес', 'финансы', 'акча', 'сом'],
+  },
+  {
+    id: 'world',
+    title: 'ДҮЙНӨ',
+    slug: 'duino',
+    description: 'Эл аралык жаңылыктар, дүйнөлүк окуялар',
+    color: '#7b1fa2',
+    keywords: ['дүйнө', 'эл аралык', 'чет өлкө', 'глобалдык'],
+  },
+  {
+    id: 'culture',
+    title: 'МАДАНИЯТ',
+    slug: 'madaniyat',
+    description: 'Маданият, искусство, өнөр жаңылыктары',
+    color: '#f57c00',
+    keywords: ['маданият', 'искусство', 'музыка', 'кино', 'театр'],
+  },
+  {
+    id: 'sport',
+    title: 'СПОРТ',
+    slug: 'sport',
+    description: 'Спорт жаңылыктары, мелдештер, жыйынтыктар',
+    color: '#00796b',
+    keywords: ['спорт', 'футбол', 'мелдеш', 'олимпиада'],
+  },
+] as const;
+
+// Type export
+export type CategoryId = typeof CATEGORIES[number]['id'];
+export type Category = typeof CATEGORIES[number];
+
+// Helper функциялар
+export const getCategoryBySlug = (slug: string) =>
+  CATEGORIES.find(c => c.slug === slug);
+
+export const getCategoryById = (id: string) =>
+  CATEGORIES.find(c => c.id === id);
+
 export const name_of_site = 'Сокол Медиа';
 
 
@@ -24,6 +96,7 @@ export enum SectionTitles {
   NEWS = 'Жаңылыктар',
   TOP_STORIES = 'Башкы темалар',
   SPOTLIGHT = 'Негизги жаңылыктар',
+  BREAKING_NEWS = 'Шашылыш кабарлар',
 }
 
 export const mockVideos = [

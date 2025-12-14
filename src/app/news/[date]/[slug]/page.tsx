@@ -4,6 +4,8 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
+import {PortableText} from "@portabletext/react";
+import {portableTextComponents} from "@/components/portable-text/PortableTextComponents";
 
 // Mock data - кийин Sanity'ден келет
 const mockArticle = {
@@ -240,6 +242,12 @@ export default function NewsDetailPage({ params }: Props) {
 
             {/* Content */}
             <div className={styles.content}>
+              <div className={styles.content}>
+                {/*<PortableText*/}
+                {/*  value={article.body}*/}
+                {/*  components={portableTextComponents}*/}
+                {/*/>*/}
+              </div>
               {article.content.map((block, index) => {
                 if (block.type === 'paragraph') {
                   return <p key={index}>{block.text}</p>;

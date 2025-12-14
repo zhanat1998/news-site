@@ -1,12 +1,22 @@
-import type {StructureResolver} from 'sanity/structure'
+// sanity/structure.ts
+import type { StructureResolver } from 'sanity/structure'
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Content')
+    .title('Контент')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('video').title('Videos'),
+      S.listItem()
+        .title('Посттор')
+        .schemaType('post')
+        .child(
+          S.documentTypeList('post')
+            .title('Посттор')
+            .defaultOrdering([
+              { field: '_createdAt', direction: 'desc' }  // ← _createdAt колдон
+            ])
+        ),
       S.divider(),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
+      S.documentTypeListItem('video').title('Видеолор'),
+      S.documentTypeListItem('category').title('Категориялар'),
+      S.documentTypeListItem('author').title('Авторлор'),
     ])
