@@ -1,5 +1,7 @@
 // types/index.ts
 
+import {ReactNode} from "react";
+
 export interface Post {
   _id: string;
   title: string;
@@ -35,4 +37,12 @@ export interface Posts {
 }
 export interface ItemProps {
   item: Post;
+}
+
+export interface ToDetailRouteProps {
+  children?: ReactNode;
+  title?: string;
+  className?: string;
+  item?: Post;
+  items?: Post[];
 }

@@ -1,21 +1,11 @@
-// components/news/NewsGrid/NewsGrid.tsx
-import Link from 'next/link';
 import Image from 'next/image';
 import styles from './NewsGrid.module.scss';
+import {ToDetailRouteProps} from "@/types/posts";
+import DetailRoute from "@/components/ui/DetailRoute";
+import {getImage} from "@/utils/getImage";
 
-type NewsItem = {
-  title: string;
-  slug: string;
-  image: string;
-  date: string;
-};
 
-type Props = {
-  title: string;
-  items: NewsItem[];
-};
-
-export default function NewsGrid({ title, items }: Props) {
+export default function NewsGrid({ title, items }: ToDetailRouteProps) {
   return (
     <section className={styles.section}>
       <h2 className={styles.sectionTitle}>
@@ -23,17 +13,13 @@ export default function NewsGrid({ title, items }: Props) {
       </h2>
 
       <div className={styles.grid}>
-        {items.map((item) => (
-          <Link
-            key={item.slug}
-            href={`/news/${item.date}/${item.slug}`}
-            className={styles.card}
-          >
+        {items?.map((item) => (
+          <DetailRoute className={styles.card} item={item} key={item.slug?.current}>
             <h3 className={styles.title}>{item.title}</h3>
             <div className={styles.imageWrapper}>
-              <Image src={item.image} alt={item.title} fill />
+              <Image src={getImage(item?.mainImage, 400, 250)} alt={item.title} fill />
             </div>
-          </Link>
+          </DetailRoute>
         ))}
       </div>
     </section>

@@ -15,7 +15,7 @@ const HeroCenter = ({ items }: Posts) => {
         href={`/news/${formatDateForUrl(centerMain.publishedAt)}/${centerMain.slug?.current}`}
         className={styles.centerMainCard}>
         <div className={styles.centerMainImage}>
-          <Image src={getImage(centerMain, 500, 300)} alt={centerMain.title} fill />
+          <Image src={getImage(centerMain?.mainImage, 500, 300)} alt={centerMain.title} fill />
         </div>
         <h2 className={styles.centerMainTitle}>{centerMain.title}</h2>
       </Link>
@@ -28,7 +28,7 @@ const HeroCenter = ({ items }: Posts) => {
               className={styles.centerNewsItem}>
           <p className={styles.centerNewsTitle}>{news.title}</p>
           <div className={styles.centerNewsImage}>
-            <Image src={getImage(news, 150, 100)} alt={news.title} fill />
+            <Image src={getImage(news?.mainImage, 150, 100)} alt={news.title} fill />
           </div>
         </Link>
       ))}

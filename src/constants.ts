@@ -1,6 +1,7 @@
 import {paths} from "@/config/paths";
 
 export const categories = [
+  { id: 0, title: 'БАШКЫ БЕТ', href: paths.HOME },
   { id: 1, title: 'САЯСАТ', href: paths.POLITICS },
   { id: 2, title: 'КООМ', href: paths.SOCIETY },
   { id: 3, title: 'ЭКОНОМИКА', href: paths.ECONOMY },

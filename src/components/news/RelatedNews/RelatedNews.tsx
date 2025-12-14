@@ -1,23 +1,12 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import styles from './RelatedNews.module.scss';
+import {Posts} from "@/types/posts";
+import DetailRoute from "@/components/ui/DetailRoute";
+import {formatDateForUrl} from "@/utils/date";
+import {getImage} from "@/utils/getImage";
 
-type NewsItem = {
-  title: string;
-  slug: string;
-  image: string;
-  excerpt?: string;
-  date: string;
-  photoCount?: number;
-  duration?: string;
-  source?: string;
-};
 
-type Props = {
-  items: NewsItem[];
-};
-
-export default function RelatedNews({ items }: Props) {
+export default function RelatedNews({ items }: Posts) {
   return (
     <section className={styles.section}>
       <h2 className={styles.sectionTitle}>
@@ -26,31 +15,18 @@ export default function RelatedNews({ items }: Props) {
 
       <div className={styles.list}>
         {items.map((item) => (
-          <Link
-            key={item.slug}
-            href={`/news/${item.date}/${item.slug}`}
-            className={styles.card}
-          >
+          <DetailRoute className={styles.card} item={item}>
             <div className={styles.content}>
-              {item.source && (
-                <span className={styles.source}>From: {item.source}</span>
-              )}
               <h3 className={styles.title}>{item.title}</h3>
               {item.excerpt && (
                 <p className={styles.excerpt}>{item.excerpt}</p>
               )}
-              <time className={styles.date}>{item.date}</time>
+              <time className={styles.date}>{formatDateForUrl(item?.publishedAt)}</time>
             </div>
             <div className={styles.imageWrapper}>
-              <Image src={item.image} alt={item.title} fill />
-              {item.photoCount && (
-                <span className={styles.photoCount}>📷 {item.photoCount}</span>
-              )}
-              {item.duration && (
-                <span className={styles.duration}>▶ {item.duration}</span>
-              )}
+              <Image src={getImage(item?.mainImage, 400, 250)} alt={item.title} fill />
             </div>
-          </Link>
+          </DetailRoute>
         ))}
       </div>
     </section>

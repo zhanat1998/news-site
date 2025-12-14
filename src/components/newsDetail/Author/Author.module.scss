@@ -1,0 +1,62 @@
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.authorAvatar {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 480px) {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorBy {
+  font-size: 13px;
+  color: #5a5a5a;
+}
+
+.authorName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
+}
+.date {
+  font-size: 14px;
+  color: #5a5a5a;
+}

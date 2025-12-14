@@ -1,8 +1,8 @@
 import { urlFor } from '@/sanity/lib/image';
 // Placeholder сүрөт функциясы
-export function getImage(post: any, width: number, height: number) {
-  if (post?.mainImage?.asset) {
-    return urlFor(post.mainImage).width(width).height(height).url();
+export function getImage(mainImage: any, width: number, height: number) {
+  if (mainImage?.asset) {
+    return urlFor(mainImage).width(width).height(height).url();
   }
-  return `https://picsum.photos/${width}/${height}?random=${post?._id || Math.random()}`;
+  return `https://picsum.photos/${width}/${height}?random=${Math.random()}`;
 }

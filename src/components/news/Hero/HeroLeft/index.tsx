@@ -15,7 +15,7 @@ const HeroLeft =  ({ items }: Posts) => {
             className={styles.heroMainCard}>
         <div className={styles.heroMainImage}>
           <Image
-            src={getImage(heroMain, 800, 500)}  // Чоң сүрөт ал
+            src={getImage(heroMain?.mainImage, 800, 500)}  // Чоң сүрөт ал
             alt={heroMain.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 446px"
@@ -36,7 +36,7 @@ const HeroLeft =  ({ items }: Posts) => {
           <p className={styles.heroSecondExcerpt}>{heroSecond.excerpt}</p>
         </div>
         <div className={styles.heroSecondImage}>
-          <Image src={getImage(heroSecond, 400, 250)} alt={heroSecond.title} fill />
+          <Image src={getImage(heroSecond?.mainImage, 400, 250)} alt={heroSecond.title} fill />
         </div>
       </Link>
     )}

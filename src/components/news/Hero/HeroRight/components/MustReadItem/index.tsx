@@ -11,7 +11,7 @@ const MustReadItem = ({ item }:ItemProps) => {
     href={`/news/${formatDateForUrl(item.publishedAt)}/${item.slug?.current}`}
     className={styles.sidebarItem}>
     <div className={styles.sidebarItemImage}>
-      <Image src={getImage(item, 100, 70)} alt={item.title} fill />
+      <Image src={getImage(item?.mainImage, 100, 70)} alt={item.title} fill />
     </div>
     <p className={styles.sidebarItemTitle}>{item.title}</p>
   </Link>
