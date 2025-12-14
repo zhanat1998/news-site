@@ -1,0 +1,41 @@
+// Trending Bar
+.trendingBar {
+  background: #f5f5f5;
+  padding: 12px 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.trendingInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.trendingLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.trendingLinks {
+  display: flex;
+  gap: 24px;
+}
+
+.trendingLink {
+  font-size: 14px;
+  color: #5a5a5a;
+  white-space: nowrap;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fa9000;
+  }
+}
