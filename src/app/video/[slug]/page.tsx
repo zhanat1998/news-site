@@ -1,11 +1,13 @@
 type Props = {
-  params: { slug: string }
-}
+  params: Promise<{ slug: string }>;
+};
 
-export default function VideoDetailPage({ params }: Props) {
+export default async function VideoDetailPage({ params }: Props) {
+  const { slug } = await params;
+
   return (
     <div className="container">
-      <h1>Видео: {params.slug}</h1>
+      <h1>Видео: {slug}</h1>
     </div>
-  )
+  );
 }

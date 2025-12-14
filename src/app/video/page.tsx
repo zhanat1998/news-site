@@ -3,5 +3,5 @@ export default function VideoPage() {
     <div className="container">
       <h1>Видеолор</h1>
     </div>
-  )
+  );
 }
