@@ -12,17 +12,17 @@ const HeroRight = ({ items }:Posts) => {
   return <div className={styles.heroRight}>
     <HeroRightWrapper title="ОКУУ КЕРЕК">
       {mustReads.map((item: any) => (
-        <MustReadItem item={item}/>
+        <MustReadItem item={item} key={item?.slug?.current}/>
       ))}
     </HeroRightWrapper>
     <HeroRightWrapper title="ДАГЫ ЖАҢЫЛЫКТАР">
       {moreHeadlines.map((item: any) => (
-        <MustReadItem item={item}/>
+        <MustReadItem item={item}  key={item?.slug?.current}/>
       ))}
     </HeroRightWrapper>
    <HeroRightWrapper title="ПИКИР">
      {opinions.map((item: any) => (
-       <OpinionItem item={item}/>
+       <OpinionItem item={item}  key={item?.slug?.current}/>
      ))}
    </HeroRightWrapper>
   </div>

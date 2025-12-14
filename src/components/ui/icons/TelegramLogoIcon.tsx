@@ -1,6 +1,5 @@
 import { FC, SVGProps } from "react";
 
-{/* eslint-disable max-len */}
 const TelegramWhiteIcon: FC<SVGProps<SVGSVGElement>> = ({ onClick }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick}>
     <circle cx="12" cy="12" r="12" fill="#D7D8E0"/>

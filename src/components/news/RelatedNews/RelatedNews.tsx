@@ -15,7 +15,7 @@ export default function RelatedNews({ items }: Posts) {
 
       <div className={styles.list}>
         {items.map((item) => (
-          <DetailRoute className={styles.card} item={item}>
+          <DetailRoute className={styles.card} item={item}  key={item?.slug?.current}>
             <div className={styles.content}>
               <h3 className={styles.title}>{item.title}</h3>
               {item.excerpt && (
