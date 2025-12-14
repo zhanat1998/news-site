@@ -11,6 +11,7 @@ import TrendingBar from "@/components/news/TrendingBar";
 import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
+import { sanityFetch } from '@/sanity/lib/client';
 import BreakingNews from "@/components/news/BreakingNews/BreakingNews";
 
 // app/page.tsx
@@ -24,7 +25,7 @@ const latestPostsQuery = groq`
     publishedAt,
     section,
     isFeatured,
-    isBreaking,   
+    isBreaking,
     mainImage { asset->, alt },
     category->{ title, slug },
     author->{ name, image }
@@ -41,10 +42,17 @@ const breakingNewsQuery = groq`
 `;
 
 export default async function Home() {
-  const posts = await client.fetch(latestPostsQuery);
-  const breakingNews = await client.fetch(breakingNewsQuery);
+  const [posts, breakingNews] = await Promise.all([
+    sanityFetch<any[]>({
+      query: latestPostsQuery,
+      tags: ['posts'],
+    }),
+    sanityFetch<any[]>({
+      query: breakingNewsQuery,
+      tags: ['posts', 'breaking'],
+    }),
+  ]);
 
-  // Trending
   const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
 
   return (

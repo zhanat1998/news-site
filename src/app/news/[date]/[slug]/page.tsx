@@ -75,15 +75,13 @@ type Props = {
 };
 
 export default async function NewsDetailPage({ params }: Props) {
-  const { date, slug } = await params;
+  const { slug } = await params;
 
-  // Sanity'ден дата алуу
   const post = await client.fetch(postQuery, { slug });
 
   if (!post) {
     notFound();
   }
-  console.log(post,'post.category')
 
   // Байланыштуу жаңылыктар
   let relatedPosts = await client.fetch(relatedPostsQuery, {
