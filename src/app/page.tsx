@@ -1,5 +1,4 @@
 import styles from './page.module.scss';
-import { client } from '@/sanity/lib/client';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import DateDisplay from "@/components/ui/DateDisplay/DateDisplay";
 import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
@@ -12,7 +11,6 @@ import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
-import BreakingNews from "@/components/news/BreakingNews/BreakingNews";
 
 // app/page.tsx
 
