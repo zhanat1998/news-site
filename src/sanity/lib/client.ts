@@ -10,8 +10,9 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
 });
+//TODO: CDN колдонуу керекпи?
 
 // Write client (жазуу үчүн, token менен)
 export const writeClient = createClient({
@@ -34,7 +35,7 @@ export async function sanityFetch<T>({
  query,
  params = {},
  tags = [],
- revalidate = 60,
+ revalidate = 0,
 }: SanityFetchOptions): Promise<T> {
   return client.fetch<T>(query, params, {
     next: {

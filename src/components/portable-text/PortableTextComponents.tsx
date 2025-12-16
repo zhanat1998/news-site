@@ -147,5 +147,23 @@ export const portableTextComponents = {
         </div>
       );
     },
-  },
+    bunnyVideo: ({value}: any) => {
+      if (!value?.videoId) return null;
+      const libraryId = process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID;
+
+      return (
+        <div className={styles.videoWrapper}>
+          <iframe
+            src={`https://iframe.mediadelivery.net/embed/${libraryId}/${value.videoId}?autoplay=false&preload=true`}
+            title={value.caption || 'Видео'}
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+          {value.caption && (
+            <p className={styles.videoCaption}>{value.caption}</p>
+          )}
+        </div>
+      );
+    },
+  }
 };

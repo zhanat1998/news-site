@@ -1,3 +1,4 @@
+// sanity/schemaTypes/videoType.ts
 import { defineField, defineType } from 'sanity'
 import { PlayIcon } from '@sanity/icons'
 
@@ -27,10 +28,10 @@ export const videoType = defineType({
       rows: 3,
     }),
     defineField({
-      name: 'youtubeUrl',
-      title: 'YouTube URL',
-      type: 'url',
-      description: 'Мисалы: https://www.youtube.com/watch?v=VIDEO_ID',
+      name: 'bunnyVideoId',
+      title: 'Bunny Video ID',
+      type: 'string',
+      description: 'Bunny dashboard → Video → Copy Video ID',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -38,13 +39,6 @@ export const videoType = defineType({
       title: 'Сүрөт (Thumbnail)',
       type: 'image',
       options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alternative text',
-          type: 'string',
-        }),
-      ],
     }),
     defineField({
       name: 'duration',
@@ -68,6 +62,7 @@ export const videoType = defineType({
       name: 'publishedAt',
       title: 'Жарыяланган күнү',
       type: 'datetime',
+      initialValue: () => new Date().toISOString(),
     }),
     defineField({
       name: 'isFeatured',
@@ -79,16 +74,13 @@ export const videoType = defineType({
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
-      media: 'thumbnail',
       duration: 'duration',
+      media: 'thumbnail',
     },
-    prepare(selection) {
-      const { title, author, duration } = selection
+    prepare({ title, duration }) {
       return {
-        ...selection,
-        title: title,
-        subtitle: `${duration || ''} ${author ? '• ' + author : ''}`,
+        title,
+        subtitle: duration || 'Видео',
       }
     },
   },

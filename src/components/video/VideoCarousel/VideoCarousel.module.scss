@@ -1,4 +1,3 @@
-// components/video/VideoCarousel/VideoCarousel.module.scss
 .section {
   background: #1a1a1a;
   padding: 32px 0;
@@ -23,6 +22,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
 
   &:hover {
     text-decoration: underline;
@@ -33,9 +33,14 @@
   font-size: 20px;
 }
 
+// Десктопто гана көрүнөт
 .controls {
-  display: flex;
+  display: none;
   gap: 8px;
+
+  @media (min-width: 769px) {
+    display: flex;
+  }
 }
 
 .navButton {
@@ -59,45 +64,71 @@
 }
 
 .carouselWrapper {
-  overflow: hidden;
   padding: 0 16px;
   max-width: 1280px;
   margin: 0 auto;
+
+  // Десктоп — overflow hidden, transform менен жылат
+  overflow: hidden;
+
+  // Мобилка — scroll менен иштейт
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 .carousel {
   display: flex;
   transition: transform 0.3s ease;
+
+  // Мобилкада transform жок
+  @media (max-width: 768px) {
+    transition: none;
+    transform: none !important;
+  }
 }
 
 .slide {
   flex: 0 0 25%;
+  min-width: 25%;
   padding: 0 8px;
-  transition: opacity 0.3s ease;
 
   @media (max-width: 1024px) {
     flex: 0 0 33.333%;
+    min-width: 33.333%;
   }
 
   @media (max-width: 768px) {
-    flex: 0 0 50%;
+    flex: 0 0 75%;
+    min-width: 75%;
+    scroll-snap-align: start;
   }
 
   @media (max-width: 480px) {
-    flex: 0 0 100%;
+    flex: 0 0 85%;
+    min-width: 85%;
   }
 }
 
 .card {
   display: block;
+  text-decoration: none;
 }
 
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 180px;
+  aspect-ratio: 16/10;
   overflow: hidden;
   margin-bottom: 12px;
+  border-radius: 4px;
 
   img {
     object-fit: cover;
@@ -106,10 +137,6 @@
 
   .card:hover & img {
     transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    height: 150px;
   }
 }
 
@@ -163,6 +190,11 @@
 
   .card:hover & {
     text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+    -webkit-line-clamp: 2;
   }
 }
 

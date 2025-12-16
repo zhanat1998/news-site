@@ -23,7 +23,7 @@ export const postType = defineType({
       type: 'slug',
       options: {
         source: 'title',
-        maxLength: 100,
+        maxLength: 200,
       },
       validation: (rule) => rule
         .required().error('Slug милдеттүү — Generate басыңыз')

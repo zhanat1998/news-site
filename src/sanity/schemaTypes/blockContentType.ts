@@ -105,16 +105,17 @@ export const blockContentType = defineType({
       },
     }),
 
-    // YouTube видео
+    // Bunny видео
     defineArrayMember({
       type: 'object',
-      name: 'youtube',
-      title: 'YouTube видео',
+      name: 'bunnyVideo',
+      title: 'Bunny видео',
       fields: [
         {
-          name: 'url',
-          type: 'url',
-          title: 'YouTube URL',
+          name: 'videoId',
+          type: 'string',
+          title: 'Bunny Video ID',
+          validation: (Rule) => Rule.required(),
         },
         {
           name: 'caption',
@@ -123,11 +124,11 @@ export const blockContentType = defineType({
         },
       ],
       preview: {
-        select: {url: 'url'},
-        prepare({url}) {
+        select: { videoId: 'videoId' },
+        prepare({ videoId }) {
           return {
-            title: 'YouTube видео',
-            subtitle: url,
+            title: 'Bunny видео',
+            subtitle: videoId || 'ID жок',
           }
         },
       },

@@ -2,7 +2,7 @@ import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import DateDisplay from "@/components/ui/DateDisplay/DateDisplay";
 import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
-import {categoryColumnsData, categoryNewsData, mockVideos, sportData} from "@/constants";
+import {categoryColumnsData, categoryNewsData, sportData} from "@/constants";
 import CategoryNewsGrid from "@/components/news/CategoryNewsGrid/CategoryNewsGrid";
 import SportSection from "@/components/news/SportSection/SportSection";
 import { groq } from 'next-sanity';
@@ -11,8 +11,7 @@ import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
-
-// app/page.tsx
+import VideoSection from "@/components/video/VideoSection/VideoSection";
 
 const latestPostsQuery = groq`
   *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) [0...20] {
@@ -39,17 +38,39 @@ const breakingNewsQuery = groq`
   }
 `;
 
+const videosQuery = groq`
+  *[_type == "video"] | order(publishedAt desc) [0...10] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    bunnyVideoId,
+    duration,
+    thumbnail { asset->, alt },
+    category->{ title }
+  }
+`;
+
 export default async function Home() {
-  const [posts, breakingNews] = await Promise.all([
+  const [posts, breakingNews, videos] = await Promise.all([
     sanityFetch<any[]>({
       query: latestPostsQuery,
       tags: ['posts'],
+      revalidate: 0
     }),
-    sanityFetch<any[]>({
-      query: breakingNewsQuery,
-      tags: ['posts', 'breaking'],
-    }),
+    sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'] }),
+    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),  // ← ЖАҢЫ
   ]);
+
+  const formattedVideos = videos.map(video => ({
+    title: video.title,
+    slug: video.slug,
+    image: video.thumbnail?.asset?.url
+      || `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`,
+    excerpt: video.description,
+    category: video.category?.title,
+    duration: video.duration,
+  }));
 
   const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
 
@@ -68,7 +89,12 @@ export default async function Home() {
       <VideoCarousel
         title="КӨРҮҮ КЕРЕК"
         link="/video"
-        items={mockVideos}
+        items={formattedVideos}
+      />
+      <VideoSection
+        title="ЖАҢЫ ВИДЕОЛОР"
+        link="/video"
+        items={formattedVideos}
       />
       <CategoryColumns categories={categoryColumnsData} />
       <CategoryNewsGrid categories={categoryNewsData} />

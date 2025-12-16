@@ -100,57 +100,6 @@ export enum SectionTitles {
   BREAKING_NEWS = 'Шашылыш кабарлар',
 }
 
-export const mockVideos = [
-  {
-    title: 'Калифорнияда үй жарылган учурду эшик камерасы тартып алды',
-    slug: 'house-explosion',
-    image: 'https://picsum.photos/400/250?random=20',
-    excerpt: 'Газ түтүгү агып, үйдүн жарылуусуна алып келип, алты адамды жаралады.',
-    category: 'АКШ жана Канада',
-    duration: '2:34'
-  },
-  {
-    title: 'Катаракт операциясы чоң мышыктын көзүн сактап калды',
-    slug: 'snow-leopard',
-    image: 'https://picsum.photos/400/250?random=21',
-    excerpt: '"Уникалдуу операция" карбарстын бузулган көз линзасын жасалма менен алмаштырды.',
-    category: 'Норфолк',
-    duration: '3:15'
-  },
-  {
-    title: 'Кичинекей чип ичегиңиздин маалыматын кантип сактай алат',
-    slug: 'gut-chip',
-    image: 'https://picsum.photos/400/250?random=22',
-    excerpt: 'Жаңы орган-чип технологиясы дарыгерлерге ичеги ден соолугу үчүн жеке дарылоо түзүүгө жардам берет.',
-    category: 'Tech Now',
-    duration: '4:22'
-  },
-  {
-    title: 'Clair Obscur Game Awards сыйлыктарын тогуз жолу жеңип алды',
-    slug: 'game-awards',
-    image: 'https://picsum.photos/400/250?random=23',
-    excerpt: 'Clair Obscur: Expedition 33 быйылкы Game Awards сыйлыгында жылдын оюну деп аталды.',
-    category: 'Технология',
-    duration: '5:10'
-  },
-  {
-    title: 'Котормочу украиналык баланы Россиядагы энесине кошту',
-    slug: 'interpreter-ukraine',
-    image: 'https://picsum.photos/400/250?random=24',
-    excerpt: 'Роман Олексив, 11 жашта, орус ракетасы энесин да өлтүргөн.',
-    category: 'Европа',
-    duration: '6:45'
-  },
-  {
-    title: 'Кыргызстандын тоолорундагы жашоо',
-    slug: 'kyrgyzstan-mountains',
-    image: 'https://picsum.photos/400/250?random=25',
-    excerpt: 'Көчмөн турмуш жана салттуу маданият.',
-    category: 'Борбор Азия',
-    duration: '8:20'
-  },
-];
-
 export const categoryNewsData = [
   {
     title: 'Элдик экономика',
