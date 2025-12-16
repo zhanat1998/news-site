@@ -91,7 +91,6 @@ export default async function NewsDetailPage({ params }: Props) {
 
   const relatedIds = relatedPosts.map((p: any) => p._id);
   const moreNews = await client.fetch(moreNewsQuery, { slug, relatedIds });
-  console.log(moreNews,'moreNews')
 
 // Эгер бош же 2ден аз болсо — башка посттордон ал
   if (!relatedPosts || relatedPosts.length < 2) {

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './Header.module.scss';
 import MobileMenu from '../MobileMenu/MobileMenu';
@@ -5,6 +7,7 @@ import SearchToggle from "@/components/ui/SearchToggle/SearchToggle";
 import { paths } from "@/config/paths";
 import Image from "next/image";
 import LanguageSwitcher from "@/components/layout/Header/components/LanguageSwitcher/LanguageSwitcher";
+import {usePathname} from "next/navigation";
 
 const socialLinks = [
   { icon: 'instagram', href: 'https://www.instagram.com/sokol.media_/' },
@@ -14,6 +17,8 @@ const socialLinks = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -59,13 +64,15 @@ export default function Header() {
         </div>
 
         {/* Row 2 - Слоган (Desktop) */}
-        <div className={styles.sloganRow}>
-          <p className={styles.slogan}>
-            <span className={styles.sloganIcon}>✦</span>
-            Канаттын кагылышы, мезгилдин чагылышы.
-            <span className={styles.sloganIcon}>✦</span>
-          </p>
-        </div>
+        {isHomePage && (
+          <div className={styles.sloganRow}>
+            <p className={styles.slogan}>
+              <span className={styles.sloganIcon}>✦</span>
+              Канаттын кагылышы, мезгилдин чагылышы.
+              <span className={styles.sloganIcon}>✦</span>
+            </p>
+          </div>
+        )}
 
         {/* Row 2 Mobile - Burger + Search */}
         <div className={styles.mobileRow}>
@@ -73,12 +80,14 @@ export default function Header() {
           <SearchToggle />
         </div>
 
-        {/* Row 3 Mobile - Слоган */}
-        <div className={styles.sloganRowMobile}>
-          <p className={styles.slogan}>
-            Канаттын кагылышы, мезгилдин чагылышы.
-          </p>
-        </div>
+        {/* Row 3 Mobile - Слоган - ТОЛЬКО ГЛАВНАЯ */}
+        {isHomePage && (
+          <div className={styles.sloganRowMobile}>
+            <p className={styles.slogan}>
+              Канаттын кагылышы, мезгилдин чагылышы.
+            </p>
+          </div>
+        )}
       </div>
     </header>
   );
