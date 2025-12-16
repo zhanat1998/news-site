@@ -1,53 +1,232 @@
 @use '../../../styles/variables' as *;
-@use '../../../styles/mixins' as *;
 
 .header {
-  background: $white;
-  border-bottom: 1px solid $gray-light;
+  background: #f5f5f5;
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .container {
+  max-width: 1200px;
   margin: 0 auto;
-  height: 56px;
-  padding: 0 $spacing-md;
+  padding: 0 16px;
+}
+
+// ========== ROW 1 ==========
+.topRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 70px;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    height: 56px;
+  }
 }
 
 .left {
-  flex: 1;
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+
+// Burger - Desktop only
+.burgerDesktop {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: $spacing-sm;
-  color: $dark;
-  font-weight: 700;
+  text-decoration: none;
+  gap: 8px;
 }
 
-.logoIcon {
-  background: $primary;
-  color: $white;
-  padding: $spacing-xs $spacing-sm;
-  border-radius: $radius-sm;
-  font-size: 20px;
-  font-weight: bold;
+.logoImage {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .logoText {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
+  color: #3a5ba0;  // Көк түс
+  letter-spacing: -1px;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
 }
 
-.right {
-  flex: 1;
+.logoDot {
+  color: #f5a623;  // Сары түс (BIA.kg стили)
+  font-weight: 800;
+}
+
+
+// ========== SOCIAL ICONS ==========
+.socialIcons {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+}
+
+.socialLink {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #ffd54f 0%, #f5a623 50%, #e5941a 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a1a;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(245, 166, 35, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// ========== SEARCH DESKTOP ==========
+.searchDesktop {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+
+// ========== SLOGAN ROW - DESKTOP ==========
+.sloganRow {
+  display: block;
+  background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #3182ce 100%);
+  padding: 10px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  // Жылдыз эффекти
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    animation: shine 3s infinite;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.slogan {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+  font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sloganIcon {
+  color: #f5a623;
+  margin: 0 12px;
+  font-style: normal;
+}
+
+// ========== SLOGAN ROW - MOBILE (Row 3) ==========
+.sloganRowMobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #3182ce 100%);
+    padding: 8px 16px;
+    text-align: center;
+
+    .slogan {
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// ========== ROW 2 - MOBILE ONLY ==========
+.mobileRow {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid #e0e0e0;
+  }
+}
+
+.centerSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 }

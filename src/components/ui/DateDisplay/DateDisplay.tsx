@@ -4,23 +4,27 @@ import { useEffect, useState } from 'react';
 import styles from './DateDisplay.module.scss';
 
 export default function DateDisplay() {
-  const [currentTime, setCurrentTime] = useState('');
+  const [dateStr, setDateStr] = useState('');
+  const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
+
+      const date = now.toLocaleDateString('ky-KG', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
         weekday: 'long',
-      };
-      const date = now.toLocaleDateString('ky-KG', options);
+      });
+
       const time = now.toLocaleTimeString('ky-KG', {
         hour: '2-digit',
         minute: '2-digit'
       });
-      setCurrentTime(`${date}, Бишкек убактысы ${time}`);
+
+      setDateStr(date);
+      setTimeStr(time);
     };
 
     updateTime();
@@ -30,7 +34,11 @@ export default function DateDisplay() {
 
   return (
     <div className={styles.dateDisplay}>
-      {currentTime}
+      <span className={styles.weekday}>{dateStr.split(',')[0]}, </span>
+      {dateStr.split(',')[1]?.trim()},
+      <span className={styles.location}> Бишкек</span>
+      <span className={styles.ubakyt}> убактысы</span>
+      <span className={styles.time}> {timeStr}</span>
     </div>
   );
 }
