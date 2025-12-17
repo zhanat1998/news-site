@@ -1,8 +1,8 @@
-// src/app/video/[slug]/page.tsx
 import { client } from '@/sanity/lib/client'
 import { notFound } from 'next/navigation'
 import { groq } from 'next-sanity'
-import {BunnyPlayer} from "@/components/video/BunnyPlayer/BunnyPlayer";
+import { BunnyPlayer } from "@/components/video/BunnyPlayer/BunnyPlayer";
+import styles from './page.module.scss';
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -16,24 +16,13 @@ const videoBySlugQuery = groq`
     bunnyVideoId,
     duration,
     publishedAt,
-    thumbnail {
-      asset->,
-      alt
-    },
-    category->{
-      title,
-      slug
-    },
-    author->{
-      name,
-      image
-    }
+    category->{ title },
+    author->{ name }
   }
 `
 
 export default async function VideoDetailPage({ params }: Props) {
   const { slug } = await params
-
   const video = await client.fetch(videoBySlugQuery, { slug })
 
   if (!video) {
@@ -41,18 +30,27 @@ export default async function VideoDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="container">
+    <div className={styles.videoPage}>
+      {/* Title + Description ҮСТҮНДӨ */}
+      <div className={styles.content}>
+        <h1 className={styles.title}>{video.title}</h1>
+
+        {video.description && (
+          <p className={styles.description}>{video.description}</p>
+        )}
+      </div>
+
       {/* Видео плеер */}
-      <BunnyPlayer videoId={video.bunnyVideoId} title={video.title} />
+      <div className={styles.playerSection}>
+        <BunnyPlayer videoId={video.bunnyVideoId} title={video.title} />
+      </div>
 
-      {/* Маалымат */}
-      <h1>{video.title}</h1>
-
-      {video.duration && <span>{video.duration}</span>}
-
-      {video.description && <p>{video.description}</p>}
-
-      {video.author && <p>Автор: {video.author.name}</p>}
+      {/* Мета маалымат */}
+      <div className={styles.meta}>
+        {video.author && <span>👤 {video.author.name}</span>}
+        {video.duration && <span>⏱ {video.duration}</span>}
+        {video.category && <span>{video.category.title}</span>}
+      </div>
     </div>
   )
 }
