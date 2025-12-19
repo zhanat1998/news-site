@@ -1,3 +1,5 @@
+import {ReactNode} from "react";
+
 export type News = {
   _id: string;
   title: string;
@@ -36,3 +38,7 @@ export type Author = {
   image: string;
   bio?: string;
 };
+
+export interface MainContainerProps {
+  children: ReactNode;
+}

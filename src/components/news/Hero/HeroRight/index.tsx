@@ -1,7 +1,7 @@
 import styles from "./HeroRight.module.scss";
 import HeroRightWrapper from "@/components/news/Hero/HeroRight/components/HeroRightWrapper";
 import OpinionItem from "@/components/news/Hero/HeroRight/components/OpinionItem";
-import MustReadItem from "@/components/news/Hero/HeroRight/components/MustReadItem";
+import MustReadItem from "../../../ui/MustReadItem";
 import {Posts} from "@/types/posts";
 
 const HeroRight = ({ items }:Posts) => {
@@ -12,17 +12,17 @@ const HeroRight = ({ items }:Posts) => {
   return <div className={styles.heroRight}>
     <HeroRightWrapper title="ОКУУ КЕРЕК">
       {mustReads.map((item: any) => (
-        <MustReadItem item={item} key={item?.slug?.current}/>
+        <MustReadItem item={item} key={item?._id}/>
       ))}
     </HeroRightWrapper>
     <HeroRightWrapper title="ДАГЫ ЖАҢЫЛЫКТАР">
       {moreHeadlines.map((item: any) => (
-        <MustReadItem item={item}  key={item?.slug?.current}/>
+        <MustReadItem item={item}  key={item?._id}/>
       ))}
     </HeroRightWrapper>
    <HeroRightWrapper title="ПИКИР">
      {opinions.map((item: any) => (
-       <OpinionItem item={item}  key={item?.slug?.current}/>
+       <OpinionItem item={item}  key={item?._id}/>
      ))}
    </HeroRightWrapper>
   </div>

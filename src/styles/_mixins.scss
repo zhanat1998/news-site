@@ -18,9 +18,14 @@
     @content;
   }
 }
+@mixin full-width-desktop {
+  @media (max-width: $wide) {
+    @content;
+  }
+}
 
 @mixin tablet {
-  @media (max-width: $tablet) {
+  @media (min-width: $mobile + 1) and (max-width: $desktop - 1) {
     @content;
   }
 }

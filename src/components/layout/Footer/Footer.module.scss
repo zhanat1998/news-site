@@ -2,14 +2,9 @@
 @use '../../../styles/mixins' as *;
 
 .footer {
-  //background: $dark-light;
   padding: $spacing-2xl 0 $spacing-lg;
   margin-top: $spacing-2xl;
   border-top: 1px solid $gray-dark;
-}
-
-.container {
-  @include container;
 }
 
 .grid {

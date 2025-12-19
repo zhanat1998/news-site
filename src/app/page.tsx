@@ -12,6 +12,7 @@ import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
 import VideoSection from "@/components/video/VideoSection/VideoSection";
 import {breakingNewsQuery, latestPostsQuery, videosQuery} from "@/sanity/lib/queries";
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 export default async function Home() {
   const [posts, breakingNews, videos] = await Promise.all([
@@ -38,36 +39,33 @@ export default async function Home() {
   const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
 
   return (
-    <div className={styles.page}>
+    <MainContainer>
       <TrendingBar items={trending}/>
-      {/*<BreakingNews items={posts}/>*/}
-      <div className="container">
-        <DateDisplay/>
-        <section className={styles.heroSection}>
-          <HeroLeft items={posts}/>
-          <HeroCenter items={posts}/>
-          <HeroRight items={posts}/>
-        </section>
-        <VideoCarousel
-          title="Latest Episodes"
-          videos={formattedVideos}
-          link="/video"
-        />
-        <VideoSection
-          title="ЖАҢЫ ВИДЕОЛОР"
-          link="/video"
-          items={formattedVideos}
-        />
-        <CategoryColumns categories={categoryColumnsData} />
-        <CategoryNewsGrid categories={categoryNewsData} />
+      <DateDisplay/>
+      <section className={styles.heroSection}>
+        <HeroLeft items={posts}/>
+        <HeroCenter items={posts}/>
+        <HeroRight items={posts}/>
+      </section>
+      <VideoCarousel
+        title="Latest Episodes"
+        videos={formattedVideos}
+        link="/video"
+      />
+      <VideoSection
+        title="ЖАҢЫ ВИДЕОЛОР"
+        link="/video"
+        items={formattedVideos}
+      />
+      <CategoryColumns categories={categoryColumnsData} />
+      <CategoryNewsGrid categories={categoryNewsData} />
 
-        <SportSection
-          bannerImage={sportData.bannerImage}
-          mainNews={sportData.mainNews}
-          sideNews={sportData.sideNews}
-          link="/category/sport"
-        />
-      </div>
-    </div>
+      <SportSection
+        bannerImage={sportData.bannerImage}
+        mainNews={sportData.mainNews}
+        sideNews={sportData.sideNews}
+        link="/category/sport"
+      />
+    </MainContainer>
   );
 }

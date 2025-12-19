@@ -1,0 +1,9 @@
+@use '../../../styles/mixins' as *;
+
+.page {
+  min-height: 100vh;
+  background: #fff;
+}
+.container {
+  @include container;
+}

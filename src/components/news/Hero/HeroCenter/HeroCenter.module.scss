@@ -1,64 +1,18 @@
 // ========== CENTER COLUMN ==========
+@use '../../../../styles/mixins' as *;
 .heroCenter {
   padding-left: 24px;
   border-left: 1px solid #e6e6e6;
 
-  @media (max-width: 1024px) {
+  @include tablet {
     padding-left: 20px;
   }
 
-  @media (max-width: 768px) {
+  @include mobile {
     padding-left: 0;
     border-left: none;
     padding-bottom: 24px;
     border-bottom: 1px solid #e6e6e6;
-  }
-}
-
-.centerMainCard {
-  display: block;
-  margin-bottom: 20px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 16px;
-  }
-}
-
-.centerMainImage {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  margin-bottom: 12px;
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s;
-  }
-
-  .centerMainCard:hover & img {
-    transform: scale(1.02);
-  }
-
-  @media (max-width: 768px) {
-    height: 180px;
-  }
-}
-
-.centerMainTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.3;
-
-  .centerMainCard:hover & {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 17px;
   }
 }
 
@@ -74,49 +28,6 @@
     gap: 12px;
     padding-bottom: 12px;
     margin-bottom: 12px;
-  }
-}
-
-.centerNewsItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.centerNewsTitle {
-  flex: 1;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.4;
-
-  .centerNewsItem:hover & {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 13px;
-  }
-}
-
-.centerNewsImage {
-  position: relative;
-  width: 100px;
-  min-width: 100px;
-  height: 70px;
-  overflow: hidden;
-
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-
-  @media (max-width: 768px) {
-    width: 90px;
-    min-width: 90px;
-    height: 60px;
   }
 }
 
@@ -142,7 +53,7 @@
     padding-bottom: 0;
   }
 
-  @media (max-width: 768px) {
+  @include mobile {
     font-size: 13px;
     padding: 10px 0;
   }

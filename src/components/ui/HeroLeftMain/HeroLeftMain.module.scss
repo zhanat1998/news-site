@@ -1,0 +1,73 @@
+@use '../../../styles/mixins' as *;
+.heroMainCard {
+  display: block;
+  margin-bottom: 24px;
+
+  @include mobile {
+    margin-bottom: 20px;
+  }
+}
+
+.heroMainImage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 350px;
+  overflow: hidden;
+  margin-bottom: 0;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s;
+  }
+
+  .heroMainCard:hover & img {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    height: 200px;
+    max-height: 200px;
+  }
+}
+.heroMainAccent {
+  width: 100%;
+  height: 5px;
+  background: #fa9000;
+  margin-bottom: 14px;
+}
+
+.heroMainTitle {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: #fa9000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  .heroMainCard:hover & {
+    color: #fa9000;
+  }
+
+  @include mobile {
+    font-size: 20px;
+  }
+}
+.heroMainExcerpt {
+  font-size: 15px;
+  color: #5a5a5a;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  @include mobile {
+    font-size: 14px;
+  }
+}

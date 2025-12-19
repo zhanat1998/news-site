@@ -4,6 +4,9 @@ import Image from "next/image";
 import styles from "./HeroCenter.module.scss";
 import {Posts} from "@/types/posts";
 import {getImage} from "@/utils/getImage";
+import HeroLeftMain from "../../../ui/HeroLeftMain";
+import RightImageCard from "@/components/ui/RightImageCard/RightImageCard";
+import RightSmallImageCard from "@/components/ui/RightSmallImageCard/RightSmallImageCard";
 
 const HeroCenter = ({ items }: Posts) => {
   const centerMain = items[2];
@@ -11,26 +14,12 @@ const HeroCenter = ({ items }: Posts) => {
   const centerLinks = items.slice(5, 9);
   return <div className={styles.heroCenter}>
     {centerMain && (
-      <Link
-        href={`/news/${formatDateForUrl(centerMain.publishedAt)}/${centerMain.slug?.current}`}
-        className={styles.centerMainCard}>
-        <div className={styles.centerMainImage}>
-          <Image src={getImage(centerMain?.mainImage, 500, 300)} alt={centerMain.title} fill />
-        </div>
-        <h2 className={styles.centerMainTitle}>{centerMain.title}</h2>
-      </Link>
+      <HeroLeftMain item={centerMain} key={centerMain?._id} height={220} has_excerpt={false}/>
     )}
 
     <div className={styles.centerNewsList}>
       {centerNews.map((news: any) => (
-        <Link key={news._id}
-              href={`/news/${formatDateForUrl(news.publishedAt)}/${news.slug?.current}`}
-              className={styles.centerNewsItem}>
-          <p className={styles.centerNewsTitle}>{news.title}</p>
-          <div className={styles.centerNewsImage}>
-            <Image src={getImage(news?.mainImage, 150, 100)} alt={news.title} fill />
-          </div>
-        </Link>
+        <RightSmallImageCard item={news} key={news._id} />
       ))}
     </div>
 
