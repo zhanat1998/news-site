@@ -1,11 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { SearchIcon } from '@/components/ui/icons/SearchIcon';
 import styles from './SearchToggle.module.scss';
 
-export default function SearchToggle() {
+function SearchToggleContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,5 +43,25 @@ export default function SearchToggle() {
         <SearchIcon />
       </button>
     </form>
+  );
+}
+
+export default function SearchToggle() {
+  return (
+    <Suspense fallback={
+      <form className={styles.searchForm}>
+        <input
+          type="text"
+          placeholder="Издөө..."
+          className={styles.searchInput}
+          disabled
+        />
+        <button type="submit" className={styles.searchButton} disabled>
+          <SearchIcon />
+        </button>
+      </form>
+    }>
+      <SearchToggleContent />
+    </Suspense>
   );
 }
