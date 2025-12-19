@@ -1,117 +1,149 @@
+// src/components/video/VideoCarousel/VideoCarousel.tsx
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImage } from '@/utils/getImage';
 import styles from './VideoCarousel.module.scss';
 
-type VideoItem = {
+interface Video {
+  _id: string;
   title: string;
   slug: string;
-  image: string;
-  excerpt?: string;
-  category?: string;
+  thumbnail?: any;
+  bunnyVideoId?: string;
   duration?: string;
-};
+  category?: { title: string };
+}
 
-type Props = {
+interface VideoCarouselProps {
   title: string;
+  videos: Video[];
   link?: string;
-  items: VideoItem[];
-};
+}
 
-export default function VideoCarousel({ title, link, items }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const carouselRef = useRef<HTMLDivElement>(null);
+export default function VideoCarousel({ title, videos, link }: VideoCarouselProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const visibleCount = 4;
-  const maxIndex = Math.max(0, items.length - visibleCount);
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
 
-  // Мобилка текшерүү
+    const container = scrollRef.current;
+    const cardWidth = container.scrollWidth / videos.length;
+    const scrollAmount = cardWidth * 6; // 6 карточка
+
+    const newScrollLeft = direction === 'left'
+      ? container.scrollLeft - scrollAmount
+      : container.scrollLeft + scrollAmount;
+
+    container.scrollTo({
+      left: newScrollLeft,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    handleScroll();
   }, []);
 
-  const handlePrev = () => {
-    if (isMobile) return;
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    if (isMobile) return;
-    setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
-  };
-
   return (
-    <section className={styles.section}>
+    <section className={styles.carousel}>
+      {/* container класын алып салдык */}
       <div className={styles.header}>
-        <Link href={link || '/video'} className={styles.title}>
-          {title} <span className={styles.arrow}>›</span>
-        </Link>
+        <h2 className={styles.title}>
+          <span className={styles.accent}></span>
+          {title}
+        </h2>
 
-        {/* Десктопто гана көрүнөт */}
         <div className={styles.controls}>
           <button
-            className={styles.navButton}
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            aria-label="Артка"
+            className={styles.arrow}
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+            aria-label="Previous"
           >
-            ‹
+            <ArrowIcon direction="left" />
           </button>
           <button
-            className={styles.navButton}
-            onClick={handleNext}
-            disabled={currentIndex >= maxIndex}
-            aria-label="Алдыга"
+            className={styles.arrow}
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+            aria-label="Next"
           >
-            ›
+            <ArrowIcon direction="right" />
           </button>
         </div>
       </div>
 
-      <div className={styles.carouselWrapper} ref={carouselRef}>
-        <div
-          className={styles.carousel}
-          style={!isMobile ? {
-            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`
-          } : undefined}
-        >
-          {items.map((item) => (
-            <div key={item.slug} className={styles.slide}>
-              <Link href={`/video/${item.slug}`} className={styles.card}>
-                <div className={styles.imageWrapper}>
-                  <Image src={item.image} alt={item.title} fill />
-                  <div className={styles.playButton}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                      <polygon points="5,3 19,12 5,21" />
-                    </svg>
-                  </div>
-                  {item.duration && (
-                    <span className={styles.duration}>{item.duration}</span>
-                  )}
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.cardTitle}>{item.title}</h3>
-                  {item.excerpt && (
-                    <p className={styles.excerpt}>{item.excerpt}</p>
-                  )}
-                  {item.category && (
-                    <span className={styles.category}>{item.category}</span>
-                  )}
-                </div>
-              </Link>
+      <div
+        ref={scrollRef}
+        className={styles.items}
+        onScroll={handleScroll}
+      >
+        {videos.map((video) => (
+          <Link
+            key={video._id}
+            href={`/video/${video.slug}`}
+            className={styles.item}
+          >
+            <div className={styles.thumbnail}>
+              <Image
+                src={getImage(video.thumbnail, 320, 180)}
+                alt={video.title}
+                width={320}
+                height={180}
+                className={styles.image}
+              />
+              {video.duration && (
+                <span className={styles.duration}>▶ {video.duration}</span>
+              )}
             </div>
-          ))}
-        </div>
+
+            <div className={styles.info}>
+              {video.category && (
+                <span className={styles.category}>{video.category.title}</span>
+              )}
+              <h3 className={styles.videoTitle}>{video.title}</h3>
+            </div>
+          </Link>
+        ))}
       </div>
+
+      {link && (
+        <div className={styles.footer}>
+          <Link href={link} className={styles.viewAll}>
+            View all
+          </Link>
+        </div>
+      )}
     </section>
+  );
+}
+
+function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d={direction === 'left'
+          ? "M15 18L9 12L15 6"
+          : "M9 18L15 12L9 6"
+        }
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

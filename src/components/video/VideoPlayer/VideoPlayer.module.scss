@@ -1,0 +1,58 @@
+// src/components/video/VideoPlayer/VideoPlayer.module.scss
+.player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+// Эгер loading state керек болсо
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 18px;
+}
+
+// Play overlay (эгер custom play button керек болсо)
+.playOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.9;
+    transition: transform 0.3s;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
+}

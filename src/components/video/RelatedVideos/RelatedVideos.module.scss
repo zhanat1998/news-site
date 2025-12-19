@@ -1,0 +1,116 @@
+// src/components/video/RelatedVideos/RelatedVideos.module.scss
+.related {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px); // ← viewport биктигине жараша
+  overflow-y: auto; // ← скролл бар болсо
+  padding-right: 8px; // ← scrollbar үчүн боштук
+
+  // Scrollbar стилдери
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 20px;
+  letter-spacing: 1px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky; // ← title дагы sticky
+  top: 0;
+  background: #000; // ← background керек
+  z-index: 1;
+  padding-top: 4px;
+  margin-top: -4px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.8;
+
+    .image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.videoTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: white;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.thumbnail {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1a1a;
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.duration {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: monospace;
+  color: white;
+}

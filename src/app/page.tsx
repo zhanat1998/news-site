@@ -5,7 +5,6 @@ import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
 import {categoryColumnsData, categoryNewsData, sportData} from "@/constants";
 import CategoryNewsGrid from "@/components/news/CategoryNewsGrid/CategoryNewsGrid";
 import SportSection from "@/components/news/SportSection/SportSection";
-import { groq } from 'next-sanity';
 import TrendingBar from "@/components/news/TrendingBar";
 import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
@@ -26,6 +25,7 @@ export default async function Home() {
   ]);
 
   const formattedVideos = videos.map(video => ({
+    _id: video._id,
     title: video.title,
     slug: video.slug,
     image: video.thumbnail?.asset?.url
@@ -48,26 +48,26 @@ export default async function Home() {
           <HeroCenter items={posts}/>
           <HeroRight items={posts}/>
         </section>
-      </div>
-      <VideoCarousel
-        title="КӨРҮҮ КЕРЕК"
-        link="/video"
-        items={formattedVideos}
-      />
-      <VideoSection
-        title="ЖАҢЫ ВИДЕОЛОР"
-        link="/video"
-        items={formattedVideos}
-      />
-      <CategoryColumns categories={categoryColumnsData} />
-      <CategoryNewsGrid categories={categoryNewsData} />
+        <VideoCarousel
+          title="Latest Episodes"
+          videos={formattedVideos}
+          link="/video"
+        />
+        <VideoSection
+          title="ЖАҢЫ ВИДЕОЛОР"
+          link="/video"
+          items={formattedVideos}
+        />
+        <CategoryColumns categories={categoryColumnsData} />
+        <CategoryNewsGrid categories={categoryNewsData} />
 
-      <SportSection
-        bannerImage={sportData.bannerImage}
-        mainNews={sportData.mainNews}
-        sideNews={sportData.sideNews}
-        link="/category/sport"
-      />
+        <SportSection
+          bannerImage={sportData.bannerImage}
+          mainNews={sportData.mainNews}
+          sideNews={sportData.sideNews}
+          link="/category/sport"
+        />
+      </div>
     </div>
   );
 }
