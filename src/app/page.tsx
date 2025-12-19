@@ -12,44 +12,7 @@ import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
 import VideoSection from "@/components/video/VideoSection/VideoSection";
-
-const latestPostsQuery = groq`
-  *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) [0...20] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    section,
-    isFeatured,
-    isBreaking,
-    mainImage { asset->, alt },
-    category->{ title, slug },
-    author->{ name, image }
-  }
-`;
-
-const breakingNewsQuery = groq`
-  *[_type == "post" && isBreaking == true] | order(coalesce(publishedAt, _createdAt) desc) [0...5] {
-    _id,
-    title,
-    slug,
-    publishedAt
-  }
-`;
-
-const videosQuery = groq`
-  *[_type == "video"] | order(publishedAt desc) [0...10] {
-    _id,
-    title,
-    "slug": slug.current,
-    description,
-    bunnyVideoId,
-    duration,
-    thumbnail { asset->, alt },
-    category->{ title }
-  }
-`;
+import {breakingNewsQuery, latestPostsQuery, videosQuery} from "@/sanity/lib/queries";
 
 export default async function Home() {
   const [posts, breakingNews, videos] = await Promise.all([

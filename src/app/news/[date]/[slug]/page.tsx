@@ -11,64 +11,7 @@ import ShareButtons from "@/components/newsDetail/ShareButtons";
 import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
-
-// GROQ Queries
-const postQuery = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    section,
-    body,
-    mainImage {
-      asset->,
-      alt,
-      caption
-    },
-    author-> {
-      name,
-      image { asset-> }
-    },
-    category-> {
-      title,
-      slug
-    }
-  }
-`;
-
-const relatedPostsQuery = groq`
-  *[_type == "post" && slug.current != $slug && category->slug.current == $categorySlug] | order(publishedAt desc) [0...4] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    publishedAt,
-    mainImage { asset->, alt }
-  }
-`;
-
-const moreNewsQuery = groq`
-  *[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0...4] {
-    _id,
-    title,
-    slug,
-    publishedAt,
-    mainImage { asset->, alt }
-  }
-`;
-
-const sidebarQuery = groq`
-  *[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0...3] {
-    _id,
-    title,
-    slug,
-    publishedAt,
-    mainImage { asset->, alt }
-  }
-`;
+import {moreNewsQuery, postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
 
 type Props = {
   params: Promise<{ date: string; slug: string }>;
@@ -145,19 +88,6 @@ export default async function NewsDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* Video Section*/}
-            {/*<div className={styles.videoSection}>*/}
-            {/*  <div className={styles.mainVideo}>*/}
-            {/*    <div className={styles.videoThumbnail}>*/}
-            {/*      <Image src={article.video.thumbnail} alt={article.video.title} fill />*/}
-            {/*      <div className={styles.playButton}>▶</div>*/}
-            {/*      <div className={styles.videoDuration}>*/}
-            {/*        <span>▶</span> {article.video.duration}*/}
-            {/*      </div>*/}
-            {/*      <div className={styles.videoProgress}></div>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
             <RelatedNews items={relatedPosts} />
 
             <NewsGrid title="ЖАҢЫЛЫКТАРДАН ДАГЫ" items={moreNews} />

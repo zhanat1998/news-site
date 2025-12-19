@@ -2,33 +2,31 @@
 import { groq } from 'next-sanity'
 
 // Бардык посттор (жаңыдан эскиге)
-export const postsQuery = groq`
-  *[_type == "post"] | order(publishedAt desc) {
+export const postQuery = groq`
+  *[_type == "post" && slug.current == $slug][0] {
     _id,
     title,
     slug,
     excerpt,
     publishedAt,
     section,
-    isBreaking,
-    isFeatured,
+    body,
     mainImage {
       asset->,
       alt,
       caption
     },
-    category->{
-      _id,
+    author-> {
+      name,
+      image { asset-> }
+    },
+    category-> {
       title,
       slug
-    },
-    author->{
-      _id,
-      name,
-      image
     }
   }
-`
+`;
+
 
 // Секция боюнча посттор
 export const postsBySectionQuery = groq`
@@ -55,12 +53,14 @@ export const postsBySectionQuery = groq`
 
 // Breaking news
 export const breakingNewsQuery = groq`
-  *[_type == "post" && isBreaking == true] | order(publishedAt desc) [0...5] {
+  *[_type == "post" && isBreaking == true] | order(coalesce(publishedAt, _createdAt) desc) [0...5] {
     _id,
     title,
-    slug
+    slug,
+    publishedAt
   }
-`
+`;
+
 
 // Hero посттор (башкы бет үчүн)
 export const heroPostsQuery = groq`
@@ -83,26 +83,20 @@ export const heroPostsQuery = groq`
 
 // Акыркы посттор (лимит менен)
 export const latestPostsQuery = groq`
-  *[_type == "post"] | order(publishedAt desc) [0...$limit] {
+  *[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) [0...20] {
     _id,
     title,
     slug,
     excerpt,
     publishedAt,
-    mainImage {
-      asset->,
-      alt
-    },
-    category->{
-      title,
-      slug
-    },
-    author->{
-      name,
-      image
-    }
+    section,
+    isFeatured,
+    isBreaking,
+    mainImage { asset->, alt },
+    category->{ title, slug },
+    author->{ name, image }
   }
-`
+`;
 
 // Бир пост (slug боюнча)
 export const postBySlugQuery = groq`
@@ -158,11 +152,33 @@ export const videosQuery = groq`
   *[_type == "video"] | order(publishedAt desc) [0...10] {
     _id,
     title,
-    slug,
+    "slug": slug.current,
     description,
-    youtubeUrl,
-    thumbnail,
+    bunnyVideoId,
     duration,
-    publishedAt
+    thumbnail { asset->, alt },
+    category->{ title }
   }
-`
+`;
+
+export const relatedPostsQuery = groq`
+  *[_type == "post" && slug.current != $slug && category->slug.current == $categorySlug] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    publishedAt,
+    mainImage { asset->, alt }
+  }
+`;
+
+export const moreNewsQuery = groq`
+  *[_type == "post" && slug.current != $slug] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    mainImage { asset->, alt }
+  }
+`;
