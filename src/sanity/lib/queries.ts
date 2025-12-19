@@ -182,3 +182,22 @@ export const moreNewsQuery = groq`
     mainImage { asset->, alt }
   }
 `;
+
+// src/sanity/lib/queries.ts
+export const searchPostsQuery = groq`
+  *[_type == "post" && (
+    title match $searchQuery ||
+    excerpt match $searchQuery ||
+    pt::text(body) match $searchQuery
+  )] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    publishedAt,
+    mainImage { asset->, alt },
+    category->{ title, slug },
+    author->{ name },
+    "matchInTitle": title match $searchQuery
+  } | order(matchInTitle desc, publishedAt desc)
+`;
