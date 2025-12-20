@@ -82,10 +82,11 @@ export const postType = defineType({
     }),
 
     defineField({
-      name: 'category',
-      title: 'Категория',
-      type: 'reference',
-      to: { type: 'category' },
+      name: 'categories',
+      title: 'Категориялар',
+      type: 'array',
+      of: [{ type: 'reference', to: { type: 'category' } }],
+      description: 'Бир нече категория тандай аласыз',
     }),
 
     defineField({

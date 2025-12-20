@@ -1,0 +1,13 @@
+{
+  "name": "wp-migration",
+  "version": "1.0.0",
+  "scripts": {
+    "migrate": "node migrate-wordpress-full.js"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.10.0",
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.7.0"
+  }
+}
