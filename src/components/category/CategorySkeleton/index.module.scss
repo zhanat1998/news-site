@@ -1,0 +1,165 @@
+.page {
+  background: #fff;
+  padding: 32px 0 64px;
+  min-height: 100vh;
+}
+
+// Shimmer animation
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeletonTitle {
+  height: 48px;
+  width: 300px;
+  margin: 0 auto 40px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+
+  @media (max-width: 768px) {
+    height: 32px;
+    width: 200px;
+    margin-bottom: 24px;
+  }
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid #e6e6e6;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.heroColumn {
+  @media (max-width: 1024px) {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: span 1;
+  }
+}
+
+.centerColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skeletonHeroImage {
+  width: 100%;
+  padding-bottom: 70%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.skeletonAccent {
+  width: 80px;
+  height: 5px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  margin-bottom: 16px;
+}
+
+.skeletonLine {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+}
+
+.skeletonTopImage {
+  width: 100%;
+  padding-bottom: 60%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.newsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeletonListCard {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.skeletonListImage {
+  width: 120px;
+  min-width: 120px;
+  height: 80px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+
+  @media (max-width: 480px) {
+    width: 100px;
+    min-width: 100px;
+    height: 70px;
+  }
+}
+
+.moreSection {
+  padding-top: 48px;
+
+  @media (max-width: 768px) {
+    padding-top: 32px;
+  }
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.skeletonMoreImage {
+  width: 100%;
+  padding-bottom: 65%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}

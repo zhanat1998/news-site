@@ -1,6 +1,5 @@
 // src/components/video/VideoCarousel/VideoCarousel.module.scss
 .carousel {
-  background: #000;
   padding: 60px 0;
 
   @media (max-width: 768px) {
@@ -13,18 +12,16 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding: 0 40px; // ← container падинг
 
   @media (max-width: 768px) {
     margin-bottom: 20px;
-    padding: 0;
   }
 }
 
 .title {
   font-size: 32px;
   font-weight: 700;
-  color: white;
+  color: black;
   margin: 0;
   display: flex;
   align-items: center;
@@ -58,8 +55,6 @@
 .arrow {
   width: 48px;
   height: 48px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   color: white;
   cursor: pointer;
@@ -70,7 +65,6 @@
 
   &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
   }
 
   &:disabled {
@@ -97,10 +91,6 @@
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media (max-width: 1600px) {
-    grid-auto-columns: calc((100% - (20px * 4)) / 5);
   }
 
   @media (max-width: 1200px) {

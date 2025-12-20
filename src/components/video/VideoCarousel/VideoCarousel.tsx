@@ -139,7 +139,7 @@ function ArrowIcon({ direction }: { direction: 'left' | 'right' }) {
           ? "M15 18L9 12L15 6"
           : "M9 18L15 12L9 6"
         }
-        stroke="currentColor"
+        stroke="black"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
