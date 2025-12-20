@@ -2,7 +2,6 @@ import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import DateDisplay from "@/components/ui/DateDisplay/DateDisplay";
 import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
-import {categoryColumnsData, categoryNewsData, sportData} from "@/constants";
 import CategoryNewsGrid from "@/components/news/CategoryNewsGrid/CategoryNewsGrid";
 import SportSection from "@/components/news/SportSection/SportSection";
 import TrendingBar from "@/components/news/TrendingBar";
@@ -10,20 +9,24 @@ import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
-import VideoSection from "@/components/video/VideoSection/VideoSection";
-import {breakingNewsQuery, latestPostsQuery, videosQuery} from "@/sanity/lib/queries";
+import {breakingNewsQuery, latestPostsQuery, videosQuery, sportSectionQuery,
+  categoryColumnsQuery, categoryNewsGridQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 export default async function Home() {
-  const [posts, breakingNews, videos] = await Promise.all([
+  const [posts, breakingNews, videos, sportData, categoryColumns, categoryNewsGrid] = await Promise.all([
     sanityFetch<any[]>({
       query: latestPostsQuery,
       tags: ['posts'],
       revalidate: 0
     }),
     sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'] }),
-    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),  // ← ЖАҢЫ
+    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
+    sanityFetch<any>({ query: sportSectionQuery, tags: ['posts', 'sport'] }),
+    sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
+    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'videos', 'categories'] }), // ← ЖАҢЫ
   ]);
+
 
   const formattedVideos = videos.map(video => ({
     _id: video._id,
@@ -52,19 +55,13 @@ export default async function Home() {
         videos={formattedVideos}
         link="/video"
       />
-      <VideoSection
-        title="ЖАҢЫ ВИДЕОЛОР"
-        link="/video"
-        items={formattedVideos}
-      />
-      <CategoryColumns categories={categoryColumnsData} />
-      <CategoryNewsGrid categories={categoryNewsData} />
+      <CategoryColumns categories={categoryColumns} />
+      <CategoryNewsGrid categories={categoryNewsGrid} />
 
       <SportSection
-        bannerImage={sportData.bannerImage}
+        banner={sportData.banner}
         mainNews={sportData.mainNews}
         sideNews={sportData.sideNews}
-        link="/category/sport"
       />
     </MainContainer>
   );

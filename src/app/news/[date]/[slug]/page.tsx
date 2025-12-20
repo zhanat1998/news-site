@@ -4,10 +4,8 @@ import { client } from '@/sanity/lib/client';
 import { PortableText } from '@portabletext/react';
 import { portableTextComponents } from '@/components/portable-text/PortableTextComponents';
 import styles from './page.module.scss';
-import Breadcrumb from "@/components/newsDetail/Breadcrumb";
 import MainImage from "@/components/newsDetail/MainImage";
 import Author from "@/components/newsDetail/Author";
-import ShareButtons from "@/components/newsDetail/ShareButtons";
 import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
@@ -71,14 +69,12 @@ export default async function NewsDetailPage({ params }: Props) {
         <div className={styles.layout}>
           {/* Main Content */}
           <article className={styles.article}>
-            <Breadcrumb item={post} />
             <h1 className={styles.title}>{post.title}</h1>
             {post.excerpt && (
               <p className={styles.subtitle}>{post.excerpt}</p>
             )}
             <MainImage item={post} />
             <Author item={post} />
-            <ShareButtons />
             <div className={styles.content}>
               {post.body && (
                 <PortableText

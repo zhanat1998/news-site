@@ -6,6 +6,7 @@ import styles from './page.module.scss';
 import { client } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 import CategorySkeleton from "@/components/category/CategorySkeleton";
+import ShowMoreButton from "@/components/ui/ShowMoreButton/ShowMoreButton";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -277,6 +278,11 @@ async function CategoryContent({ slug }: { slug: string }) {
                 </Link>
               ))}
             </div>
+            <ShowMoreButton
+              categoryId={categoryId}
+              initialOffset={15}
+              perPage={6}
+            />
           </section>
         )}
       </div>

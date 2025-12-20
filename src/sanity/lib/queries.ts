@@ -27,30 +27,6 @@ export const postQuery = groq`
   }
 `;
 
-
-// Секция боюнча посттор
-export const postsBySectionQuery = groq`
-  *[_type == "post" && section == $section] | order(publishedAt desc) [0...$limit] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    mainImage {
-      asset->,
-      alt
-    },
-    category->{
-      title,
-      slug
-    },
-    author->{
-      name,
-      image
-    }
-  }
-`
-
 // Breaking news
 export const breakingNewsQuery = groq`
   *[_type == "post" && isBreaking == true] | order(coalesce(publishedAt, _createdAt) desc) [0...5] {
@@ -61,25 +37,6 @@ export const breakingNewsQuery = groq`
   }
 `;
 
-
-// Hero посттор (башкы бет үчүн)
-export const heroPostsQuery = groq`
-  *[_type == "post" && section == "hero"] | order(publishedAt desc) [0...10] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    mainImage {
-      asset->,
-      alt
-    },
-    category->{
-      title,
-      slug
-    }
-  }
-`
 
 // Акыркы посттор (лимит менен)
 export const latestPostsQuery = groq`
@@ -97,55 +54,6 @@ export const latestPostsQuery = groq`
     author->{ name, image }
   }
 `;
-
-// Бир пост (slug боюнча)
-export const postBySlugQuery = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    summary,
-    publishedAt,
-    body,
-    mainImage {
-      asset->,
-      alt,
-      caption
-    },
-    category->{
-      _id,
-      title,
-      slug
-    },
-    author->{
-      _id,
-      name,
-      image,
-      bio
-    },
-    "relatedPosts": *[_type == "post" && category._ref == ^.category._ref && _id != ^._id] | order(publishedAt desc) [0...4] {
-      _id,
-      title,
-      slug,
-      publishedAt,
-      mainImage {
-        asset->,
-        alt
-      }
-    }
-  }
-`
-
-// Категориялар
-export const categoriesQuery = groq`
-  *[_type == "category"] | order(title asc) {
-    _id,
-    title,
-    slug,
-    description
-  }
-`
 
 // Видеолор
 export const videosQuery = groq`
@@ -201,3 +109,231 @@ export const searchPostsQuery = groq`
     "matchInTitle": title match $searchQuery
   } | order(matchInTitle desc, publishedAt desc)
 `;
+
+export const sportSectionQuery = `{
+  // Banner үчүн акыркы спорт жаңылык
+  "banner": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+    | order(publishedAt desc) [0] {
+    mainImage {
+      asset -> { url }
+    }
+  },
+  
+  // Негизги жаңылык
+  "mainNews": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+    | order(publishedAt desc) [0] {
+    title,
+    excerpt,
+    slug,
+    mainImage {
+      asset -> { url },
+      alt
+    },
+    publishedAt,
+    section
+  },
+  
+  // Капталдагы жаңылыктар (2-4)
+  "sideNews": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+    | order(publishedAt desc) [1...4] {
+    title,
+    slug,
+    mainImage {
+      asset -> { url },
+      alt
+    },
+    publishedAt
+  }
+}`;
+
+export const categoryColumnsQuery = `{
+  "politics": {
+    "title": "Саясат",
+    "slug": "wp-2",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-2"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      excerpt,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-2"]._id)]
+      | order(publishedAt desc) [1...6] {
+      title,
+      slug,
+      publishedAt
+    }
+  },
+  
+  "society": {
+    "title": "Коом",
+    "slug": "wp-4",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-4"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      excerpt,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-4"]._id)]
+      | order(publishedAt desc) [1...6] {
+      title,
+      slug,
+      publishedAt
+    }
+  },
+  
+  "economy": {
+    "title": "Экономика",
+    "slug": "wp-10",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-10"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      excerpt,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-10"]._id)]
+      | order(publishedAt desc) [1...6] {
+      title,
+      slug,
+      publishedAt
+    }
+  },
+  
+  "world": {
+    "title": "Дүйнө",
+    "slug": "wp-30",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-30"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      excerpt,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-30"]._id)]
+      | order(publishedAt desc) [1...6] {
+      title,
+      slug,
+      publishedAt
+    }
+  }
+}`;
+
+export const categoryNewsGridQuery = `{
+  "culture": {
+    "title": "Маданият",
+    "slug": "wp-3",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-3"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-3"]._id)]
+      | order(publishedAt desc) [1...4] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    }
+  },
+  
+  "crime": {
+    "title": "Кылмыш-кырсык",
+    "slug": "wp-5",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-5"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-5"]._id)]
+      | order(publishedAt desc) [1...4] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    }
+  },
+  
+  "sport": {
+    "title": "Спорт",
+    "slug": "wp-7",
+    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-7"]._id)]
+      | order(publishedAt desc) [0] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    },
+    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-7"]._id)]
+      | order(publishedAt desc) [1...4] {
+      title,
+      slug,
+      mainImage {
+        asset -> { url },
+        alt
+      },
+      publishedAt
+    }
+  },
+  
+  "video": {
+    "title": "Видео",
+    "slug": "video",
+    "mainVideo": *[_type == "video"] | order(publishedAt desc) [0] {
+      title,
+      slug,
+      thumbnail {
+        asset -> { url }
+      },
+      bunnyVideoId,
+      duration,
+      publishedAt
+    },
+    "smallVideos": *[_type == "video"] | order(publishedAt desc) [1...4] {
+      title,
+      slug,
+      thumbnail {
+        asset -> { url }
+      },
+      bunnyVideoId,
+      duration,
+      publishedAt
+    }
+  }
+}`;

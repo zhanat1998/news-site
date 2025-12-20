@@ -1,29 +1,64 @@
-// components/news/SportSection/SportSection.tsx
 import Link from 'next/link';
 import Image from 'next/image';
+import { urlFor } from '@/sanity/lib/image';
 import styles from './SportSection.module.scss';
 
 type NewsItem = {
   title: string;
-  slug: string;
-  image: string;
+  slug: { current: string };
+  mainImage?: {
+    asset: { url: string };
+    alt?: string;
+  };
   excerpt?: string;
-  label?: string;
+  publishedAt: string;
+  section?: string;
 };
 
 type Props = {
-  bannerImage: string;
-  mainNews: NewsItem;
-  sideNews: NewsItem[];
-  link?: string;
+  banner?: {
+    mainImage?: {
+      asset: { url: string };
+    };
+  };
+  mainNews?: NewsItem;
+  sideNews?: NewsItem[];
 };
 
-export default function SportSection({ bannerImage, mainNews, sideNews, link }: Props) {
+function getDateSlug(dateString: string) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+}
+
+export default function SportSection({ banner, mainNews, sideNews }: Props) {
+  // Эгер маалымат жок болсо, көрсөтпөйбүз
+  if (!mainNews || !sideNews || sideNews.length === 0) {
+    return null;
+  }
+
+  const bannerImage = banner?.mainImage?.asset?.url || mainNews.mainImage?.asset?.url || '';
+
+  // Section label (Breaking, Hero, ж.б.)
+  const getSectionLabel = (section?: string) => {
+    if (section === 'breaking') return 'ШАШЫЛЫШ';
+    if (section === 'hero') return 'БАШКЫ';
+    if (section === 'investigation') return 'ИЛИКТӨӨ';
+    return null;
+  };
+
   return (
     <section className={styles.section}>
       {/* Banner */}
       <div className={styles.banner}>
-        <Image src={bannerImage} alt="Спорт" fill priority />
+        {bannerImage && (
+          <Image
+            src={urlFor({ asset: { url: bannerImage } }).width(1400).height(300).url()}
+            alt="Спорт"
+            fill
+            priority
+          />
+        )}
         <div className={styles.bannerOverlay} />
         <div className={styles.bannerTitle}>
           <span className={styles.bannerAccent}></span>
@@ -35,14 +70,28 @@ export default function SportSection({ bannerImage, mainNews, sideNews, link }: 
       <div className={styles.content}>
         {/* Left - Main News */}
         <div className={styles.mainNews}>
-          <Link href={`/news/${mainNews.slug}`} className={styles.mainCard}>
-            <div className={styles.mainImage}>
-              <Image src={mainNews.image} alt={mainNews.title} fill />
-            </div>
-            {mainNews.label && (
-              <span className={styles.mainLabel}>{mainNews.label}</span>
+          <Link
+            href={`/news/${getDateSlug(mainNews.publishedAt)}/${mainNews.slug.current}`}
+            className={styles.mainCard}
+          >
+            {mainNews.mainImage?.asset?.url && (
+              <div className={styles.mainImage}>
+                <Image
+                  src={urlFor(mainNews.mainImage).width(600).height(400).url()}
+                  alt={mainNews.mainImage.alt || mainNews.title}
+                  fill
+                />
+              </div>
             )}
+
+            {getSectionLabel(mainNews.section) && (
+              <span className={styles.mainLabel}>
+                {getSectionLabel(mainNews.section)}
+              </span>
+            )}
+
             <h2 className={styles.mainTitle}>{mainNews.title}</h2>
+
             {mainNews.excerpt && (
               <p className={styles.mainExcerpt}>{mainNews.excerpt}</p>
             )}
@@ -53,13 +102,19 @@ export default function SportSection({ bannerImage, mainNews, sideNews, link }: 
         <div className={styles.sideNews}>
           {sideNews.map((news) => (
             <Link
-              key={news.slug}
-              href={`/news/${news.slug}`}
+              key={news.slug.current}
+              href={`/news/${getDateSlug(news.publishedAt)}/${news.slug.current}`}
               className={styles.sideCard}
             >
-              <div className={styles.sideImage}>
-                <Image src={news.image} alt={news.title} fill />
-              </div>
+              {news.mainImage?.asset?.url && (
+                <div className={styles.sideImage}>
+                  <Image
+                    src={urlFor(news.mainImage).width(200).height(130).url()}
+                    alt={news.mainImage.alt || news.title}
+                    fill
+                  />
+                </div>
+              )}
               <h3 className={styles.sideTitle}>{news.title}</h3>
             </Link>
           ))}
@@ -67,13 +122,11 @@ export default function SportSection({ bannerImage, mainNews, sideNews, link }: 
       </div>
 
       {/* Footer Link */}
-      {link && (
-        <div className={styles.footer}>
-          <Link href={link} className={styles.footerLink}>
-            Баарын көрүү
-          </Link>
-        </div>
-      )}
+      <div className={styles.footer}>
+        <Link href="/category/wp-7" className={styles.footerLink}>
+          Баарын көрүү
+        </Link>
+      </div>
     </section>
   );
 }
