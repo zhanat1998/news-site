@@ -3,6 +3,7 @@ import Image from "next/image";
 import {urlFor} from "@/sanity/lib/image";
 import Link from "next/link";
 import {formatDateForUrl} from "@/utils/date";
+import {Post} from "@/types/posts";
 
 interface InteractiveHeroBannerMobileProps {
   thumbnailPosts: Post[];
