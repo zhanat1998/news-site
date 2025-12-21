@@ -25,8 +25,8 @@ export default function SearchResults({ items }: Posts) {
             </div>
 
             <div className={styles.content}>
-              {post.category && (
-                <span className={styles.category}>{post.category.title}</span>
+              {post.categories && post.categories[0] && (
+                <span className={styles.category}>{post.categories[0].title}</span>
               )}
 
               <h2 className={styles.title}>{post.title}</h2>
