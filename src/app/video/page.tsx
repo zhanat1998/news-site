@@ -4,7 +4,6 @@ import { videosQuery } from '@/sanity/lib/queries';
 import VideoGrid from '@/components/video/VideoGrid/VideoGrid';
 import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
-import ShowMore from "@/components/video/ShowMore/ShowMore";
 
 export const metadata = {
   title: 'Video - Сокол.Медиа',
@@ -17,18 +16,6 @@ export default async function VideoPage() {
     tags: ['videos'],
     revalidate: 0,
   });
-
-  const formattedVideos = videos.map(video => ({
-    _id: video._id,
-    title: video.title,
-    slug: video.slug,
-    description: video.description,
-    bunnyVideoId: video.bunnyVideoId,
-    duration: video.duration,
-    thumbnail: video.thumbnail,
-    category: video.category,
-    publishedAt: video.publishedAt,
-  }));
 
   return (
     <div className={styles.videoPage}>
@@ -43,13 +30,11 @@ export default async function VideoPage() {
           videos={videos}
           link="/video"
         />
-        <ShowMore videos={formattedVideos.slice(6)} initialCount={5} />
         <VideoCarousel
           title="Акыркы видеолор"
           videos={videos}
           link="/video"
         />
-        <ShowMore videos={formattedVideos.slice(6)} initialCount={5} />
       </div>
     </div>
   );
