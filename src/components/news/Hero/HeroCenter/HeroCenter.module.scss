@@ -1,8 +1,9 @@
 // ========== CENTER COLUMN ==========
 @use '../../../../styles/mixins' as *;
+@use '../../../../styles/variables' as *;
 .heroCenter {
   padding-left: 24px;
-  border-left: 1px solid #e6e6e6;
+  border-left: 1px solid $white;
 
   @include tablet {
     padding-left: 20px;
@@ -12,7 +13,7 @@
     padding-left: 0;
     border-left: none;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid $white;
   }
 }
 
@@ -21,7 +22,7 @@
   flex-direction: column;
   gap: 14px;
   padding-bottom: 14px;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid $white;
   margin-bottom: 14px;
 
   @media (max-width: 768px) {
@@ -39,10 +40,11 @@
 
 .centerLink {
   font-size: 14px;
-  color: #1a1a1a;
+  color: $dark;
+  font-weight: 600;
   line-height: 1.4;
   padding: 12px 0;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid $white;
 
   &:hover {
     text-decoration: underline;

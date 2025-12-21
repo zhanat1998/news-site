@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
-import { categories, navLinks } from '@/constants';
+import { categories } from '@/constants';
 import styles from './MobileMenu.module.scss';
 import {MenuIcon} from "@/components/ui/icons/menuIcon";
 import {CloseIcon} from "@/components/ui/icons/CloseIcon";
@@ -51,14 +51,6 @@ export default function MobileMenu() {
             </div>
 
             <nav className={styles.nav}>
-              <Link
-                href="/"
-                className={styles.navItem}
-                onClick={() => setIsOpen(false)}
-              >
-                Башкы бет
-              </Link>
-
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
@@ -67,17 +59,6 @@ export default function MobileMenu() {
                   onClick={() => setIsOpen(false)}
                 >
                   {cat.title}
-                </Link>
-              ))}
-
-              {navLinks.map((link) => (
-                <Link
-                  key={link.id}
-                  href={link.href}
-                  className={styles.navItem}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.title}
                 </Link>
               ))}
             </nav>

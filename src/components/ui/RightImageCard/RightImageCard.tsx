@@ -9,11 +9,10 @@ interface RightImageCardProps {
   item: Post;
   height?: number;
   width?: number;
-  hasExcerpt?: boolean;
 }
 
 const RightImageCard = (props: RightImageCardProps) => {
-  const { item, height = 120, width = 180, hasExcerpt = true } = props;
+  const { item, height = 120, width = 180 } = props;
 
   return (
     <Link
@@ -22,9 +21,6 @@ const RightImageCard = (props: RightImageCardProps) => {
     >
       <div className={styles.content}>
         <h2 className={styles.title}>{item.title}</h2>
-        {hasExcerpt && item.excerpt && (
-          <p className={styles.description}>{item.excerpt}</p>
-        )}
       </div>
       <div className={styles.image} style={{ height, width }}>
         <Image

@@ -1,9 +1,11 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
 .searchForm {
   display: flex;
   width: 100%;
   max-width: 300px;
 
-  @media (max-width: 768px) {
+  @include mobile {
     flex: 1;
     max-width: none;
   }
@@ -13,18 +15,18 @@
   flex: 1;
   height: 42px;
   padding: 0 14px;
-  font-size: 14px;
-  border: 1px solid #ddd;
+  font-size: 18px;
+  border: 1px solid $gray;
   border-right: none;
-  background: #fff;
+  background: $white;
   outline: none;
 
   &::placeholder {
-    color: #999;
+    color: $gray;
   }
 
   &:focus {
-    border-color: #c41e1e;
+    border-color: $primary;
   }
 
   @media (max-width: 768px) {
@@ -37,7 +39,7 @@
 .searchButton {
   width: 46px;
   height: 42px;
-  background: #529eea;
+  background: $main;
   border: none;
   cursor: pointer;
   display: flex;
@@ -48,14 +50,10 @@
   svg {
     width: 18px;
     height: 18px;
-    fill: #fff;
+    fill: $white;
   }
 
-  &:hover {
-    background: #7bb4ef;
-  }
-
-  @media (max-width: 768px) {
+  @include mobile {
     width: 40px;
     height: 36px;
 

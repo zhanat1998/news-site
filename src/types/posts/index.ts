@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 export interface Post {
   _id: string;
   title: string;
-  slug?: {
+  slug: {
     current: string;
   };
   excerpt?: string;
@@ -22,12 +22,12 @@ export interface Post {
     name: string;
     image?: any;
   };
-  category?: {
+  categories?: Array<{
     title: string;
     slug?: {
       current: string;
     };
-  };
+  }>;
   body?: any[];
   summary?: string[];
 }

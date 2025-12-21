@@ -76,7 +76,6 @@ export default function CategoryColumns({ categories }: Props) {
                   </div>
                 )}
                 <h3 className={styles.mainTitle}>{category.mainNews.title}</h3>
-                <p className={styles.mainExcerpt}>{category.mainNews.excerpt}</p>
               </Link>
             )}
 

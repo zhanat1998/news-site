@@ -337,3 +337,18 @@ export const categoryNewsGridQuery = `{
     }
   }
 }`;
+
+export const interactiveHeroQuery = `*[_type == "post"] 
+  | order(publishedAt desc) [0...12] {
+  _id,
+  title,
+  slug,
+  mainImage {
+    asset -> { url },
+    alt
+  },
+  publishedAt,
+  categories[]-> {
+    title
+  }
+}`;

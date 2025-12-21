@@ -10,11 +10,20 @@ import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
 import {breakingNewsQuery, latestPostsQuery, videosQuery, sportSectionQuery,
-  categoryColumnsQuery, categoryNewsGridQuery} from "@/sanity/lib/queries";
+  categoryColumnsQuery, categoryNewsGridQuery, interactiveHeroQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
+import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
 
 export default async function Home() {
-  const [posts, breakingNews, videos, sportData, categoryColumns, categoryNewsGrid] = await Promise.all([
+  const [
+    posts,
+    breakingNews,
+    videos,
+    sportData,
+    categoryColumns,
+    categoryNewsGrid,
+    heroPosts // ← ЖАҢЫ
+  ] = await Promise.all([
     sanityFetch<any[]>({
       query: latestPostsQuery,
       tags: ['posts'],
@@ -24,7 +33,8 @@ export default async function Home() {
     sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
     sanityFetch<any>({ query: sportSectionQuery, tags: ['posts', 'sport'] }),
     sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'videos', 'categories'] }), // ← ЖАҢЫ
+    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'videos', 'categories'] }),
+    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }), // ← ЖАҢЫ
   ]);
 
 
@@ -40,18 +50,18 @@ export default async function Home() {
   }));
 
   const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
-
   return (
     <MainContainer>
       <TrendingBar items={trending}/>
       <DateDisplay/>
+      <InteractiveHeroBanner items={heroPosts} />
       <section className={styles.heroSection}>
         <HeroLeft items={posts}/>
         <HeroCenter items={posts}/>
         <HeroRight items={posts}/>
       </section>
       <VideoCarousel
-        title="Latest Episodes"
+        title="Акыркы видеолор"
         videos={formattedVideos}
         link="/video"
       />

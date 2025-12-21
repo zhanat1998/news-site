@@ -76,12 +76,6 @@ export const CATEGORIES = [
 export const name_of_site = 'Сокол Медиа';
 
 
-export const navLinks = [
-  { id: 1, title: 'Подкаст', href: paths.VIDEO },
-  { id: 2, title: 'БИЗ ЖОНУНДО', href: paths.ABOUT },
-  { id: 3, title: 'Байланыш', href: paths.CONTACT },
-];
-
 export enum SectionTitles {
   LATEST_NEWS = 'Соңку жаңылыктар',
   POPULAR_NEWS = 'Популярдуу жаңылыктар',
@@ -90,3 +84,10 @@ export enum SectionTitles {
   SPOTLIGHT = 'Негизги жаңылыктар',
   BREAKING_NEWS = 'Шашылыш кабарлар',
 }
+
+export const socialLinks = [
+  { icon: 'instagram', href: 'https://www.instagram.com/sokol.media_/' },
+  { icon: 'facebook', href: 'https://www.facebook.com/groups/309724122880487' },
+  { icon: 'telegram', href: 'https://t.me' },
+  { icon: 'youtube', href: 'https://www.youtube.com/results?search_query=sokol+media' },
+];

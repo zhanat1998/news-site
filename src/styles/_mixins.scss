@@ -72,6 +72,6 @@
 @mixin container {
   max-width: $wide;
   margin: 0 auto;
-  padding: 0 $spacing-md;
+  padding: 0 4px;
   box-sizing: border-box;
 }

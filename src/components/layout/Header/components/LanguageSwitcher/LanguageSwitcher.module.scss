@@ -1,8 +1,10 @@
+@use '../../../../../styles/variables' as *;
+@use '../../../../../styles/mixins' as *;
 .wrapper {
   position: relative;
   margin-left: 12px;
 
-  @media (max-width: 768px) {
+  @include mobile {
     margin-left: 8px;
   }
 }
@@ -13,7 +15,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #4a90d9 0%, #3a5ba0 50%, #2c4a80 100%);
+  background: $main;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -29,7 +31,7 @@
     transform: scale(0.95);
   }
 
-  @media (max-width: 768px) {
+  @include mobile {
     width: 32px;
     height: 32px;
     border-radius: 4px;
@@ -41,12 +43,11 @@
   font-weight: 700;
   color: #fff;
 
-  @media (max-width: 768px) {
+  @include mobile {
     font-size: 10px;
   }
 }
 
-// Dropdown
 .dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -61,7 +62,6 @@
   transform-origin: top right;
 }
 
-// Ачылуу анимациясы
 @keyframes slideDown {
   0% {
     opacity: 0;
@@ -73,7 +73,6 @@
   }
 }
 
-// Жабылуу анимациясы
 .closing {
   animation: slideUp 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
@@ -114,19 +113,19 @@
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
 
   .optionLabel {
-    color: #3a5ba0;
+    color: $main;
   }
 }
 
 .optionLabel {
   font-size: 14px;
   font-weight: 700;
-  color: #333;
+  color: $gray-dark;
   min-width: 28px;
 }
 
 .optionName {
-  font-size: 13px;
-  color: #666;
+  font-size: 15px;
+  color: $gray-dark;
   margin-left: auto;
 }

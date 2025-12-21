@@ -61,19 +61,6 @@
   }
 }
 
-.socialLinks {
-  display: flex;
-  gap: $spacing-md;
-
-  a {
-    font-size: 24px;
-    transition: transform $transition-fast;
-
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-}
 
 .bottom {
   border-top: 1px solid $gray-dark;

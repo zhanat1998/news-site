@@ -39,13 +39,13 @@ export default async function VideoPage() {
 
         <VideoGrid videos={videos} />
         <VideoCarousel
-          title="Latest Episodes"
+          title="Акыркы видеолор"
           videos={videos}
           link="/video"
         />
         <ShowMore videos={formattedVideos.slice(6)} initialCount={5} />
         <VideoCarousel
-          title="Latest Episodes"
+          title="Акыркы видеолор"
           videos={videos}
           link="/video"
         />
