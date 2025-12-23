@@ -19,4 +19,5 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('video').title('Видеолор'),
       S.documentTypeListItem('category').title('Категориялар'),
       S.documentTypeListItem('author').title('Авторлор'),
+      S.documentTypeListItem('ad').title('Жарнамалар'),
     ])
