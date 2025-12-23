@@ -137,3 +137,56 @@ function SaveIcon() {
     </svg>
   );
 }
+
+// SEO Metadata
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+
+  const video = await sanityFetch<any>({
+    query: videoBySlugQuery,
+    params: { slug },
+    tags: ['videos'],
+  });
+
+  if (!video) {
+    return { title: 'Видео табылган жок' };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
+  const videoUrl = `${siteUrl}/video/${slug}`;
+  const thumbnailUrl = video.bunnyVideoId
+    ? `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`
+    : `${siteUrl}/og-image.jpg`;
+
+  return {
+    title: video.title,
+    description: video.description || `${video.title} - Сокол.Медиа видео`,
+    keywords: [video.category?.title, 'видео', 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'].filter(Boolean),
+    openGraph: {
+      type: 'video.other',
+      locale: 'ky_KG',
+      url: videoUrl,
+      title: video.title,
+      description: video.description || video.title,
+      siteName: 'Сокол.Медиа',
+      publishedTime: video.publishedAt,
+      images: [
+        {
+          url: thumbnailUrl,
+          width: 1280,
+          height: 720,
+          alt: video.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: video.title,
+      description: video.description || video.title,
+      images: [thumbnailUrl],
+    },
+    alternates: {
+      canonical: videoUrl,
+    },
+  };
+}

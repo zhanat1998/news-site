@@ -307,12 +307,42 @@ export async function generateMetadata({ params }: Props) {
   const categoryId = `category-${slug}`;
 
   const category = await client.fetch(
-    `*[_type == "category" && _id == $categoryId][0] { title }`,
+    `*[_type == "category" && _id == $categoryId][0] { title, description }`,
     { categoryId }
   );
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
+  const categoryUrl = `${siteUrl}/category/${slug}`;
+  const categoryTitle = category?.title || 'Категория';
+
   return {
-    title: `${category?.title || 'Категория'} - Сокол Медиа`,
-    description: `${category?.title || 'Категория'} боюнча акыркы жаңылыктар жана макалалар`,
+    title: `${categoryTitle} жаңылыктары`,
+    description: category?.description || `${categoryTitle} боюнча акыркы жаңылыктар, макалалар жана маалыматтар - Сокол.Медиа`,
+    keywords: [categoryTitle, 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'],
+    openGraph: {
+      type: 'website',
+      locale: 'ky_KG',
+      url: categoryUrl,
+      title: `${categoryTitle} жаңылыктары - Сокол.Медиа`,
+      description: `${categoryTitle} боюнча акыркы жаңылыктар жана макалалар`,
+      siteName: 'Сокол.Медиа',
+      images: [
+        {
+          url: '/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${categoryTitle} - Сокол.Медиа`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${categoryTitle} жаңылыктары - Сокол.Медиа`,
+      description: `${categoryTitle} боюнча акыркы жаңылыктар`,
+      images: ['/og-image.jpg'],
+    },
+    alternates: {
+      canonical: categoryUrl,
+    },
   };
 }

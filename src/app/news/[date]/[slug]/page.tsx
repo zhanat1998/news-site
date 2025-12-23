@@ -101,15 +101,49 @@ export default async function NewsDetailPage({ params }: Props) {
 
 // Metadata for SEO
 export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
+  const { slug, date } = await params;
   const post = await client.fetch(postQuery, { slug });
 
   if (!post) {
     return { title: 'Табылган жок' };
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
+  const postUrl = `${siteUrl}/news/${date}/${slug}`;
+  const imageUrl = post.mainImage?.asset?.url || `${siteUrl}/og-image.jpg`;
+
   return {
     title: post.title,
-    description: post.excerpt,
+    description: post.excerpt || `${post.title} - Сокол.Медиа жаңылыктар порталы`,
+    keywords: [post.category?.title, 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'].filter(Boolean),
+    authors: post.author?.name ? [{ name: post.author.name }] : undefined,
+    openGraph: {
+      type: 'article',
+      locale: 'ky_KG',
+      url: postUrl,
+      title: post.title,
+      description: post.excerpt || post.title,
+      siteName: 'Сокол.Медиа',
+      publishedTime: post.publishedAt,
+      authors: post.author?.name ? [post.author.name] : undefined,
+      section: post.category?.title,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.mainImage?.alt || post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || post.title,
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: postUrl,
+    },
   };
 }

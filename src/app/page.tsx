@@ -47,6 +47,7 @@ export default async function Home() {
     excerpt: video.description,
     category: video.category?.title,
     duration: video.duration,
+    thumbnail: video.thumbnail,
   }));
 
   const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
