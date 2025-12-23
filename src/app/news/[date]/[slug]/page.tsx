@@ -11,6 +11,7 @@ import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
 import {moreNewsQuery, postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
 import AdBanner from "@/components/ads/AdBanner";
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 type Props = {
   params: Promise<{ date: string; slug: string }>;
@@ -65,9 +66,10 @@ export default async function NewsDetailPage({ params }: Props) {
   `, { slug, excludeIds: allExcludeIds });
 
   return (
-    <div className={styles.page}>
-      <div className="container">
-        <div className={styles.layout}>
+    <MainContainer>
+      <div className={styles.page}>
+        <div className="container">
+          <div className={styles.layout}>
           {/* Main Content */}
           <article className={styles.article}>
             <h1 className={styles.title}>{post.title}</h1>
@@ -97,9 +99,10 @@ export default async function NewsDetailPage({ params }: Props) {
             <AdBanner placement="sidebar" />
             <SideBar items={sidebarPosts}/>
           </aside>
+          </div>
         </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

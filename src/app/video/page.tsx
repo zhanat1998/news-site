@@ -5,6 +5,7 @@ import VideoGrid from '@/components/video/VideoGrid/VideoGrid';
 import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import AdBanner from "@/components/ads/AdBanner";
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 import { Metadata } from 'next';
 
@@ -49,25 +50,27 @@ export default async function VideoPage() {
   });
 
   return (
-    <div className={styles.videoPage}>
-      <div className="container">
-        <div className={styles.header}>
-          <h1 className={styles.title}>Видео</h1>
+    <MainContainer>
+      <div className={styles.videoPage}>
+        <div className="container">
+          <div className={styles.header}>
+            <h1 className={styles.title}>Видео</h1>
+          </div>
+          <AdBanner placement="video_section" />
+          <VideoGrid videos={videos} />
+          <VideoCarousel
+            title="Акыркы видеолор"
+            videos={videos}
+            link="/video"
+          />
+          <AdBanner placement="above_footer" />
+          <VideoCarousel
+            title="Акыркы видеолор"
+            videos={videos}
+            link="/video"
+          />
         </div>
-        <AdBanner placement="video_section" />
-        <VideoGrid videos={videos} />
-        <VideoCarousel
-          title="Акыркы видеолор"
-          videos={videos}
-          link="/video"
-        />
-        <AdBanner placement="above_footer" />
-        <VideoCarousel
-          title="Акыркы видеолор"
-          videos={videos}
-          link="/video"
-        />
       </div>
-    </div>
+    </MainContainer>
   );
 }

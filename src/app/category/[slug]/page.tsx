@@ -8,6 +8,7 @@ import { urlFor } from '@/sanity/lib/image';
 import CategorySkeleton from "@/components/category/CategorySkeleton";
 import ShowMoreButton from "@/components/ui/ShowMoreButton/ShowMoreButton";
 import AdBanner from "@/components/ads/AdBanner";
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -116,21 +117,24 @@ async function CategoryContent({ slug }: { slug: string }) {
 
   if (!news.category) {
     return (
-      <div className={styles.page}>
-        <div className="container">
-          <h1 className={styles.categoryTitle}>Категория табылган жок</h1>
-          <p>Категория ID: {categoryId}</p>
+      <MainContainer>
+        <div className={styles.page}>
+          <div className="container">
+            <h1 className={styles.categoryTitle}>Категория табылган жок</h1>
+            <p>Категория ID: {categoryId}</p>
+          </div>
         </div>
-      </div>
+      </MainContainer>
     );
   }
 
   return (
-    <div className={styles.page}>
-      <div className="container">
-        <h1 className={styles.categoryTitle}>{news.category.title}</h1>
-        <AdBanner placement="category_page" />
-        <div className={styles.mainGrid}>
+    <MainContainer>
+      <div className={styles.page}>
+        <div className="container">
+          <h1 className={styles.categoryTitle}>{news.category.title}</h1>
+          <AdBanner placement="category_page" />
+          <div className={styles.mainGrid}>
           {/* Hero */}
           {news.hero && (
             <div className={styles.heroColumn}>
@@ -286,8 +290,9 @@ async function CategoryContent({ slug }: { slug: string }) {
             />
           </section>
         )}
+        </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import VideoPlayer from '@/components/video/VideoPlayer/VideoPlayer';
 import RelatedVideos from '@/components/video/RelatedVideos/RelatedVideos';
 import styles from './page.module.scss';
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -60,8 +61,9 @@ export default async function VideoDetailPage({ params }: Props) {
   });
 
   return (
-    <div className={styles.videoPage}>
-      <div className={styles.layout}>
+    <MainContainer>
+      <div className={styles.videoPage}>
+        <div className={styles.layout}>
         {/* Сол жак - Видео плеер + Info */}
         <div className={styles.mainContent}>
           <div className={styles.playerWrapper}>
@@ -114,8 +116,9 @@ export default async function VideoDetailPage({ params }: Props) {
             title="БУЛ БЕРҮҮДӨН ДАГЫ"
           />
         </aside>
+        </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }
 

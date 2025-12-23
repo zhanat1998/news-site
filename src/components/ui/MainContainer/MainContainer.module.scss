@@ -3,6 +3,24 @@
 .page {
   min-height: 100vh;
   background: #fff;
+  background-image:
+    url('#{"/new-year.png"}'),
+    url('#{"/new-year.png"}'),
+    url('#{"/new-year.png"}');
+  background-repeat: no-repeat;
+  background-position:
+    top center,
+    center center,
+    bottom center;
+  background-size: 100% auto;
+
+  @include tablet {
+    background-size: 200% auto;
+  }
+
+  @include mobile {
+    background-size: 300% auto;
+  }
 }
 .container {
   @include container;

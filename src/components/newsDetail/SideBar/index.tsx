@@ -20,18 +20,6 @@ const SideBar = ({ items }: Posts) => {
         <button className={styles.readMoreBtn}>Окуу</button>
       </DetailRoute>
     ))}
-
-    {/* Advertisement */}
-    <div className={styles.adSection}>
-      <span className={styles.adLabel}>Жарнама</span>
-      <div className={styles.adBanner}>
-        <Image
-          src="https://picsum.photos/300/250?random=111"
-          alt="Ad"
-          fill
-        />
-      </div>
-    </div>
   </aside>
 }
 export default SideBar;

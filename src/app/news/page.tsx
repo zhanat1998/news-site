@@ -1,7 +1,11 @@
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
+
 export default function NewsPage() {
   return (
-    <div className="container">
-      <h1>Бардык жаңылыктар</h1>
-    </div>
+    <MainContainer>
+      <div className="container">
+        <h1>Бардык жаңылыктар</h1>
+      </div>
+    </MainContainer>
   )
 }

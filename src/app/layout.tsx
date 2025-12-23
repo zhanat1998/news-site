@@ -3,6 +3,7 @@ import Header from '../components/layout/Header/Header';
 import Footer from '../components/layout/Footer/Footer';
 import MainNavigation from "@/components/layout/MainNavigation/MainNavigation";
 import { Metadata } from 'next';
+import Image from 'next/image';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
 
@@ -71,6 +72,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <body>
     <Header />
     <MainNavigation/>
+    <div className="mobile-decoration">
+      <Image
+        src="/new-year.png"
+        alt="Жаңы жыл"
+        width={1200}
+        height={200}
+        style={{ width: '100%', height: '70px' }}
+      />
+    </div>
     <main>{children}</main>
     <Footer />
     </body>

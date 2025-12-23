@@ -162,7 +162,7 @@
 // Responsive adjustments
 @media (max-width: $mobile) {
   .adBanner {
-    margin: $spacing-md auto;
+    margin: 0 auto $spacing-md;
     padding: $spacing-xs;
     border-radius: $radius-sm;
   }

@@ -3,6 +3,7 @@ import { sanityFetch } from '@/sanity/lib/client';
 import { searchPostsQuery } from '@/sanity/lib/queries';
 import SearchResults from "@/components/search/SearchResults/SearchResults";
 import Pagination from "@/components/search/Pagination/Pagination";
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 interface SearchPageProps {
   searchParams: Promise<{
@@ -35,48 +36,50 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const paginatedResults = allResults.slice(startIndex, endIndex);
 
   return (
-    <div className="container" style={{ padding: '40px 20px', minHeight: '60vh' }}>
-      <h1 style={{ marginBottom: '10px' }}>
-        Издөө: &quot;{decodeURIComponent(query)}&quot;
-      </h1>
+    <MainContainer>
+      <div className="container" style={{ padding: '40px 20px', minHeight: '60vh' }}>
+        <h1 style={{ marginBottom: '10px' }}>
+          Издөө: &quot;{decodeURIComponent(query)}&quot;
+        </h1>
 
-      {query && totalResults > 0 && (
-        <p style={{ color: '#666', marginBottom: '30px' }}>
-          {totalResults} натыйжа табылды
-        </p>
-      )}
-
-      {query && totalResults === 0 && (
-        <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-          <p style={{ fontSize: '18px', color: '#999' }}>
-            &quot;{decodeURIComponent(query)}&quot; боюнча эч нерсе табылган жок
+        {query && totalResults > 0 && (
+          <p style={{ color: '#666', marginBottom: '30px' }}>
+            {totalResults} натыйжа табылды
           </p>
-          <p style={{ color: '#bbb', marginTop: '10px' }}>
-            Башка сөздөр менен аракет кылыңыз
+        )}
+
+        {query && totalResults === 0 && (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <p style={{ fontSize: '18px', color: '#999' }}>
+              &quot;{decodeURIComponent(query)}&quot; боюнча эч нерсе табылган жок
+            </p>
+            <p style={{ color: '#bbb', marginTop: '10px' }}>
+              Башка сөздөр менен аракет кылыңыз
+            </p>
+          </div>
+        )}
+
+        {!query && (
+          <p style={{ color: '#999', textAlign: 'center', padding: '60px 20px' }}>
+            Издөө сөзүн киргизиңиз
           </p>
-        </div>
-      )}
+        )}
 
-      {!query && (
-        <p style={{ color: '#999', textAlign: 'center', padding: '60px 20px' }}>
-          Издөө сөзүн киргизиңиз
-        </p>
-      )}
+        {paginatedResults.length > 0 && (
+          <>
+            <SearchResults items={paginatedResults} />
 
-      {paginatedResults.length > 0 && (
-        <>
-          <SearchResults items={paginatedResults} />
-
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              searchQuery={query}
-            />
-          )}
-        </>
-      )}
-    </div>
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                searchQuery={query}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </MainContainer>
   );
 }
 

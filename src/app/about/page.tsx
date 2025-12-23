@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
 
@@ -35,8 +36,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="container">
-      Биз жөнүндө
-    </div>
+    <MainContainer>
+      <div className="container">
+        Биз жөнүндө
+      </div>
+    </MainContainer>
   )
 }
