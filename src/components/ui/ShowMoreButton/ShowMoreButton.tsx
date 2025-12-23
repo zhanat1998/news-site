@@ -109,7 +109,7 @@ export default function ShowMoreButton({ categoryId, initialOffset, perPage = 6 
             disabled={loading}
             className={styles.showMoreButton}
           >
-            {loading ? 'Жүктөлүүдө...' : 'Show more'}
+            {loading ? 'Жүктөлүүдө...' : 'Дагы көрсөтүү'}
           </button>
         </div>
       )}

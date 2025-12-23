@@ -78,7 +78,7 @@ export default async function VideoDetailPage({ params }: Props) {
             {video.description && (
               <div className={styles.description}>
                 <p>{video.description}</p>
-                <button className={styles.readMore}>Read more</button>
+                <button className={styles.readMore}>Кененирээк</button>
               </div>
             )}
 
@@ -96,11 +96,11 @@ export default async function VideoDetailPage({ params }: Props) {
               <div className={styles.actions}>
                 <button className={styles.actionBtn}>
                   <ShareIcon />
-                  Share
+                  Бөлүшүү
                 </button>
                 <button className={styles.actionBtn}>
                   <SaveIcon />
-                  Save
+                  Сактоо
                 </button>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default async function VideoDetailPage({ params }: Props) {
         <aside className={styles.sidebar}>
           <RelatedVideos
             videos={relatedVideos}
-            title="MORE FROM THE SAME SHOW"
+            title="БУЛ БЕРҮҮДӨН ДАГЫ"
           />
         </aside>
       </div>

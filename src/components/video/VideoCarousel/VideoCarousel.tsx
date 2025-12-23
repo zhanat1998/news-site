@@ -71,7 +71,7 @@ export default function VideoCarousel({ title, videos, link }: VideoCarouselProp
             className={styles.arrow}
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
-            aria-label="Previous"
+            aria-label="Мурунку"
           >
             <ArrowIcon direction="left" />
           </button>
@@ -79,7 +79,7 @@ export default function VideoCarousel({ title, videos, link }: VideoCarouselProp
             className={styles.arrow}
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
-            aria-label="Next"
+            aria-label="Кийинки"
           >
             <ArrowIcon direction="right" />
           </button>
@@ -123,7 +123,7 @@ export default function VideoCarousel({ title, videos, link }: VideoCarouselProp
       {link && (
         <div className={styles.footer}>
           <Link href={link} className={styles.viewAll}>
-            View all
+            Баарын көрүү
           </Link>
         </div>
       )}

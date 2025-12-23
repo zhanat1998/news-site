@@ -30,7 +30,7 @@ export default function VideoGrid({ videos }: { videos: any[] }) {
               className={styles.mainInfo}
             >
               <span className={styles.category}>
-                {selectedVideo.category?.title || 'CARCAT'}
+                {selectedVideo.category?.title || 'Категория'}
               </span>
               <h2 className={styles.mainTitle}>{selectedVideo.title}</h2>
               {selectedVideo.description && (
