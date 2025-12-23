@@ -13,6 +13,7 @@ import {breakingNewsQuery, latestPostsQuery, videosQuery, sportSectionQuery,
   categoryColumnsQuery, categoryNewsGridQuery, interactiveHeroQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
+import AdBanner from "@/components/ads/AdBanner";
 
 export default async function Home() {
   const [
@@ -54,6 +55,7 @@ export default async function Home() {
   return (
     <MainContainer>
       <TrendingBar items={trending}/>
+      <AdBanner placement="home_top" />
       <DateDisplay/>
       <InteractiveHeroBanner items={heroPosts} />
       <section className={styles.heroSection}>
@@ -66,6 +68,7 @@ export default async function Home() {
         videos={formattedVideos}
         link="/video"
       />
+      <AdBanner placement="home_middle" />
       <CategoryColumns categories={categoryColumns} />
       <CategoryNewsGrid categories={categoryNewsGrid} />
 
@@ -74,6 +77,7 @@ export default async function Home() {
         mainNews={sportData.mainNews}
         sideNews={sportData.sideNews}
       />
+      <AdBanner placement="above_footer" />
     </MainContainer>
   );
 }

@@ -4,6 +4,7 @@ import { videosQuery } from '@/sanity/lib/queries';
 import VideoGrid from '@/components/video/VideoGrid/VideoGrid';
 import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
+import AdBanner from "@/components/ads/AdBanner";
 
 import { Metadata } from 'next';
 
@@ -53,13 +54,14 @@ export default async function VideoPage() {
         <div className={styles.header}>
           <h1 className={styles.title}>Видео</h1>
         </div>
-
+        <AdBanner placement="video_section" />
         <VideoGrid videos={videos} />
         <VideoCarousel
           title="Акыркы видеолор"
           videos={videos}
           link="/video"
         />
+        <AdBanner placement="above_footer" />
         <VideoCarousel
           title="Акыркы видеолор"
           videos={videos}

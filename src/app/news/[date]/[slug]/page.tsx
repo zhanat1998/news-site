@@ -10,6 +10,7 @@ import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
 import {moreNewsQuery, postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
+import AdBanner from "@/components/ads/AdBanner";
 
 type Props = {
   params: Promise<{ date: string; slug: string }>;
@@ -83,7 +84,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 />
               )}
             </div>
-
+            <AdBanner placement="in_article" />
             <RelatedNews items={relatedPosts} />
 
             <NewsGrid title="ЖАҢЫЛЫКТАРДАН ДАГЫ" items={moreNews} />
@@ -92,7 +93,10 @@ export default async function NewsDetailPage({ params }: Props) {
           </article>
 
           {/* Sidebar */}
-          <SideBar items={sidebarPosts}/>
+          <aside className={styles.sidebar}>
+            <AdBanner placement="sidebar" />
+            <SideBar items={sidebarPosts}/>
+          </aside>
         </div>
       </div>
     </div>

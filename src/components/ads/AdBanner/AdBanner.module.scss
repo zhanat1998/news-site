@@ -1,0 +1,200 @@
+@import '../../../styles/variables';
+
+.adBanner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: $spacing-lg auto;
+  padding: $spacing-sm;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: $radius-md;
+  overflow: hidden;
+  max-width: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $main 0%, $yellow 100%);
+  }
+}
+
+.adLabel {
+  position: absolute;
+  top: $spacing-sm;
+  right: $spacing-sm;
+  font-size: 10px;
+  color: $gray;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.adLink {
+  display: block;
+  text-decoration: none;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.adImage {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: $radius-sm;
+}
+
+.htmlContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  iframe {
+    max-width: 100%;
+    border: none;
+  }
+}
+
+// Placement-specific styles
+.home_top {
+  margin-top: 0;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-md;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+
+  &::before {
+    background: linear-gradient(90deg, $yellow 0%, $primary 100%);
+  }
+
+  .adLabel {
+    color: $white;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.home_middle {
+  margin: $spacing-2xl auto;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebar {
+  margin: $spacing-md 0;
+  padding: $spacing-sm;
+  background: $white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-sm;
+
+  &::before {
+    height: 2px;
+  }
+}
+
+.in_article {
+  margin: $spacing-xl 0;
+  padding: $spacing-md;
+  background: #fafbfc;
+  border-left: 4px solid $main;
+  border-radius: 0 $radius-md $radius-md 0;
+
+  &::before {
+    display: none;
+  }
+}
+
+.video_section {
+  margin: $spacing-lg auto;
+  padding: $spacing-md;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+
+  .adLabel {
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.category_page {
+  margin: $spacing-lg auto;
+  padding: $spacing-md;
+  background: $white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: $shadow-sm;
+}
+
+.above_footer {
+  margin: $spacing-2xl auto $spacing-lg;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+  border-radius: $radius-lg;
+
+  &::before {
+    background: linear-gradient(90deg, $primary 0%, $yellow 50%, $main 100%);
+    height: 4px;
+  }
+
+  .adLabel {
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $mobile) {
+  .adBanner {
+    margin: $spacing-md auto;
+    padding: $spacing-xs;
+    border-radius: $radius-sm;
+  }
+
+  .adLabel {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  .home_top,
+  .home_middle,
+  .above_footer {
+    padding: $spacing-sm;
+  }
+
+  .adImage {
+    border-radius: 2px;
+  }
+}
+
+// Animation for ad appearance
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adBanner {
+  animation: fadeInUp 0.4s ease-out;
+}
