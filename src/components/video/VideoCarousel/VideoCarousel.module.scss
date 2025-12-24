@@ -1,13 +1,6 @@
 // src/components/video/VideoCarousel/VideoCarousel.module.scss
 @use '../../../styles/mixins' as *;
 @use '../../../styles/variables' as *;
-.carousel {
-  padding: 60px 0;
-
-  @include mobile {
-    padding: 40px 0;
-  }
-}
 
 .header {
   display: flex;
