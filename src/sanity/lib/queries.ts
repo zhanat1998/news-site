@@ -55,19 +55,19 @@ export const latestPostsQuery = groq`
   }
 `;
 
-// Видеолор (YouTube жана Bunny)
+// Видеолор (YouTube гана - Bunny жок)
 export const videosQuery = groq`
-  *[_type == "video" && !(videoSource in ["instagram", "tiktok"])] | order(publishedAt desc) [0...10] {
+  *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [0...20] {
     _id,
     title,
     "slug": slug.current,
     description,
     videoSource,
     youtubeUrl,
-    bunnyVideoId,
     duration,
     thumbnail { asset->, alt },
-    category->{ title }
+    category->{ title },
+    publishedAt
   }
 `;
 

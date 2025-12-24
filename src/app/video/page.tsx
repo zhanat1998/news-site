@@ -1,11 +1,11 @@
 // src/app/video/page.tsx
 import { sanityFetch } from '@/sanity/lib/client';
-import { videosQuery } from '@/sanity/lib/queries';
-import VideoGrid from '@/components/video/VideoGrid/VideoGrid';
+import { videosQuery, instagramVideosQuery } from '@/sanity/lib/queries';
 import styles from './page.module.scss';
-import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import AdBanner from "@/components/ads/AdBanner";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
+import VideoSection from "@/components/video/VideoSection/VideoSection";
+import InstagramSection from "@/components/video/InstagramSection/InstagramSection";
 
 import { Metadata } from 'next';
 
@@ -43,11 +43,18 @@ export const metadata: Metadata = {
 };
 
 export default async function VideoPage() {
-  const videos = await sanityFetch<any[]>({
-    query: videosQuery,
-    tags: ['videos'],
-    revalidate: 0,
-  });
+  const [videos, instagramVideos] = await Promise.all([
+    sanityFetch<any[]>({
+      query: videosQuery,
+      tags: ['videos'],
+      revalidate: 0,
+    }),
+    sanityFetch<any[]>({
+      query: instagramVideosQuery,
+      tags: ['videos'],
+      revalidate: 0,
+    }),
+  ]);
 
   return (
     <MainContainer>
@@ -56,18 +63,23 @@ export default async function VideoPage() {
           <div className={styles.header}>
             <h1 className={styles.title}>Видео</h1>
           </div>
+
           <AdBanner placement="video_section" />
-          <VideoGrid videos={videos} />
-          <VideoCarousel
-            title="Акыркы видеолор"
+
+          {/* YouTube видеолор - grid менен */}
+          <VideoSection
+            title="YouTube"
             videos={videos}
-            link="/video"
+            initialCount={6}
           />
+
           <AdBanner placement="above_footer" />
-          <VideoCarousel
-            title="Акыркы видеолор"
-            videos={videos}
-            link="/video"
+
+          {/* Instagram видеолор - Instagram стилинде */}
+          <InstagramSection
+            title="Instagram"
+            videos={instagramVideos}
+            initialCount={8}
           />
         </div>
       </div>
