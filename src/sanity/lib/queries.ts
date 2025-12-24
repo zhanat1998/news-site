@@ -55,9 +55,9 @@ export const latestPostsQuery = groq`
   }
 `;
 
-// Видеолор
+// Видеолор (YouTube жана Bunny)
 export const videosQuery = groq`
-  *[_type == "video"] | order(publishedAt desc) [0...10] {
+  *[_type == "video" && !(videoSource in ["instagram", "tiktok"])] | order(publishedAt desc) [0...10] {
     _id,
     title,
     "slug": slug.current,
@@ -68,6 +68,36 @@ export const videosQuery = groq`
     duration,
     thumbnail { asset->, alt },
     category->{ title }
+  }
+`;
+
+// Instagram видеолор (өзүнчө carousel үчүн)
+export const instagramVideosQuery = groq`
+  *[_type == "video" && videoSource == "instagram"] | order(publishedAt desc) [0...20] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    instagramUrl,
+    duration,
+    thumbnail { asset->, alt },
+    category->{ title },
+    publishedAt
+  }
+`;
+
+// TikTok видеолор (өзүнчө carousel үчүн)
+export const tiktokVideosQuery = groq`
+  *[_type == "video" && videoSource == "tiktok"] | order(publishedAt desc) [0...20] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    tiktokUrl,
+    duration,
+    thumbnail { asset->, alt },
+    category->{ title },
+    publishedAt
   }
 `;
 

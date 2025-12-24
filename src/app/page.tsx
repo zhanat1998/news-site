@@ -1,5 +1,8 @@
+import { Suspense } from 'react';
 import styles from './page.module.scss';
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
+import InstagramCarousel from "@/components/video/InstagramCarousel/InstagramCarousel";
+import TikTokCarousel from "@/components/video/TikTokCarousel/TikTokCarousel";
 import DateDisplay from "@/components/ui/DateDisplay/DateDisplay";
 import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
 import CategoryNewsGrid from "@/components/news/CategoryNewsGrid/CategoryNewsGrid";
@@ -9,7 +12,7 @@ import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
-import {breakingNewsQuery, latestPostsQuery, videosQuery, sportSectionQuery,
+import {breakingNewsQuery, latestPostsQuery, videosQuery, instagramVideosQuery, tiktokVideosQuery, sportSectionQuery,
   categoryColumnsQuery, categoryNewsGridQuery, interactiveHeroQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
@@ -20,10 +23,12 @@ export default async function Home() {
     posts,
     breakingNews,
     videos,
+    instagramVideos,
+    tiktokVideos,
     sportData,
     categoryColumns,
     categoryNewsGrid,
-    heroPosts // ← ЖАҢЫ
+    heroPosts
   ] = await Promise.all([
     sanityFetch<any[]>({
       query: latestPostsQuery,
@@ -32,10 +37,12 @@ export default async function Home() {
     }),
     sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'] }),
     sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
+    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos', 'instagram'] }),
+    sanityFetch<any[]>({ query: tiktokVideosQuery, tags: ['videos', 'tiktok'] }),
     sanityFetch<any>({ query: sportSectionQuery, tags: ['posts', 'sport'] }),
     sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
     sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'videos', 'categories'] }),
-    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }), // ← ЖАҢЫ
+    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }),
   ]);
 
 
@@ -68,6 +75,22 @@ export default async function Home() {
         videos={formattedVideos}
         link="/video"
       />
+      {instagramVideos && instagramVideos.length > 0 && (
+        <Suspense fallback={null}>
+          <InstagramCarousel
+            title="Instagram"
+            videos={instagramVideos}
+          />
+        </Suspense>
+      )}
+      {tiktokVideos && tiktokVideos.length > 0 && (
+        <Suspense fallback={null}>
+          <TikTokCarousel
+            title="TikTok"
+            videos={tiktokVideos}
+          />
+        </Suspense>
+      )}
       <AdBanner placement="home_middle" />
       <CategoryColumns categories={categoryColumns} />
       <CategoryNewsGrid categories={categoryNewsGrid} />

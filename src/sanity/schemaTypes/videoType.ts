@@ -34,6 +34,8 @@ export const videoType = defineType({
       options: {
         list: [
           { title: 'YouTube', value: 'youtube' },
+          { title: 'Instagram', value: 'instagram' },
+          { title: 'TikTok', value: 'tiktok' },
           { title: 'Bunny CDN', value: 'bunny' },
         ],
         layout: 'radio',
@@ -55,6 +57,42 @@ export const videoType = defineType({
           }
           if (value && !value.includes('youtube.com') && !value.includes('youtu.be')) {
             return 'Туура YouTube шилтемеси киргизиңиз'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'instagramUrl',
+      title: 'Instagram шилтемеси',
+      type: 'url',
+      description: 'Толук Instagram шилтемесин киргизиңиз. Мисалы: https://www.instagram.com/reel/ABC123/',
+      hidden: ({ parent }) => parent?.videoSource !== 'instagram',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as { videoSource?: string }
+          if (parent?.videoSource === 'instagram' && !value) {
+            return 'Instagram шилтемесин киргизиңиз'
+          }
+          if (value && !value.includes('instagram.com')) {
+            return 'Туура Instagram шилтемеси киргизиңиз'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'tiktokUrl',
+      title: 'TikTok шилтемеси',
+      type: 'url',
+      description: 'Толук TikTok шилтемесин киргизиңиз. Мисалы: https://www.tiktok.com/@user/video/123456',
+      hidden: ({ parent }) => parent?.videoSource !== 'tiktok',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as { videoSource?: string }
+          if (parent?.videoSource === 'tiktok' && !value) {
+            return 'TikTok шилтемесин киргизиңиз'
+          }
+          if (value && !value.includes('tiktok.com')) {
+            return 'Туура TikTok шилтемеси киргизиңиз'
           }
           return true
         }),
