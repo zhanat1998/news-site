@@ -40,14 +40,6 @@ export const postType = defineType({
     }),
 
     defineField({
-      name: 'summary',
-      title: 'Мазмуну (негизги тезистер)',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Макаланын негизги пункттары (bullet points)',
-    }),
-
-    defineField({
       name: 'author',
       title: 'Автору',
       type: 'reference',

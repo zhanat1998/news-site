@@ -18,9 +18,6 @@ export default function RelatedNews({ items }: Posts) {
           <DetailRoute className={styles.card} item={item}  key={item?.slug?.current}>
             <div className={styles.content}>
               <h3 className={styles.title}>{item.title}</h3>
-              {item.excerpt && (
-                <p className={styles.excerpt}>{item.excerpt}</p>
-              )}
               <time className={styles.date}>{formatDateForUrl(item?.publishedAt)}</time>
             </div>
             <div className={styles.imageWrapper}>
