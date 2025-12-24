@@ -28,11 +28,51 @@ export const videoType = defineType({
       rows: 3,
     }),
     defineField({
+      name: 'videoSource',
+      title: 'Видео булагы',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'YouTube', value: 'youtube' },
+          { title: 'Bunny CDN', value: 'bunny' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'youtube',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube шилтемеси',
+      type: 'url',
+      description: 'Толук YouTube шилтемесин киргизиңиз. Мисалы: https://www.youtube.com/watch?v=dc2PNSdRHtY',
+      hidden: ({ parent }) => parent?.videoSource !== 'youtube',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as { videoSource?: string }
+          if (parent?.videoSource === 'youtube' && !value) {
+            return 'YouTube шилтемесин киргизиңиз'
+          }
+          if (value && !value.includes('youtube.com') && !value.includes('youtu.be')) {
+            return 'Туура YouTube шилтемеси киргизиңиз'
+          }
+          return true
+        }),
+    }),
+    defineField({
       name: 'bunnyVideoId',
       title: 'Bunny Video ID',
       type: 'string',
       description: 'Bunny dashboard → Video → Copy Video ID',
-      validation: (Rule) => Rule.required(),
+      hidden: ({ parent }) => parent?.videoSource !== 'bunny',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as { videoSource?: string }
+          if (parent?.videoSource === 'bunny' && !value) {
+            return 'Bunny Video ID киргизиңиз'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'thumbnail',

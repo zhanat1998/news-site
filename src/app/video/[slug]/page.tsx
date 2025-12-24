@@ -16,10 +16,12 @@ const videoBySlugQuery = groq`
     _id,
     title,
     description,
+    videoSource,
+    youtubeUrl,
     bunnyVideoId,
     duration,
     publishedAt,
-    category->{ 
+    category->{
       title,
       slug
     },
@@ -141,6 +143,16 @@ function SaveIcon() {
   );
 }
 
+// YouTube URL'ден Video ID алуу
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const watchMatch = url.match(/[?&]v=([^&]+)/);
+  if (watchMatch) return watchMatch[1];
+  const shortMatch = url.match(/youtu\.be\/([^?&]+)/);
+  if (shortMatch) return shortMatch[1];
+  return null;
+}
+
 // SEO Metadata
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -157,9 +169,17 @@ export async function generateMetadata({ params }: Props) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
   const videoUrl = `${siteUrl}/video/${slug}`;
-  const thumbnailUrl = video.bunnyVideoId
-    ? `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`
-    : `${siteUrl}/og-image.jpg`;
+
+  // YouTube же Bunny үчүн thumbnail
+  let thumbnailUrl = `${siteUrl}/og-image.jpg`;
+  if (video.videoSource === 'youtube' && video.youtubeUrl) {
+    const youtubeId = extractYouTubeId(video.youtubeUrl);
+    if (youtubeId) {
+      thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+    }
+  } else if (video.bunnyVideoId) {
+    thumbnailUrl = `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`;
+  }
 
   return {
     title: video.title,

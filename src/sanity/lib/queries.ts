@@ -62,6 +62,8 @@ export const videosQuery = groq`
     title,
     "slug": slug.current,
     description,
+    videoSource,
+    youtubeUrl,
     bunnyVideoId,
     duration,
     thumbnail { asset->, alt },
@@ -321,6 +323,8 @@ export const categoryNewsGridQuery = `{
       thumbnail {
         asset -> { url }
       },
+      videoSource,
+      youtubeUrl,
       bunnyVideoId,
       duration,
       publishedAt
@@ -331,6 +335,8 @@ export const categoryNewsGridQuery = `{
       thumbnail {
         asset -> { url }
       },
+      videoSource,
+      youtubeUrl,
       bunnyVideoId,
       duration,
       publishedAt
