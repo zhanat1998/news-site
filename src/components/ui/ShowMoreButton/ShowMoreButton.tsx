@@ -18,12 +18,12 @@ interface Post {
 }
 
 interface Props {
-  categoryId: string;
+  categorySlug: string;
   initialOffset: number;
   perPage?: number;
 }
 
-export default function ShowMoreButton({ categoryId, initialOffset, perPage = 6 }: Props) {
+export default function ShowMoreButton({ categorySlug, initialOffset, perPage = 6 }: Props) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [offset, setOffset] = useState(initialOffset);
   const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ export default function ShowMoreButton({ categoryId, initialOffset, perPage = 6 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          categoryId,
+          categorySlug,
           offset,
           limit: perPage,
         }),

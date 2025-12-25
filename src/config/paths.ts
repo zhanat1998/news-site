@@ -3,14 +3,16 @@ export enum paths {
   ABOUT = '/about',
   VIDEO = '/video',
 
-  // WordPress категориялары боюнча
-  POLITICS = '/category/wp-2',      // Саясат
-  SOCIETY = '/category/wp-4',       // Коом
-  ECONOMY = '/category/wp-10',      // Экономика
-  WORLD = '/category/wp-30',        // Дүйнөлүк жаңылыктар
-  CULTURE = '/category/wp-3',       // Маданият-шоу
-  SPORT = '/category/wp-7',         // Спорт
-  CRIME = '/category/wp-5',        // Кылмыш-жаза
+  // Категориялар (slug менен)
+  POLITICS = '/category/sayasat',              // Саясат
+  SOCIETY = '/category/koom',                  // Коом
+  ECONOMY = '/category/ekonomika',             // Экономика
+  WORLD = '/category/d-in-l-k-zha-ylyktar',    // Дүйнөлүк жаңылыктар
+  CULTURE = '/category/madaniyat-shou',        // Маданият-шоу
+  SPORT = '/category/sport',                   // Спорт
+  CRIME = '/category/kylmysh-kyrsyk',          // Кылмыш-кырсык
+  SCIENCE = '/category/ilim-bilim',            // Илим-билим
+  REPORTAGE = '/category/sokoldun-reportazhdary', // Соколдун репортаждары
 
   CONTACT = '/contact',
   NEWS = '/news',

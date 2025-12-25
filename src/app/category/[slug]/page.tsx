@@ -14,15 +14,15 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-async function getCategoryPosts(categoryId: string) {
+async function getCategoryPosts(categorySlug: string) {
   const query = `{
-    "category": *[_type == "category" && _id == $categoryId][0] {
+    "category": *[_type == "category" && slug.current == $categorySlug][0] {
       _id,
       title,
       slug
     },
-    
-    "hero": *[_type == "post" && references($categoryId)] 
+
+    "hero": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       excerpt,
@@ -33,8 +33,8 @@ async function getCategoryPosts(categoryId: string) {
       },
       publishedAt
     },
-    
-    "centerTop": *[_type == "post" && references($categoryId)] 
+
+    "centerTop": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [1] {
       title,
       slug,
@@ -44,8 +44,8 @@ async function getCategoryPosts(categoryId: string) {
       },
       publishedAt
     },
-    
-    "centerList": *[_type == "post" && references($categoryId)] 
+
+    "centerList": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [2...5] {
       title,
       slug,
@@ -55,8 +55,8 @@ async function getCategoryPosts(categoryId: string) {
       },
       publishedAt
     },
-    
-    "rightTop": *[_type == "post" && references($categoryId)] 
+
+    "rightTop": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [5] {
       title,
       slug,
@@ -66,8 +66,8 @@ async function getCategoryPosts(categoryId: string) {
       },
       publishedAt
     },
-    
-    "rightList": *[_type == "post" && references($categoryId)] 
+
+    "rightList": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [6...9] {
       title,
       slug,
@@ -77,8 +77,8 @@ async function getCategoryPosts(categoryId: string) {
       },
       publishedAt
     },
-    
-    "moreNews": *[_type == "post" && references($categoryId)] 
+
+    "moreNews": *[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [9...15] {
       title,
       excerpt,
@@ -91,7 +91,7 @@ async function getCategoryPosts(categoryId: string) {
     }
   }`;
 
-  const data = await client.fetch(query, { categoryId });
+  const data = await client.fetch(query, { categorySlug });
   return data;
 }
 
@@ -112,8 +112,7 @@ function getDateSlug(dateString: string) {
 
 // Main Content Component
 async function CategoryContent({ slug }: { slug: string }) {
-  const categoryId = `category-${slug}`;
-  const news = await getCategoryPosts(categoryId);
+  const news = await getCategoryPosts(slug);
 
   if (!news.category) {
     return (
@@ -121,7 +120,7 @@ async function CategoryContent({ slug }: { slug: string }) {
         <div className={styles.page}>
           <div className="container">
             <h1 className={styles.categoryTitle}>Категория табылган жок</h1>
-            <p>Категория ID: {categoryId}</p>
+            <p>Slug: {slug}</p>
           </div>
         </div>
       </MainContainer>
@@ -284,7 +283,7 @@ async function CategoryContent({ slug }: { slug: string }) {
               ))}
             </div>
             <ShowMoreButton
-              categoryId={categoryId}
+              categorySlug={slug}
               initialOffset={15}
               perPage={6}
             />
@@ -310,11 +309,10 @@ export default async function CategoryPage({ params }: Props) {
 // SEO Metadata
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const categoryId = `category-${slug}`;
 
   const category = await client.fetch(
-    `*[_type == "category" && _id == $categoryId][0] { title, description }`,
-    { categoryId }
+    `*[_type == "category" && slug.current == $slug][0] { title, description }`,
+    { slug }
   );
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';

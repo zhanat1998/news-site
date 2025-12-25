@@ -6,13 +6,12 @@ import TikTokCarousel from "@/components/video/TikTokCarousel/TikTokCarousel";
 import DateDisplay from "@/components/ui/DateDisplay/DateDisplay";
 import CategoryColumns from "@/components/news/CategoryColumns/CategoryColumns";
 import CategoryNewsGrid from "@/components/news/CategoryNewsGrid/CategoryNewsGrid";
-import SportSection from "@/components/news/SportSection/SportSection";
 import TrendingBar from "@/components/news/TrendingBar";
 import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
 import { sanityFetch } from '@/sanity/lib/client';
-import {breakingNewsQuery, latestPostsQuery, videosQuery, instagramVideosQuery, tiktokVideosQuery, sportSectionQuery,
+import {breakingNewsQuery, latestPostsQuery, videosQuery, instagramVideosQuery, tiktokVideosQuery,
   categoryColumnsQuery, categoryNewsGridQuery, interactiveHeroQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
@@ -25,7 +24,6 @@ export default async function Home() {
     videos,
     instagramVideos,
     tiktokVideos,
-    sportData,
     categoryColumns,
     categoryNewsGrid,
     heroPosts
@@ -39,9 +37,8 @@ export default async function Home() {
     sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
     sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos', 'instagram'] }),
     sanityFetch<any[]>({ query: tiktokVideosQuery, tags: ['videos', 'tiktok'] }),
-    sanityFetch<any>({ query: sportSectionQuery, tags: ['posts', 'sport'] }),
     sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'videos', 'categories'] }),
+    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'categories'] }),
     sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }),
   ]);
 
@@ -93,12 +90,6 @@ export default async function Home() {
       <AdBanner placement="home_middle" />
       <CategoryColumns categories={categoryColumns} />
       <CategoryNewsGrid categories={categoryNewsGrid} />
-
-      <SportSection
-        banner={sportData.banner}
-        mainNews={sportData.mainNews}
-        sideNews={sportData.sideNews}
-      />
       <AdBanner placement="above_footer" />
     </MainContainer>
   );

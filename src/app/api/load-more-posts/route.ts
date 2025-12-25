@@ -3,9 +3,9 @@ import { client } from '@/sanity/lib/client';
 
 export async function POST(request: Request) {
   try {
-    const { categoryId, offset, limit } = await request.json();
+    const { categorySlug, offset, limit } = await request.json();
 
-    const query = `*[_type == "post" && references($categoryId)] 
+    const query = `*[_type == "post" && $categorySlug in categories[]->slug.current]
       | order(publishedAt desc) [$offset...($offset + $limit)] {
       title,
       excerpt,
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     }`;
 
     const posts = await client.fetch(query, {
-      categoryId,
+      categorySlug,
       offset: parseInt(offset),
       limit: parseInt(limit),
     });

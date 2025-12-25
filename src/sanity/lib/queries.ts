@@ -20,7 +20,7 @@ export const postQuery = groq`
       name,
       image { asset-> }
     },
-    category-> {
+    "category": categories[0]-> {
       title,
       slug
     }
@@ -50,7 +50,7 @@ export const latestPostsQuery = groq`
     isFeatured,
     isBreaking,
     mainImage { asset->, alt },
-    category->{ title, slug },
+    "category": categories[0]->{ title, slug },
     author->{ name, image }
   }
 `;
@@ -102,7 +102,7 @@ export const tiktokVideosQuery = groq`
 `;
 
 export const relatedPostsQuery = groq`
-  *[_type == "post" && slug.current != $slug && category->slug.current == $categorySlug] | order(publishedAt desc) [0...4] {
+  *[_type == "post" && slug.current != $slug && $categorySlug in categories[]->slug.current] | order(publishedAt desc) [0...4] {
     _id,
     title,
     slug,
@@ -123,7 +123,6 @@ export const moreNewsQuery = groq`
   }
 `;
 
-// src/sanity/lib/queries.ts
 export const searchPostsQuery = groq`
   *[_type == "post" && (
     title match $searchQuery ||
@@ -136,7 +135,7 @@ export const searchPostsQuery = groq`
     excerpt,
     publishedAt,
     mainImage { asset->, alt },
-    category->{ title, slug },
+    "category": categories[0]->{ title, slug },
     author->{ name },
     "matchInTitle": title match $searchQuery
   } | order(matchInTitle desc, publishedAt desc)
@@ -144,7 +143,7 @@ export const searchPostsQuery = groq`
 
 export const sportSectionQuery = `{
   // Banner үчүн акыркы спорт жаңылык
-  "banner": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+  "banner": *[_type == "post" && "sport" in categories[]->slug.current]
     | order(publishedAt desc) [0] {
     mainImage {
       asset -> { url }
@@ -152,7 +151,7 @@ export const sportSectionQuery = `{
   },
   
   // Негизги жаңылык
-  "mainNews": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+  "mainNews": *[_type == "post" && "sport" in categories[]->slug.current]
     | order(publishedAt desc) [0] {
     title,
     excerpt,
@@ -164,9 +163,9 @@ export const sportSectionQuery = `{
     publishedAt,
     section
   },
-  
+
   // Капталдагы жаңылыктар (2-4)
-  "sideNews": *[_type == "post" && references(*[_type == "category" && slug.current == "Sport"]._id)]
+  "sideNews": *[_type == "post" && "sport" in categories[]->slug.current]
     | order(publishedAt desc) [1...4] {
     title,
     slug,
@@ -181,8 +180,8 @@ export const sportSectionQuery = `{
 export const categoryColumnsQuery = `{
   "politics": {
     "title": "Саясат",
-    "slug": "wp-2",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-2"]._id)]
+    "slug": "sayasat",
+    "mainNews": *[_type == "post" && "sayasat" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       excerpt,
@@ -193,18 +192,18 @@ export const categoryColumnsQuery = `{
       },
       publishedAt
     },
-    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-2"]._id)]
+    "links": *[_type == "post" && "sayasat" in categories[]->slug.current]
       | order(publishedAt desc) [1...6] {
       title,
       slug,
       publishedAt
     }
   },
-  
+
   "society": {
     "title": "Коом",
-    "slug": "wp-4",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-4"]._id)]
+    "slug": "koom",
+    "mainNews": *[_type == "post" && "koom" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       excerpt,
@@ -215,18 +214,18 @@ export const categoryColumnsQuery = `{
       },
       publishedAt
     },
-    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-4"]._id)]
+    "links": *[_type == "post" && "koom" in categories[]->slug.current]
       | order(publishedAt desc) [1...6] {
       title,
       slug,
       publishedAt
     }
   },
-  
+
   "economy": {
     "title": "Экономика",
-    "slug": "wp-10",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-10"]._id)]
+    "slug": "ekonomika",
+    "mainNews": *[_type == "post" && "ekonomika" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       excerpt,
@@ -237,18 +236,18 @@ export const categoryColumnsQuery = `{
       },
       publishedAt
     },
-    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-10"]._id)]
+    "links": *[_type == "post" && "ekonomika" in categories[]->slug.current]
       | order(publishedAt desc) [1...6] {
       title,
       slug,
       publishedAt
     }
   },
-  
+
   "world": {
     "title": "Дүйнө",
-    "slug": "wp-30",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-30"]._id)]
+    "slug": "d-in-l-k-zha-ylyktar",
+    "mainNews": *[_type == "post" && "d-in-l-k-zha-ylyktar" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       excerpt,
@@ -259,7 +258,7 @@ export const categoryColumnsQuery = `{
       },
       publishedAt
     },
-    "links": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-30"]._id)]
+    "links": *[_type == "post" && "d-in-l-k-zha-ylyktar" in categories[]->slug.current]
       | order(publishedAt desc) [1...6] {
       title,
       slug,
@@ -270,9 +269,9 @@ export const categoryColumnsQuery = `{
 
 export const categoryNewsGridQuery = `{
   "culture": {
-    "title": "Маданият",
-    "slug": "wp-3",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-3"]._id)]
+    "title": "Маданият-шоу",
+    "slug": "madaniyat-shou",
+    "mainNews": *[_type == "post" && "madaniyat-shou" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       slug,
@@ -282,7 +281,7 @@ export const categoryNewsGridQuery = `{
       },
       publishedAt
     },
-    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-3"]._id)]
+    "smallNews": *[_type == "post" && "madaniyat-shou" in categories[]->slug.current]
       | order(publishedAt desc) [1...4] {
       title,
       slug,
@@ -293,11 +292,11 @@ export const categoryNewsGridQuery = `{
       publishedAt
     }
   },
-  
+
   "crime": {
     "title": "Кылмыш-кырсык",
-    "slug": "wp-5",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-5"]._id)]
+    "slug": "kylmysh-kyrsyk",
+    "mainNews": *[_type == "post" && "kylmysh-kyrsyk" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       slug,
@@ -307,7 +306,7 @@ export const categoryNewsGridQuery = `{
       },
       publishedAt
     },
-    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-5"]._id)]
+    "smallNews": *[_type == "post" && "kylmysh-kyrsyk" in categories[]->slug.current]
       | order(publishedAt desc) [1...4] {
       title,
       slug,
@@ -318,11 +317,11 @@ export const categoryNewsGridQuery = `{
       publishedAt
     }
   },
-  
-  "sport": {
-    "title": "Спорт",
-    "slug": "wp-7",
-    "mainNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-7"]._id)]
+
+  "ilimBilim": {
+    "title": "Илим-билим",
+    "slug": "ilim-bilim",
+    "mainNews": *[_type == "post" && "ilim-bilim" in categories[]->slug.current]
       | order(publishedAt desc) [0] {
       title,
       slug,
@@ -332,7 +331,7 @@ export const categoryNewsGridQuery = `{
       },
       publishedAt
     },
-    "smallNews": *[_type == "post" && references(*[_type == "category" && _id == "category-wp-7"]._id)]
+    "smallNews": *[_type == "post" && "ilim-bilim" in categories[]->slug.current]
       | order(publishedAt desc) [1...4] {
       title,
       slug,
@@ -343,37 +342,34 @@ export const categoryNewsGridQuery = `{
       publishedAt
     }
   },
-  
-  "video": {
-    "title": "Видео",
-    "slug": "video",
-    "mainVideo": *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [0] {
+
+  "sokoldunReportazhdary": {
+    "title": "Соколдун репортаждары",
+    "slug": "sokoldun-reportazhdary",
+    "mainNews": *[_type == "post" && "sokoldun-reportazhdary" in categories[]->slug.current]
+      | order(publishedAt desc) [0] {
       title,
       slug,
-      thumbnail {
-        asset -> { url }
+      mainImage {
+        asset -> { url },
+        alt
       },
-      videoSource,
-      youtubeUrl,
-      duration,
       publishedAt
     },
-    "smallVideos": *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [1...4] {
+    "smallNews": *[_type == "post" && "sokoldun-reportazhdary" in categories[]->slug.current]
+      | order(publishedAt desc) [1...4] {
       title,
       slug,
-      thumbnail {
-        asset -> { url }
+      mainImage {
+        asset -> { url },
+        alt
       },
-      videoSource,
-      youtubeUrl,
-      duration,
       publishedAt
     }
   }
 }`;
 
-export const interactiveHeroQuery = `*[_type == "post"] 
-  | order(publishedAt desc) [0...12] {
+export const interactiveHeroQuery = `*[_type == "post"] | order(publishedAt desc) [0...12] {
   _id,
   title,
   slug,

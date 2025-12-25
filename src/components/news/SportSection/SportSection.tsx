@@ -123,7 +123,7 @@ export default function SportSection({ banner, mainNews, sideNews }: Props) {
 
       {/* Footer Link */}
       <div className={styles.footer}>
-        <Link href="/category/wp-7" className={styles.footerLink}>
+        <Link href="/category/sport" className={styles.footerLink}>
           Баарын көрүү
         </Link>
       </div>
