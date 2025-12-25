@@ -126,6 +126,14 @@ export const postType = defineType({
     }),
 
     defineField({
+      name: 'sendPushNotification',
+      title: 'Push уведомление жиберүү',
+      type: 'boolean',
+      description: 'Бул постту жарыялаганда подписчиктерге push уведомление жөнөтүлөт (5 мүнөттөн кийин)',
+      initialValue: false,
+    }),
+
+    defineField({
       name: 'body',
       title: 'Негизги текст (Макаланын мазмуну)',
       type: 'blockContent',

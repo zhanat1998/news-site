@@ -4,6 +4,7 @@ import Footer from '../components/layout/Footer/Footer';
 import MainNavigation from "@/components/layout/MainNavigation/MainNavigation";
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Script from 'next/script';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
 
@@ -67,8 +68,36 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const oneSignalAppId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
+
   return (
     <html lang="ky">
+    <head>
+      {oneSignalAppId && (
+        <Script
+          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+          defer
+          strategy="afterInteractive"
+        />
+      )}
+      {oneSignalAppId && (
+        <Script id="onesignal-init" strategy="afterInteractive">
+          {`
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+              await OneSignal.init({
+                appId: "${oneSignalAppId}",
+                safari_web_id: "${process.env.NEXT_PUBLIC_ONESIGNAL_SAFARI_WEB_ID || ''}",
+                notifyButton: {
+                  enable: false,
+                },
+                allowLocalhostAsSecureOrigin: true,
+              });
+            });
+          `}
+        </Script>
+      )}
+    </head>
     <body>
     <Header />
     <MainNavigation/>

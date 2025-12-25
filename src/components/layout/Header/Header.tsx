@@ -10,6 +10,7 @@ import LanguageSwitcher from "@/components/layout/Header/components/LanguageSwit
 import {usePathname} from "next/navigation";
 import { socialLinks } from '@/constants';
 import SocialIcons from "@/components/ui/SocialIcons/SocialIcons";
+import SubscribeButton from "@/components/ui/SubscribeButton/SubscribeButton";
 
 export default function Header() {
   const pathname = usePathname();
@@ -39,6 +40,7 @@ export default function Header() {
 
             <div className={styles.centerSection}>
               <SocialIcons/>
+              <SubscribeButton />
               <LanguageSwitcher />
             </div>
 
