@@ -105,33 +105,5 @@ export const blockContentType = defineType({
       },
     }),
 
-    // Bunny видео
-    defineArrayMember({
-      type: 'object',
-      name: 'bunnyVideo',
-      title: 'Bunny видео',
-      fields: [
-        {
-          name: 'videoId',
-          type: 'string',
-          title: 'Bunny Video ID',
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: 'caption',
-          type: 'string',
-          title: 'Видео сүрөттөмөсү',
-        },
-      ],
-      preview: {
-        select: { videoId: 'videoId' },
-        prepare({ videoId }) {
-          return {
-            title: 'Bunny видео',
-            subtitle: videoId || 'ID жок',
-          }
-        },
-      },
-    }),
   ],
 })

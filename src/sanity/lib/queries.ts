@@ -55,7 +55,7 @@ export const latestPostsQuery = groq`
   }
 `;
 
-// Видеолор (YouTube гана - Bunny жок)
+// YouTube видеолор
 export const videosQuery = groq`
   *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [0...20] {
     _id,
@@ -347,7 +347,7 @@ export const categoryNewsGridQuery = `{
   "video": {
     "title": "Видео",
     "slug": "video",
-    "mainVideo": *[_type == "video"] | order(publishedAt desc) [0] {
+    "mainVideo": *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [0] {
       title,
       slug,
       thumbnail {
@@ -355,11 +355,10 @@ export const categoryNewsGridQuery = `{
       },
       videoSource,
       youtubeUrl,
-      bunnyVideoId,
       duration,
       publishedAt
     },
-    "smallVideos": *[_type == "video"] | order(publishedAt desc) [1...4] {
+    "smallVideos": *[_type == "video" && videoSource == "youtube"] | order(publishedAt desc) [1...4] {
       title,
       slug,
       thumbnail {
@@ -367,7 +366,6 @@ export const categoryNewsGridQuery = `{
       },
       videoSource,
       youtubeUrl,
-      bunnyVideoId,
       duration,
       publishedAt
     }

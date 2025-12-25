@@ -1,14 +1,11 @@
 // src/components/video/VideoPlayer/VideoPlayer.tsx
 'use client';
 
-import { useRef } from 'react';
 import styles from './VideoPlayer.module.scss';
 
 interface VideoPlayerProps {
   video: {
-    videoSource?: 'youtube' | 'bunny';
     youtubeUrl?: string;
-    bunnyVideoId?: string;
     title: string;
   };
 }
@@ -33,20 +30,16 @@ function extractYouTubeId(url: string): string | null {
 }
 
 export default function VideoPlayer({ video }: VideoPlayerProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-
-  const isYouTube = video.videoSource === 'youtube' || video.youtubeUrl;
   const youtubeId = video.youtubeUrl ? extractYouTubeId(video.youtubeUrl) : null;
 
-  const src = isYouTube && youtubeId
-    ? `https://www.youtube.com/embed/${youtubeId}?rel=0`
-    : `https://iframe.mediadelivery.net/embed/${process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID}/${video.bunnyVideoId}?autoplay=false&loop=false&muted=false&preload=true`;
+  if (!youtubeId) {
+    return <div className={styles.player}>Видео табылган жок</div>;
+  }
 
   return (
     <div className={styles.player}>
       <iframe
-        ref={iframeRef}
-        src={src}
+        src={`https://www.youtube.com/embed/${youtubeId}?rel=0`}
         loading="lazy"
         style={{
           border: 'none',

@@ -36,7 +36,6 @@ export const videoType = defineType({
           { title: 'YouTube', value: 'youtube' },
           { title: 'Instagram', value: 'instagram' },
           { title: 'TikTok', value: 'tiktok' },
-          { title: 'Bunny CDN', value: 'bunny' },
         ],
         layout: 'radio',
       },
@@ -93,21 +92,6 @@ export const videoType = defineType({
           }
           if (value && !value.includes('tiktok.com')) {
             return 'Туура TikTok шилтемеси киргизиңиз'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'bunnyVideoId',
-      title: 'Bunny Video ID',
-      type: 'string',
-      description: 'Bunny dashboard → Video → Copy Video ID',
-      hidden: ({ parent }) => parent?.videoSource !== 'bunny',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const parent = context.parent as { videoSource?: string }
-          if (parent?.videoSource === 'bunny' && !value) {
-            return 'Bunny Video ID киргизиңиз'
           }
           return true
         }),

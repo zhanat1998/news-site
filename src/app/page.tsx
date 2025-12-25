@@ -50,8 +50,7 @@ export default async function Home() {
     _id: video._id,
     title: video.title,
     slug: video.slug,
-    image: video.thumbnail?.asset?.url
-      || `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`,
+    image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
     excerpt: video.description,
     category: video.category?.title,
     duration: video.duration,

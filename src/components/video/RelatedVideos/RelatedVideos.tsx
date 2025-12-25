@@ -21,11 +21,13 @@ interface RelatedVideosProps {
 }
 
 export default function RelatedVideos({ videos, title }: RelatedVideosProps) {
-  if (!videos.length) return null;
-
   return (
     <div className={styles.related}>
       <h2 className={styles.title}>{title}</h2>
+
+      {!videos.length && (
+        <p className={styles.noVideos}>Бул категориядан видео табылган жок</p>
+      )}
 
       <div className={styles.list}>
         {videos.map((video) => (

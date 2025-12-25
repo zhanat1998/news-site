@@ -3,7 +3,6 @@ export interface Video {
   title: string;
   slug: string;
   thumbnail?: any;
-  bunnyVideoId?: string;
   duration?: string;
   category?: { title: string };
 }

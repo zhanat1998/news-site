@@ -19,7 +19,6 @@ type VideoItem = {
   thumbnail?: {
     asset: { url: string };
   };
-  bunnyVideoId?: string;
   duration?: string;
   publishedAt: string;
 };
@@ -51,9 +50,6 @@ function getDateSlug(dateString: string) {
 function getVideoThumbnail(video: VideoItem) {
   if (video.thumbnail?.asset?.url) {
     return video.thumbnail.asset.url;
-  }
-  if (video.bunnyVideoId) {
-    return `https://vz-0a81affa-d72.b-cdn.net/${video.bunnyVideoId}/thumbnail.jpg`;
   }
   return '/placeholder-video.jpg';
 }
