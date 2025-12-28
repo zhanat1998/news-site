@@ -36,9 +36,9 @@ function sanityImageUrl(ref?: string): string | undefined {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
+    // Verify webhook secret (optional - skip if not configured)
     const secret = request.headers.get('x-sanity-webhook-secret');
-    if (WEBHOOK_SECRET && secret !== WEBHOOK_SECRET) {
+    if (WEBHOOK_SECRET && secret && secret !== WEBHOOK_SECRET) {
       console.log('Webhook unauthorized: secret mismatch');
       return NextResponse.json(
         { error: 'Unauthorized' },
