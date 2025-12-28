@@ -36,8 +36,25 @@ export async function sendPushNotification(payload: NotificationPayload): Promis
         headings: { en: payload.title, ky: payload.title },
         contents: { en: payload.message, ky: payload.message },
         url: payload.url,
+        // Чоң сүрөт (Chrome, Firefox, Edge)
         chrome_web_image: payload.imageUrl,
         firefox_icon: payload.imageUrl,
+        // Android үчүн чоң сүрөт
+        big_picture: payload.imageUrl,
+        // Иконка (сайттын логосу)
+        chrome_web_icon: 'https://sokol.media/images/logo.png',
+        // Баскычтар
+        web_buttons: [
+          {
+            id: 'read-more',
+            text: 'Окуу',
+            url: payload.url,
+          },
+        ],
+        // TTL (убакыт өткөндө өчүрүү) - 24 саат
+        ttl: 86400,
+        // Приоритет - жогорку
+        priority: 10,
       }),
     });
 

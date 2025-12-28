@@ -68,7 +68,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const oneSignalAppId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
+  const isDev = process.env.NODE_ENV === 'development';
+  const oneSignalAppId = isDev
+    ? process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID_DEV || process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID
+    : process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
 
   return (
     <html lang="ky">

@@ -20,9 +20,6 @@ interface SanityWebhookPayload {
   sendPushNotification?: boolean;
 }
 
-// Store for scheduled notifications (in production, use Redis or database)
-const scheduledNotifications = new Map<string, NodeJS.Timeout>();
-
 export async function POST(request: NextRequest) {
   try {
     // Verify webhook secret
@@ -46,12 +43,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Skipped: sendPushNotification is false' });
     }
 
-    // Check if already scheduled
-    if (scheduledNotifications.has(body._id)) {
-      clearTimeout(scheduledNotifications.get(body._id));
-      scheduledNotifications.delete(body._id);
-    }
-
     // Get post URL
     const dateSlug = body.publishedAt
       ? new Date(body.publishedAt).toISOString().split('T')[0]
@@ -61,33 +52,29 @@ export async function POST(request: NextRequest) {
     // Get image URL
     const imageUrl = body.mainImage?.asset?.url;
 
-    // Schedule notification for 5 minutes later
-    const DELAY_MS = 5 * 60 * 1000; // 5 minutes
+    // Дароо уведомление жөнөтүү
+    try {
+      const result = await sendPushNotification({
+        title: body.title || 'Жаңылык',
+        message: body.excerpt || 'Жаңы макала жарыяланды!',
+        url: postUrl,
+        imageUrl: imageUrl,
+      });
 
-    const timeoutId = setTimeout(async () => {
-      try {
-        const result = await sendPushNotification({
-          title: 'Жаңы макала: ' + (body.title || 'Жаңылык'),
-          message: body.excerpt || body.title || 'Жаңы макала жарыяланды!',
-          url: postUrl,
-          imageUrl: imageUrl,
-        });
+      console.log('Push notification sent:', result);
 
-        console.log('Push notification sent:', result);
-        scheduledNotifications.delete(body._id);
-      } catch (error) {
-        console.error('Failed to send push notification:', error);
-        scheduledNotifications.delete(body._id);
-      }
-    }, DELAY_MS);
-
-    scheduledNotifications.set(body._id, timeoutId);
-
-    return NextResponse.json({
-      success: true,
-      message: `Notification scheduled for ${body.title}`,
-      scheduledFor: new Date(Date.now() + DELAY_MS).toISOString(),
-    });
+      return NextResponse.json({
+        success: true,
+        message: `Notification sent for ${body.title}`,
+        result,
+      });
+    } catch (notifError) {
+      console.error('Failed to send push notification:', notifError);
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to send notification',
+      });
+    }
 
   } catch (error) {
     console.error('Webhook error:', error);
@@ -103,6 +90,5 @@ export async function GET() {
   return NextResponse.json({
     status: 'ok',
     service: 'push-notifications',
-    scheduledCount: scheduledNotifications.size,
   });
 }
