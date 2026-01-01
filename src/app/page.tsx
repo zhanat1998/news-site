@@ -33,13 +33,13 @@ export default async function Home() {
       tags: ['posts'],
       revalidate: 0
     }),
-    sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'] }),
-    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
-    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos', 'instagram'] }),
-    sanityFetch<any[]>({ query: tiktokVideosQuery, tags: ['videos', 'tiktok'] }),
-    sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }),
+    sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'], revalidate: 0 }),
+    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'], revalidate: 0 }),
+    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos', 'instagram'], revalidate: 0 }),
+    sanityFetch<any[]>({ query: tiktokVideosQuery, tags: ['videos', 'tiktok'], revalidate: 0 }),
+    sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'], revalidate: 0 }),
+    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'categories'], revalidate: 0 }),
+    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'], revalidate: 0 }),
   ]);
 
 
