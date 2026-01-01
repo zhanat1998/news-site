@@ -9,6 +9,8 @@ import CategorySkeleton from "@/components/category/CategorySkeleton";
 import ShowMoreButton from "@/components/ui/ShowMoreButton/ShowMoreButton";
 import AdBanner from "@/components/ads/AdBanner";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
+import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
+import InstagramCarousel from "@/components/video/InstagramCarousel/InstagramCarousel";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -88,6 +90,34 @@ async function getCategoryPosts(categorySlug: string) {
         alt
       },
       publishedAt
+    },
+
+    "youtubeVideos": *[_type == "video" && videoSource == "youtube" && category->slug.current == $categorySlug]
+      | order(publishedAt desc) [0...10] {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      youtubeUrl,
+      duration,
+      thumbnail {
+        asset -> { url }
+      },
+      "category": category->title
+    },
+
+    "instagramVideos": *[_type == "video" && videoSource == "instagram" && category->slug.current == $categorySlug]
+      | order(publishedAt desc) [0...10] {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      instagramUrl,
+      duration,
+      thumbnail {
+        asset -> { url }
+      },
+      "category": category->title
     }
   }`;
 
@@ -288,6 +318,34 @@ async function CategoryContent({ slug }: { slug: string }) {
               perPage={6}
             />
           </section>
+        )}
+
+        {/* YouTube Videos */}
+        {news.youtubeVideos && news.youtubeVideos.length > 0 && (
+          <VideoCarousel
+            title="YouTube видеолор"
+            videos={news.youtubeVideos.map((video: any) => ({
+              _id: video._id,
+              title: video.title,
+              slug: video.slug,
+              image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
+              excerpt: video.description,
+              category: video.category,
+              duration: video.duration,
+              thumbnail: video.thumbnail,
+            }))}
+            link="/video"
+          />
+        )}
+
+        {/* Instagram Videos */}
+        {news.instagramVideos && news.instagramVideos.length > 0 && (
+          <Suspense fallback={null}>
+            <InstagramCarousel
+              title="Instagram видеолор"
+              videos={news.instagramVideos}
+            />
+          </Suspense>
         )}
         </div>
       </div>
