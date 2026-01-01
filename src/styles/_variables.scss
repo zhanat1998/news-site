@@ -40,24 +40,3 @@ $shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
 // Transitions
 $transition-fast: 0.15s ease;
 $transition-normal: 0.3s ease;
-
-@font-face {
-  font-family: 'CormorantGaramond-Bold';
-  font-weight: 700;
-  font-size: 30px;
-  src: url(../components/fonts/Cormorant/CormorantGaramond-Bold.ttf);
-}
-
-@font-face {
-  font-family: 'CormorantGaramond-Medium';
-  font-weight: 500;
-  font-size: 25px;
-  src: url(../components/fonts/Cormorant/CormorantGaramond-Medium.ttf);
-}
-
-@font-face {
-  font-family: 'CormorantGaramond-Regular';
-  font-weight: 500;
-  font-size: 20px;
-  src: url(../components/fonts/Cormorant/CormorantGaramond-Regular.ttf);
-}
