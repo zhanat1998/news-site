@@ -69,7 +69,7 @@ export default function CategoryNewsGrid({ categories }: Props) {
                 <div className={styles.mainImage}>
                   {mainItem.mainImage?.asset?.url && (
                     <Image
-                      src={urlFor(mainItem.mainImage).width(800).height(500).quality(100).url()}
+                      src={urlFor(mainItem.mainImage).width(800).height(500).quality(85).auto('format').url()}
                       alt={mainItem.mainImage?.alt || mainItem.title}
                       fill
                     />
@@ -91,7 +91,7 @@ export default function CategoryNewsGrid({ categories }: Props) {
                       <div className={styles.smallImage}>
                         {item.mainImage?.asset?.url && (
                           <Image
-                            src={urlFor(item.mainImage).width(240).height(160).quality(100).url()}
+                            src={urlFor(item.mainImage).width(240).height(160).quality(85).auto('format').url()}
                             alt={item.mainImage?.alt || item.title}
                             fill
                           />

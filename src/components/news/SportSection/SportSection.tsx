@@ -53,7 +53,7 @@ export default function SportSection({ banner, mainNews, sideNews }: Props) {
       <div className={styles.banner}>
         {bannerImage && (
           <Image
-            src={urlFor({ asset: { url: bannerImage } }).width(2800).height(600).quality(100).url()}
+            src={urlFor({ asset: { url: bannerImage } }).width(2800).height(600).quality(85).auto('format').url()}
             alt="Спорт"
             fill
             priority
@@ -77,7 +77,7 @@ export default function SportSection({ banner, mainNews, sideNews }: Props) {
             {mainNews.mainImage?.asset?.url && (
               <div className={styles.mainImage}>
                 <Image
-                  src={urlFor(mainNews.mainImage).width(1200).height(800).quality(100).url()}
+                  src={urlFor(mainNews.mainImage).width(1200).height(800).quality(85).auto('format').url()}
                   alt={mainNews.mainImage.alt || mainNews.title}
                   fill
                 />
@@ -109,7 +109,7 @@ export default function SportSection({ banner, mainNews, sideNews }: Props) {
               {news.mainImage?.asset?.url && (
                 <div className={styles.sideImage}>
                   <Image
-                    src={urlFor(news.mainImage).width(400).height(260).quality(100).url()}
+                    src={urlFor(news.mainImage).width(400).height(260).quality(85).auto('format').url()}
                     alt={news.mainImage.alt || news.title}
                     fill
                   />

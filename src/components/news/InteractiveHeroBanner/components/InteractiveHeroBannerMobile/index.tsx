@@ -43,7 +43,7 @@ const InteractiveHeroBannerMobile = (
       >
         {mainPost.mainImage?.asset?.url && (
           <Image
-            src={urlFor(mainPost.mainImage).width(1500).height(600).quality(100).url()}
+            src={urlFor(mainPost.mainImage).width(800).height(400).quality(85).auto('format').url()}
             alt={mainPost.mainImage.alt || mainPost.title}
             fill
             priority

@@ -87,7 +87,7 @@ export default function ShowMoreButton({ categorySlug, initialOffset, perPage = 
               {item.mainImage?.asset?.url && (
                 <div className={styles.moreImage}>
                   <Image
-                    src={urlFor(item.mainImage).width(800).height(560).quality(100).url()}
+                    src={urlFor(item.mainImage).width(800).height(560).quality(85).auto('format').url()}
                     alt={item.mainImage.alt || item.title}
                     fill
                   />

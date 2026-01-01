@@ -144,7 +144,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.hero.mainImage?.asset?.url && (
                   <div className={styles.heroImage}>
                     <Image
-                      src={urlFor(news.hero.mainImage).width(1400).height(1000).quality(100).url()}
+                      src={urlFor(news.hero.mainImage).width(1400).height(1000).quality(85).auto('format').url()}
                       alt={news.hero.mainImage.alt || news.hero.title}
                       fill
                       priority
@@ -169,7 +169,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.centerTop.mainImage?.asset?.url && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.centerTop.mainImage).width(800).height(500).quality(100).url()}
+                      src={urlFor(news.centerTop.mainImage).width(800).height(500).quality(85).auto('format').url()}
                       alt={news.centerTop.mainImage.alt || news.centerTop.title}
                       fill
                     />
@@ -195,7 +195,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                     {item.mainImage?.asset?.url && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(300).height(200).quality(100).url()}
+                          src={urlFor(item.mainImage).width(300).height(200).quality(85).auto('format').url()}
                           alt={item.mainImage.alt || item.title}
                           fill
                         />
@@ -217,7 +217,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.rightTop.mainImage?.asset?.url && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.rightTop.mainImage).width(800).height(500).quality(100).url()}
+                      src={urlFor(news.rightTop.mainImage).width(800).height(500).quality(85).auto('format').url()}
                       alt={news.rightTop.mainImage.alt || news.rightTop.title}
                       fill
                     />
@@ -243,7 +243,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                     {item.mainImage?.asset?.url && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(300).height(200).quality(100).url()}
+                          src={urlFor(item.mainImage).width(300).height(200).quality(85).auto('format').url()}
                           alt={item.mainImage.alt || item.title}
                           fill
                         />
@@ -270,7 +270,7 @@ async function CategoryContent({ slug }: { slug: string }) {
                   {item.mainImage?.asset?.url && (
                     <div className={styles.moreImage}>
                       <Image
-                        src={urlFor(item.mainImage).width(800).height(560).quality(100).url()}
+                        src={urlFor(item.mainImage).width(800).height(560).quality(85).auto('format').url()}
                         alt={item.mainImage.alt || item.title}
                         fill
                       />

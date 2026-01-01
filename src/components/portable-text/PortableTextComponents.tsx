@@ -85,7 +85,7 @@ export const portableTextComponents = {
         <figure className={styles.figure}>
           <div className={styles.imageWrapper}>
             <Image
-              src={urlFor(value).width(2000).height(1200).quality(100).url()}
+              src={urlFor(value).width(2000).height(1200).quality(85).auto('format').url()}
               alt={value.alt || 'Сүрөт'}
               fill
               className={styles.image}
@@ -110,7 +110,7 @@ export const portableTextComponents = {
             {value.relatedPost.mainImage && (
               <div className={styles.relatedImage}>
                 <Image
-                  src={urlFor(value.relatedPost.mainImage).width(600).height(420).quality(100).url()}
+                  src={urlFor(value.relatedPost.mainImage).width(600).height(420).quality(85).auto('format').url()}
                   alt={value.relatedPost.title}
                   fill
                 />
