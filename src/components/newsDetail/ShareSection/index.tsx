@@ -36,7 +36,6 @@ const ShareSection = ({ title, url, image }: ShareSectionProps) => {
 
   const encodedUrl = encodeURIComponent(fullUrl);
   const encodedTitle = encodeURIComponent(title);
-  const encodedImage = image ? encodeURIComponent(image) : '';
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`,
@@ -47,6 +46,21 @@ const ShareSection = ({ title, url, image }: ShareSectionProps) => {
   const handleShare = (platform: keyof typeof shareLinks) => {
     window.open(shareLinks[platform], '_blank', 'width=600,height=400');
     setShowShareMenu(false);
+  };
+
+  // Mobile native share
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          url: fullUrl,
+        });
+      } catch (err) {
+        // User cancelled or error
+        console.log('Share cancelled');
+      }
+    }
   };
 
   const handlePrint = () => {
@@ -63,13 +77,24 @@ const ShareSection = ({ title, url, image }: ShareSectionProps) => {
     }
   };
 
+  // Check if native share is supported (mobile)
+  const isMobile = typeof window !== 'undefined' && 'share' in navigator;
+
+  const handleShareClick = () => {
+    if (isMobile) {
+      handleNativeShare();
+    } else {
+      setShowShareMenu(!showShareMenu);
+    }
+  };
+
   return (
     <div className={styles.shareSection}>
       {/* Бөлүшүү */}
       <div className={styles.shareItem} ref={menuRef}>
         <button
           className={styles.shareButton}
-          onClick={() => setShowShareMenu(!showShareMenu)}
+          onClick={handleShareClick}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
