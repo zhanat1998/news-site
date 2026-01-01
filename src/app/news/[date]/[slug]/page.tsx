@@ -6,6 +6,7 @@ import { portableTextComponents } from '@/components/portable-text/PortableTextC
 import styles from './page.module.scss';
 import MainImage from "@/components/newsDetail/MainImage";
 import Author from "@/components/newsDetail/Author";
+import ShareSection from "@/components/newsDetail/ShareSection";
 import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
@@ -18,7 +19,7 @@ type Props = {
 };
 
 export default async function NewsDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug, date } = await params;
 
   const post = await sanityFetch<any>({
     query: postQuery,
@@ -133,7 +134,6 @@ export default async function NewsDetailPage({ params }: Props) {
               <p className={styles.subtitle}>{post.excerpt}</p>
             )}
             <MainImage item={post} />
-            <Author item={post} />
             <div className={styles.content}>
               {post.body && (
                 <PortableText
@@ -142,6 +142,12 @@ export default async function NewsDetailPage({ params }: Props) {
                 />
               )}
             </div>
+            <Author item={post} />
+            <ShareSection
+              title={post.title}
+              url={`/news/${date}/${slug}`}
+              image={post.mainImage?.asset?.url}
+            />
             <AdBanner placement="in_article" />
             <RelatedNews items={relatedPosts} />
 
