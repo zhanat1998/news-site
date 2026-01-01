@@ -14,9 +14,11 @@ const ShareSection = ({ title, url, image }: ShareSectionProps) => {
   const [canNativeShare, setCanNativeShare] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Check if native share is supported (runs only on client)
+  // Check if mobile device (by screen width and touch support)
   useEffect(() => {
-    setCanNativeShare(typeof navigator !== 'undefined' && !!navigator.share);
+    const isMobile = window.innerWidth <= 768 && 'ontouchstart' in window;
+    const hasNativeShare = !!navigator.share;
+    setCanNativeShare(isMobile && hasNativeShare);
   }, []);
 
   // Close dropdown when clicking outside
