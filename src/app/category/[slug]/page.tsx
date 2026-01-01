@@ -285,6 +285,33 @@ async function CategoryContent({ slug }: { slug: string }) {
             )}
           </div>
         </div>
+        {/* YouTube Videos */}
+        {news.youtubeVideos && news.youtubeVideos.length > 0 && (
+          <VideoCarousel
+            title="YouTube видеолор"
+            videos={news.youtubeVideos.map((video: any) => ({
+              _id: video._id,
+              title: video.title,
+              slug: video.slug,
+              image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
+              excerpt: video.description,
+              category: video.category,
+              duration: video.duration,
+              thumbnail: video.thumbnail,
+            }))}
+            link="/video"
+          />
+        )}
+
+        {/* Instagram Videos */}
+        {news.instagramVideos && news.instagramVideos.length > 0 && (
+          <Suspense fallback={null}>
+            <InstagramCarousel
+              title="Instagram видеолор"
+              videos={news.instagramVideos}
+            />
+          </Suspense>
+        )}
 
         {/* More News */}
         {news.moreNews && news.moreNews.length > 0 && (
@@ -318,34 +345,6 @@ async function CategoryContent({ slug }: { slug: string }) {
               perPage={6}
             />
           </section>
-        )}
-
-        {/* YouTube Videos */}
-        {news.youtubeVideos && news.youtubeVideos.length > 0 && (
-          <VideoCarousel
-            title="YouTube видеолор"
-            videos={news.youtubeVideos.map((video: any) => ({
-              _id: video._id,
-              title: video.title,
-              slug: video.slug,
-              image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
-              excerpt: video.description,
-              category: video.category,
-              duration: video.duration,
-              thumbnail: video.thumbnail,
-            }))}
-            link="/video"
-          />
-        )}
-
-        {/* Instagram Videos */}
-        {news.instagramVideos && news.instagramVideos.length > 0 && (
-          <Suspense fallback={null}>
-            <InstagramCarousel
-              title="Instagram видеолор"
-              videos={news.instagramVideos}
-            />
-          </Suspense>
         )}
         </div>
       </div>
