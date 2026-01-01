@@ -34,7 +34,7 @@ export default function InteractiveHeroBanner({ items }: Posts) {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [items]);
+  }, [items, thumbnailPosts.length]);
 
   useEffect(() => {
     if (!thumbnailsRef.current) return;
