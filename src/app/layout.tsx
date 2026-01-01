@@ -2,6 +2,7 @@ import '../styles/globals.scss';
 import Header from '../components/layout/Header/Header';
 import Footer from '../components/layout/Footer/Footer';
 import MainNavigation from "@/components/layout/MainNavigation/MainNavigation";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Script from 'next/script';
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       )}
     </head>
     <body>
+    <ScrollToTop />
     <Header />
     <MainNavigation/>
     <div className="mobile-decoration">
