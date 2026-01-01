@@ -48,7 +48,7 @@
 .label {
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: $main;
 
   @include mobile {
     font-size: 12px;
