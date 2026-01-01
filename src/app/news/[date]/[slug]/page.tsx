@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { groq } from 'next-sanity';
-import { client } from '@/sanity/lib/client';
+import { sanityFetch } from '@/sanity/lib/client';
 import { PortableText } from '@portabletext/react';
 import { portableTextComponents } from '@/components/portable-text/PortableTextComponents';
 import styles from './page.module.scss';
@@ -20,20 +20,32 @@ type Props = {
 export default async function NewsDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const post = await client.fetch(postQuery, { slug });
+  const post = await sanityFetch<any>({
+    query: postQuery,
+    params: { slug },
+    tags: ['posts'],
+    revalidate: 0,
+  });
 
   if (!post) {
     notFound();
   }
 
   // Байланыштуу жаңылыктар
-  let relatedPosts = await client.fetch(relatedPostsQuery, {
-    slug,
-    categorySlug: post.category?.slug?.current || ''
+  let relatedPosts = await sanityFetch<any[]>({
+    query: relatedPostsQuery,
+    params: { slug, categorySlug: post.category?.slug?.current || '' },
+    tags: ['posts'],
+    revalidate: 0,
   });
 
   const relatedIds = relatedPosts.map((p: any) => p._id);
-  const moreNews = await client.fetch(moreNewsQuery, { slug, relatedIds });
+  const moreNews = await sanityFetch<any[]>({
+    query: moreNewsQuery,
+    params: { slug, relatedIds },
+    tags: ['posts'],
+    revalidate: 0,
+  });
 
 // Эгер бош же 2ден аз болсо — башка посттордон ал
   if (!relatedPosts || relatedPosts.length < 2) {
@@ -47,15 +59,20 @@ export default async function NewsDetailPage({ params }: Props) {
       mainImage { asset->, alt }
     }
   `;
-    relatedPosts = await client.fetch(fallbackQuery, { slug });
+    relatedPosts = await sanityFetch<any[]>({
+      query: fallbackQuery,
+      params: { slug },
+      tags: ['posts'],
+      revalidate: 0,
+    });
   }
 
   // Sidebar
   const moreIds = moreNews.map((p: any) => p._id);
   const allExcludeIds = [...relatedIds, ...moreIds];
 
-  const sidebarPosts = await client.fetch(groq`
-    *[_type == "post" && slug.current != $slug && !(_id in $excludeIds)] 
+  const sidebarQuery = groq`
+    *[_type == "post" && slug.current != $slug && !(_id in $excludeIds)]
     | order(publishedAt desc) [0...3] {
       _id,
       title,
@@ -63,7 +80,13 @@ export default async function NewsDetailPage({ params }: Props) {
       publishedAt,
       mainImage { asset->, alt }
     }
-  `, { slug, excludeIds: allExcludeIds });
+  `;
+  const sidebarPosts = await sanityFetch<any[]>({
+    query: sidebarQuery,
+    params: { slug, excludeIds: allExcludeIds },
+    tags: ['posts'],
+    revalidate: 0,
+  });
 
   return (
     <MainContainer>
@@ -109,7 +132,12 @@ export default async function NewsDetailPage({ params }: Props) {
 // Metadata for SEO
 export async function generateMetadata({ params }: Props) {
   const { slug, date } = await params;
-  const post = await client.fetch(postQuery, { slug });
+  const post = await sanityFetch<any>({
+    query: postQuery,
+    params: { slug },
+    tags: ['posts'],
+    revalidate: 0,
+  });
 
   if (!post) {
     return { title: 'Табылган жок' };

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import styles from './page.module.scss';
-import { client } from '@/sanity/lib/client';
+import { sanityFetch } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
 import CategorySkeleton from "@/components/category/CategorySkeleton";
 import ShowMoreButton from "@/components/ui/ShowMoreButton/ShowMoreButton";
@@ -121,7 +121,12 @@ async function getCategoryPosts(categorySlug: string) {
     }
   }`;
 
-  const data = await client.fetch(query, { categorySlug });
+  const data = await sanityFetch<any>({
+    query,
+    params: { categorySlug },
+    tags: ['posts', 'videos', 'categories'],
+    revalidate: 0,
+  });
   return data;
 }
 
@@ -367,10 +372,12 @@ export default async function CategoryPage({ params }: Props) {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
-  const category = await client.fetch(
-    `*[_type == "category" && slug.current == $slug][0] { title, description }`,
-    { slug }
-  );
+  const category = await sanityFetch<any>({
+    query: `*[_type == "category" && slug.current == $slug][0] { title, description }`,
+    params: { slug },
+    tags: ['categories'],
+    revalidate: 0,
+  });
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
   const categoryUrl = `${siteUrl}/category/${slug}`;
