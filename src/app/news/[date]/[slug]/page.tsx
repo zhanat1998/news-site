@@ -9,7 +9,7 @@ import Author from "@/components/newsDetail/Author";
 import RelatedNews from "@/components/news/RelatedNews/RelatedNews";
 import NewsGrid from "@/components/news/NewsGrid/NewsGrid";
 import SideBar from "@/components/newsDetail/SideBar";
-import {moreNewsQuery, postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
+import {postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
 import AdBanner from "@/components/ads/AdBanner";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
@@ -40,9 +40,42 @@ export default async function NewsDetailPage({ params }: Props) {
   });
 
   const relatedIds = relatedPosts.map((p: any) => p._id);
-  const moreNews = await sanityFetch<any[]>({
-    query: moreNewsQuery,
+
+  // ЭҢ ПОПУЛЯРДУУ - акыркы жаңылыктар (0-4)
+  const popularNewsQuery = groq`
+    *[_type == "post" && slug.current != $slug && !(_id in $relatedIds)]
+    | order(publishedAt desc) [0...4] {
+      _id,
+      title,
+      slug,
+      publishedAt,
+      mainImage { asset->, alt }
+    }
+  `;
+  const popularNews = await sanityFetch<any[]>({
+    query: popularNewsQuery,
     params: { slug, relatedIds },
+    tags: ['posts'],
+    revalidate: 0,
+  });
+
+  const popularIds = popularNews.map((p: any) => p._id);
+  const allPreviousIds = [...relatedIds, ...popularIds];
+
+  // ЖАҢЫЛЫКТАРДАН ДАГЫ - кийинки жаңылыктар (4-8)
+  const moreNewsQuery2 = groq`
+    *[_type == "post" && slug.current != $slug && !(_id in $excludeIds)]
+    | order(publishedAt desc) [0...4] {
+      _id,
+      title,
+      slug,
+      publishedAt,
+      mainImage { asset->, alt }
+    }
+  `;
+  const moreNews = await sanityFetch<any[]>({
+    query: moreNewsQuery2,
+    params: { slug, excludeIds: allPreviousIds },
     tags: ['posts'],
     revalidate: 0,
   });
@@ -112,9 +145,9 @@ export default async function NewsDetailPage({ params }: Props) {
             <AdBanner placement="in_article" />
             <RelatedNews items={relatedPosts} />
 
-            <NewsGrid title="ЖАҢЫЛЫКТАРДАН ДАГЫ" items={moreNews} />
+            <NewsGrid title="ЭҢ ПОПУЛЯРДУУ" items={popularNews} />
 
-            <NewsGrid title="ЭҢ ПОПУЛЯРДУУ" items={moreNews} />
+            <NewsGrid title="ЖАҢЫЛЫКТАРДАН ДАГЫ" items={moreNews} />
           </article>
 
           {/* Sidebar */}
