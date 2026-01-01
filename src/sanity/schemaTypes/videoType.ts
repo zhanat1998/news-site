@@ -45,56 +45,23 @@ export const videoType = defineType({
     defineField({
       name: 'youtubeUrl',
       title: 'YouTube шилтемеси',
-      type: 'url',
-      description: 'Толук YouTube шилтемесин киргизиңиз. Мисалы: https://www.youtube.com/watch?v=dc2PNSdRHtY',
+      type: 'string',
+      description: 'YouTube шилтемесин киргизиңиз. Мисалы: https://www.youtube.com/watch?v=dc2PNSdRHtY же https://youtu.be/dc2PNSdRHtY',
       hidden: ({ parent }) => parent?.videoSource !== 'youtube',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const parent = context.parent as { videoSource?: string }
-          if (parent?.videoSource === 'youtube' && !value) {
-            return 'YouTube шилтемесин киргизиңиз'
-          }
-          if (value && !value.includes('youtube.com') && !value.includes('youtu.be')) {
-            return 'Туура YouTube шилтемеси киргизиңиз'
-          }
-          return true
-        }),
     }),
     defineField({
       name: 'instagramUrl',
       title: 'Instagram шилтемеси',
-      type: 'url',
-      description: 'Толук Instagram шилтемесин киргизиңиз. Мисалы: https://www.instagram.com/reel/ABC123/',
+      type: 'string',
+      description: 'Instagram шилтемесин киргизиңиз. Мисалы: https://www.instagram.com/reel/ABC123/',
       hidden: ({ parent }) => parent?.videoSource !== 'instagram',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const parent = context.parent as { videoSource?: string }
-          if (parent?.videoSource === 'instagram' && !value) {
-            return 'Instagram шилтемесин киргизиңиз'
-          }
-          if (value && !value.includes('instagram.com')) {
-            return 'Туура Instagram шилтемеси киргизиңиз'
-          }
-          return true
-        }),
     }),
     defineField({
       name: 'tiktokUrl',
       title: 'TikTok шилтемеси',
-      type: 'url',
-      description: 'Толук TikTok шилтемесин киргизиңиз. Мисалы: https://www.tiktok.com/@user/video/123456',
+      type: 'string',
+      description: 'TikTok шилтемесин киргизиңиз. Мисалы: https://www.tiktok.com/@user/video/123456',
       hidden: ({ parent }) => parent?.videoSource !== 'tiktok',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const parent = context.parent as { videoSource?: string }
-          if (parent?.videoSource === 'tiktok' && !value) {
-            return 'TikTok шилтемесин киргизиңиз'
-          }
-          if (value && !value.includes('tiktok.com')) {
-            return 'Туура TikTok шилтемеси киргизиңиз'
-          }
-          return true
-        }),
     }),
     defineField({
       name: 'thumbnail',
