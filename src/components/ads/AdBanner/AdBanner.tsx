@@ -92,7 +92,7 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
   }
 
   if (ad.adType === 'image' && ad.image) {
-    const imageUrl = urlFor(ad.image).width(size.width).height(size.height).url();
+    const imageUrl = urlFor(ad.image).width(size.width * 2).height(size.height * 2).quality(100).url();
 
     const content = (
       <div className={styles.imageContainer}>

@@ -90,7 +90,7 @@ export default function InteractiveHeroBanner({ items }: Posts) {
           <div className={styles.mainImage}>
             {mainPost.mainImage?.asset?.url && (
               <Image
-                src={urlFor(mainPost.mainImage).width(864).height(486).url()}
+                src={urlFor(mainPost.mainImage).width(2000).height(1200).quality(100).url()}
                 alt={mainPost.mainImage.alt || mainPost.title}
                 fill
                 priority
@@ -128,7 +128,7 @@ export default function InteractiveHeroBanner({ items }: Posts) {
           >
             {post.mainImage?.asset?.url && (
               <Image
-                src={urlFor(post.mainImage).width(150).height(100).url()}
+                src={urlFor(post.mainImage).width(450).height(300).quality(100).url()}
                 alt={post.mainImage.alt || post.title}
                 fill
               />

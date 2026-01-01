@@ -69,7 +69,7 @@ export default function CategoryColumns({ categories }: Props) {
                 {category.mainNews.mainImage?.asset?.url && (
                   <div className={styles.mainImage}>
                     <Image
-                      src={urlFor(category.mainNews.mainImage).width(400).height(250).url()}
+                      src={urlFor(category.mainNews.mainImage).width(800).height(500).quality(100).url()}
                       alt={category.mainNews.mainImage.alt || category.mainNews.title}
                       fill
                     />
