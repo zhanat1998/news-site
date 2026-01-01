@@ -11,7 +11,13 @@ interface ShareSectionProps {
 
 const ShareSection = ({ title, url, image }: ShareSectionProps) => {
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Check if native share is supported (runs only on client)
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== 'undefined' && !!navigator.share);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -77,11 +83,8 @@ const ShareSection = ({ title, url, image }: ShareSectionProps) => {
     }
   };
 
-  // Check if native share is supported (mobile)
-  const isMobile = typeof window !== 'undefined' && 'share' in navigator;
-
   const handleShareClick = () => {
-    if (isMobile) {
+    if (canNativeShare) {
       handleNativeShare();
     } else {
       setShowShareMenu(!showShareMenu);
