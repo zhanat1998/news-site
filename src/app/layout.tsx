@@ -3,6 +3,7 @@ import Header from '../components/layout/Header/Header';
 import Footer from '../components/layout/Footer/Footer';
 import MainNavigation from "@/components/layout/MainNavigation/MainNavigation";
 import ScrollToTop from "@/components/layout/ScrollToTop";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Script from 'next/script';
@@ -107,20 +108,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       )}
     </head>
     <body>
-    <ScrollToTop />
-    <Header />
-    <MainNavigation/>
-    <div className="mobile-decoration">
-      <Image
-        src="/new-year.png"
-        alt="Жаңы жыл"
-        width={1200}
-        height={200}
-        style={{ width: '100%', height: '70px' }}
-      />
-    </div>
-    <main>{children}</main>
-    <Footer />
+    <LanguageProvider>
+      <ScrollToTop />
+      <Header />
+      <MainNavigation/>
+      <div className="mobile-decoration">
+        <Image
+          src="/new-year.png"
+          alt="Жаңы жыл"
+          width={1200}
+          height={200}
+          style={{ width: '100%', height: '70px' }}
+        />
+      </div>
+      <main>{children}</main>
+      <Footer />
+    </LanguageProvider>
     </body>
     </html>
   );
