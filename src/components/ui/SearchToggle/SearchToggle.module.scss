@@ -46,11 +46,12 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  color: $white;
 
   svg {
     width: 18px;
     height: 18px;
-    fill: $white;
+    stroke: $white;
   }
 
   @include mobile {
