@@ -38,12 +38,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <MainContainer>
       <div className="container" style={{ padding: '40px 20px', minHeight: '60vh' }}>
-        <h1 style={{ marginBottom: '10px' }}>
+        <h1 style={{ marginBottom: '10px', color: '#0033a0' }}>
           Издөө: &quot;{decodeURIComponent(query)}&quot;
         </h1>
 
         {query && totalResults > 0 && (
-          <p style={{ color: '#666', marginBottom: '30px' }}>
+          <p style={{ color: '#0033a0', marginBottom: '30px' }}>
             {totalResults} натыйжа табылды
           </p>
         )}
