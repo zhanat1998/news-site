@@ -151,13 +151,13 @@
 .optionLabel {
   font-size: 14px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: $main;
   min-width: 28px;
 }
 
 .optionName {
   font-size: 14px;
-  color: #666;
+  color: $main;
   flex: 1;
 }
 
