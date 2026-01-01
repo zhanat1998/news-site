@@ -64,12 +64,15 @@ export default function SubscribeButton() {
     return null;
   }
 
+  // Временно отключено
+  const isDisabled = true;
+
   return (
     <button
       onClick={handleSubscribe}
-      disabled={isLoading}
-      className={`${styles.subscribeButton} ${isSubscribed ? styles.subscribed : ''}`}
-      title={isSubscribed ? 'Подписканы өчүрүү' : 'Жаңылыктарга подписка болуу'}
+      disabled={isDisabled || isLoading}
+      className={`${styles.subscribeButton} ${isSubscribed ? styles.subscribed : ''} ${isDisabled ? styles.disabled : ''}`}
+      title={isDisabled ? 'Убактылуу иштебейт' : isSubscribed ? 'Подписканы өчүрүү' : 'Жаңылыктарга подписка болуу'}
     >
       <span className={styles.icon}>
         {isLoading ? (

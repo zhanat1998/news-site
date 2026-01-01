@@ -12,7 +12,7 @@ interface RightImageCardProps {
 }
 
 const RightImageCard = (props: RightImageCardProps) => {
-  const { item, height = 120, width = 180 } = props;
+  const { item, height, width } = props;
 
   return (
     <Link
@@ -24,7 +24,7 @@ const RightImageCard = (props: RightImageCardProps) => {
       </div>
       <div className={styles.image} style={{ height, width }}>
         <Image
-          src={getImage(item.mainImage, width, height)}
+          src={getImage(item.mainImage, 800, 500)}
           alt={item.title}
           fill
         />
