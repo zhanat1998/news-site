@@ -27,24 +27,33 @@
 .progressBarSegment {
   flex: 1;
   height: 3px;
-  background: rgb(186, 204, 135);
-  border-radius: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
 }
 
 .progressBarFill {
   height: 100%;
+  width: 0;
   background: #fff;
-  transition: width 0.05s linear;
 
   &.completed {
-    background: rgb(6, 32, 133);
+    background: #fa9000;
     width: 100% !important;
   }
 
   &.active {
-    background: #fff;
+    animation: progressAnimation 4s linear forwards;
+  }
+}
+
+@keyframes progressAnimation {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }
 .mobileImage {

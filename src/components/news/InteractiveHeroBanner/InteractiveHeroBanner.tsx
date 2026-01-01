@@ -87,10 +87,24 @@ export default function InteractiveHeroBanner({ items }: Posts) {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
+          {/* Progress Bar */}
+          <div className={styles.progressBar}>
+            {thumbnailPosts.map((_, index) => (
+              <div key={index} className={styles.progressSegment}>
+                <div
+                  key={index === activeIndex ? `active-${activeIndex}` : `inactive-${index}`}
+                  className={`${styles.progressFill} ${
+                    index === activeIndex ? styles.active : ''
+                  } ${index < activeIndex ? styles.completed : ''}`}
+                />
+              </div>
+            ))}
+          </div>
+
           <div className={styles.mainImage}>
             {mainPost.mainImage?.asset?.url && (
               <Image
-                src={urlFor(mainPost.mainImage).width(1400).height(800).quality(85).auto('format').url()}
+                src={urlFor(mainPost.mainImage).width(1600).height(900).quality(90).auto('format').url()}
                 alt={mainPost.mainImage.alt || mainPost.title}
                 fill
                 priority
@@ -98,32 +112,14 @@ export default function InteractiveHeroBanner({ items }: Posts) {
             )}
           </div>
 
-          <div className={styles.content}>
-            {mainPost.categories && mainPost.categories[0] && (
-              <div className={styles.categoryBadge}>
-                {mainPost.categories[0].title}
-              </div>
-            )}
-
-            <Link
-              href={`/news/${formatDateForUrl(mainPost.publishedAt)}/${mainPost.slug.current}`}
-              className={styles.titleLink}
-            >
-              <h1 className={styles.title}>
-                 <span className={styles.titleWord}>
-                    {mainPost.title}
-                  </span>
-              </h1>
-            </Link>
-          </div>
         </div>
       </div>
+
       <div className={styles.thumbnails} ref={thumbnailsRef}>
         {thumbnailPosts.map((post, index) => (
           <button
             key={post._id}
             className={`${styles.thumbnail} ${activeIndex === index ? styles.active : ''}`}
-            onMouseEnter={() => handleIndexChange(index)}
             onClick={() => handleIndexChange(index)}
           >
             {post.mainImage?.asset?.url && (
@@ -135,6 +131,21 @@ export default function InteractiveHeroBanner({ items }: Posts) {
             )}
           </button>
         ))}
+      </div>
+
+      <div className={styles.content}>
+        {mainPost.categories && mainPost.categories[0] && (
+          <div className={styles.categoryBadge}>
+            {mainPost.categories[0].title}
+          </div>
+        )}
+
+        <Link
+          href={`/news/${formatDateForUrl(mainPost.publishedAt)}/${mainPost.slug.current}`}
+          className={styles.titleLink}
+        >
+          <h1 className={styles.title}>{mainPost.title}</h1>
+        </Link>
       </div>
       <InteractiveHeroBannerMobile
         activeIndex={activeIndex}

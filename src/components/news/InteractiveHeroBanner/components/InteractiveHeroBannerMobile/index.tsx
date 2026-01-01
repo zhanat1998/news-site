@@ -27,6 +27,7 @@ const InteractiveHeroBannerMobile = (
         {thumbnailPosts.map((_, index) => (
           <div key={index} className={styles.progressBarSegment}>
             <div
+              key={index === activeIndex ? `active-${activeIndex}` : `inactive-${index}`}
               className={`${styles.progressBarFill} ${
                 index === activeIndex ? styles.active : ''
               } ${index < activeIndex ? styles.completed : ''}`}
