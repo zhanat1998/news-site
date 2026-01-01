@@ -11,8 +11,8 @@ $gray-light: #c9d1d9;
 $main: #0033a0;
 $yellow: #fa9000;
 
-// Fonts
-$font-primary: 'Inter', -apple-system, sans-serif;
+// Fonts - BBC style (Noto Sans - similar to BBC Reith)
+$font-primary: var(--font-noto-sans), 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
 // Breakpoints
 $mobile: 768px;

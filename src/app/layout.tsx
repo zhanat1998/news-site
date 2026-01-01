@@ -5,6 +5,14 @@ import MainNavigation from "@/components/layout/MainNavigation/MainNavigation";
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Script from 'next/script';
+import { Noto_Sans } from 'next/font/google';
+
+const notoSans = Noto_Sans({
+  subsets: ['cyrillic', 'latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-noto-sans',
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
 
@@ -71,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const oneSignalAppId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
 
   return (
-    <html lang="ky">
+    <html lang="ky" className={notoSans.variable}>
     <head>
       {oneSignalAppId && (
         <Script
