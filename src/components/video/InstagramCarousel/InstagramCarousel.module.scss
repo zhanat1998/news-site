@@ -225,7 +225,7 @@
   max-height: 90vh;
   background: #fff;
   border-radius: 12px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .closeBtn {
@@ -252,10 +252,27 @@
 
 .iframe {
   width: 100%;
-  min-height: 600px;
+  height: 80vh;
+  max-height: 800px;
   border: none;
 
   @include mobile {
-    min-height: 500px;
+    height: 70vh;
+    max-height: 600px;
+  }
+}
+
+.viewOnInsta {
+  display: block;
+  padding: 16px;
+  text-align: center;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
   }
 }

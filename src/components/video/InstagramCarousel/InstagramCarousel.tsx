@@ -26,7 +26,7 @@ function getInstagramEmbedUrl(url: string): string {
   if (!url) return '';
   // URL'ден trailing slash жана query параметрлерин алып салуу
   const cleanUrl = url.split('?')[0].replace(/\/$/, '');
-  return `${cleanUrl}/embed`;
+  return `${cleanUrl}/embed/captioned/`;
 }
 
 export default function InstagramCarousel({ title, videos }: InstagramCarouselProps) {
@@ -162,6 +162,14 @@ export default function InstagramCarousel({ title, videos }: InstagramCarouselPr
               style={{ border: 'none' }}
               allowFullScreen
             />
+            <a
+              href={activeVideo.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.viewOnInsta}
+            >
+              Instagramда толук көрүү →
+            </a>
           </div>
         </div>
       )}
