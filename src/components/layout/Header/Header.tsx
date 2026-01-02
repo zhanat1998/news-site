@@ -9,7 +9,6 @@ import Image from "next/image";
 import LanguageSwitcher from "@/components/layout/Header/components/LanguageSwitcher/LanguageSwitcher";
 import {usePathname} from "next/navigation";
 import SocialIcons from "@/components/ui/SocialIcons/SocialIcons";
-import TranslatedText from "@/components/ui/TranslatedText";
 
 export default function Header() {
   const pathname = usePathname();
@@ -52,7 +51,7 @@ export default function Header() {
             <div className={styles.sloganRow}>
               <p className={styles.slogan}>
                 <span className={styles.sloganIcon}>✦</span>
-                <TranslatedText text="Канаттын кагылышы, мезгилдин чагылышы." />
+                Канаттын кагылышы, мезгилдин чагылышы.
                 <span className={styles.sloganIcon}>✦</span>
               </p>
             </div>
@@ -68,7 +67,7 @@ export default function Header() {
           {isHomePage && (
             <div className={styles.sloganRowMobile}>
               <p className={styles.slogan}>
-                <TranslatedText text="Канаттын кагылышы, мезгилдин чагылышы." />
+                Канаттын кагылышы, мезгилдин чагылышы.
               </p>
             </div>
           )}

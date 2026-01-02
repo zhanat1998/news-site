@@ -111,7 +111,7 @@ export enum SectionTitles {
 
 export const socialLinks = [
   { icon: 'instagram', href: 'https://www.instagram.com/sokol.media_/' },
-  { icon: 'facebook', href: 'https://www.facebook.com/groups/309724122880487' },
+  { icon: 'facebook', href: 'https://www.facebook.com/profile.php?id=100064880293819' },
   { icon: 'telegram', href: 'https://t.me' },
   { icon: 'youtube', href: 'https://www.youtube.com/results?search_query=sokol+media' },
 ];

@@ -9,9 +9,9 @@ interface InteractiveHeroBannerMobileProps {
   thumbnailPosts: Post[];
   mainPost: Post;
   activeIndex: number;
-  handleTouchStart: (e: React.TouchEvent<HTMLDivElement>) => void;
-  handleTouchMove: (e: React.TouchEvent<HTMLDivElement>) => void;
-  handleTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => void;
+  handleTouchStart: (e: React.TouchEvent) => void;
+  handleTouchMove: (e: React.TouchEvent) => void;
+  handleTouchEnd: (e: React.TouchEvent) => void;
 }
 const InteractiveHeroBannerMobile = (
   { thumbnailPosts,
@@ -36,7 +36,8 @@ const InteractiveHeroBannerMobile = (
         ))}
       </div>
 
-      <div
+      <Link
+        href={`/news/${formatDateForUrl(mainPost.publishedAt)}/${mainPost.slug.current}`}
         className={styles.mobileImage}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -50,7 +51,7 @@ const InteractiveHeroBannerMobile = (
             priority
           />
         )}
-      </div>
+      </Link>
 
       <div className={styles.mobileContent}>
         {mainPost.categories && mainPost.categories[0] && (

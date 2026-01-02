@@ -2,6 +2,7 @@ import styles from './Footer.module.scss';
 import {name_of_site} from "@/constants";
 import NavLinksList from "@/components/ui/NavLinksList";
 import SocialIcons from "@/components/ui/SocialIcons/SocialIcons";
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -19,8 +20,9 @@ export default function Footer() {
           </div>
 
           <div className={styles.links}>
-            <h4>Байланыш</h4>
-            <a href="mailto:info@newskg.com">info@newskg.com</a>
+            <h4>Маалымат</h4>
+            <Link href="/about">Биз жөнүндө</Link>
+            <a href="mailto:info@sokol.media">info@sokol.media</a>
           </div>
 
           <div className={styles.social}>
@@ -30,7 +32,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p>© 2024 NewsKG. Бардык укуктар корголгон.</p>
+          <p>© 2024 Сокол.Медиа. Бардык укуктар корголгон.</p>
         </div>
       </footer>
     </div>

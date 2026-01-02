@@ -101,7 +101,10 @@ export default function InteractiveHeroBanner({ items }: Posts) {
             ))}
           </div>
 
-          <div className={styles.mainImage}>
+          <Link
+            href={`/news/${formatDateForUrl(mainPost.publishedAt)}/${mainPost.slug.current}`}
+            className={styles.mainImage}
+          >
             {mainPost.mainImage?.asset?.url && (
               <Image
                 src={urlFor(mainPost.mainImage).width(1600).height(900).quality(90).auto('format').url()}
@@ -110,7 +113,7 @@ export default function InteractiveHeroBanner({ items }: Posts) {
                 priority
               />
             )}
-          </div>
+          </Link>
 
         </div>
       </div>
