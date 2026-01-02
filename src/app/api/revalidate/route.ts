@@ -10,6 +10,22 @@ interface SanityWebhookBody {
   category?: { slug: { current: string } };
 }
 
+// Бардык кэшти тазалоо функциясы
+function revalidateAll() {
+  // Бардык тегдерди revalidate
+  revalidateTag('posts');
+  revalidateTag('breaking');
+  revalidateTag('categories');
+  revalidateTag('authors');
+  revalidateTag('videos');
+
+  // Бардык негизги жолдорду revalidate
+  revalidatePath('/', 'layout');
+  revalidatePath('/news', 'layout');
+  revalidatePath('/category', 'layout');
+  revalidatePath('/video', 'layout');
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Secret текшерүү
@@ -27,45 +43,42 @@ export async function POST(request: NextRequest) {
     console.log('Webhook received:', body);
 
     if (!body?._type) {
-      return NextResponse.json(
-        { message: 'Bad request - no _type' },
-        { status: 400 }
-      );
+      // Эгер _type жок болсо - баарын revalidate кыл (delete учурунда)
+      revalidateAll();
+      return NextResponse.json({
+        revalidated: true,
+        type: 'all',
+        now: Date.now(),
+      });
     }
 
     // Тип боюнча revalidation
     switch (body._type) {
       case 'post':
-        revalidateTag('posts');
-        revalidateTag('breaking');  // ← КОШ
-        revalidatePath('/');
-
-        if (body.category?.slug?.current) {
-          revalidatePath(`/category/${body.category.slug.current}`);
-        }
-
-        if (body.slug?.current) {
-          revalidatePath(`/news`, 'layout');
-        }
-
-        console.log('Revalidated: posts, breaking, /, news');
+      case 'video':
+        // Бардыгын revalidate кыл - delete/create/update баары үчүн
+        revalidateAll();
+        console.log('Revalidated: ALL (post/video change)');
         break;
 
       case 'category':
         revalidateTag('categories');
-        revalidatePath('/');
-        console.log('Revalidated: categories, /');
+        revalidatePath('/', 'layout');
+        revalidatePath('/category', 'layout');
+        console.log('Revalidated: categories');
         break;
 
       case 'author':
         revalidateTag('authors');
-        console.log('Revalidated: authors');
+        revalidateTag('posts');
+        revalidatePath('/', 'layout');
+        console.log('Revalidated: authors, posts');
         break;
 
       default:
-        // Башка типтер үчүн жалпы revalidation
-        revalidatePath('/');
-        console.log('Revalidated: /');
+        // Башка типтер үчүн баарын revalidate
+        revalidateAll();
+        console.log('Revalidated: ALL (unknown type)');
     }
 
     return NextResponse.json({
@@ -76,6 +89,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Revalidation error:', error);
+    // Ката болсо да баарын revalidate кылып кой
+    try {
+      revalidateAll();
+    } catch (e) {}
     return NextResponse.json(
       { message: error.message },
       { status: 500 }
@@ -83,10 +100,22 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET method — webhook тестирлөө үчүн
-export async function GET() {
+// GET method — кол менен revalidate кылуу үчүн
+// Колдонуу: /api/revalidate?secret=sokol-media-webhook-secret-2024
+export async function GET(request: NextRequest) {
+  const secret = request.nextUrl.searchParams.get('secret');
+
+  if (secret === process.env.SANITY_WEBHOOK_SECRET) {
+    revalidateAll();
+    return NextResponse.json({
+      revalidated: true,
+      message: 'All caches cleared',
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   return NextResponse.json({
-    message: 'Revalidation endpoint is working',
+    message: 'Revalidation endpoint is working. Add ?secret=YOUR_SECRET to force revalidate.',
     timestamp: new Date().toISOString(),
   });
 }
