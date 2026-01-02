@@ -9,7 +9,6 @@ import Image from "next/image";
 import LanguageSwitcher from "@/components/layout/Header/components/LanguageSwitcher/LanguageSwitcher";
 import {usePathname} from "next/navigation";
 import SocialIcons from "@/components/ui/SocialIcons/SocialIcons";
-import SubscribeButton from "@/components/ui/SubscribeButton/SubscribeButton";
 import TranslatedText from "@/components/ui/TranslatedText";
 
 export default function Header() {
@@ -40,7 +39,6 @@ export default function Header() {
 
             <div className={styles.centerSection}>
               <SocialIcons/>
-              <SubscribeButton />
               <LanguageSwitcher />
             </div>
 
