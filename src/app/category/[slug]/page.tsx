@@ -298,7 +298,7 @@ async function CategoryContent({ slug }: { slug: string }) {
               _id: video._id,
               title: video.title,
               slug: video.slug,
-              image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
+              image: video.thumbnail?.asset?.url || '/og-image.png',
               excerpt: video.description,
               category: video.category,
               duration: video.duration,
@@ -396,7 +396,7 @@ export async function generateMetadata({ params }: Props) {
       siteName: 'Сокол.Медиа',
       images: [
         {
-          url: '/og-image.jpg',
+          url: '/og-image.png',
           width: 1200,
           height: 630,
           alt: `${categoryTitle} - Сокол.Медиа`,
@@ -407,7 +407,7 @@ export async function generateMetadata({ params }: Props) {
       card: 'summary_large_image',
       title: `${categoryTitle} жаңылыктары - Сокол.Медиа`,
       description: `${categoryTitle} боюнча акыркы жаңылыктар`,
-      images: ['/og-image.jpg'],
+      images: ['/og-image.png'],
     },
     alternates: {
       canonical: categoryUrl,

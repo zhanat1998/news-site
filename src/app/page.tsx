@@ -47,7 +47,7 @@ export default async function Home() {
     _id: video._id,
     title: video.title,
     slug: video.slug,
-    image: video.thumbnail?.asset?.url || '/placeholder-video.jpg',
+    image: video.thumbnail?.asset?.url || '/og-image.png',
     excerpt: video.description,
     category: video.category?.title,
     duration: video.duration,

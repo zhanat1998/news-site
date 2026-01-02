@@ -184,7 +184,7 @@ export async function generateMetadata({ params }: Props) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
   const postUrl = `${siteUrl}/news/${date}/${slug}`;
-  const imageUrl = post.mainImage?.asset?.url || `${siteUrl}/og-image.jpg`;
+  const imageUrl = post.mainImage?.asset?.url || `${siteUrl}/og-image.png`;
 
   return {
     title: post.title,

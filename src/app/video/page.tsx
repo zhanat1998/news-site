@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: 'Сокол.Медиа',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Видео - Сокол.Медиа',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Видео жаңылыктар - Сокол.Медиа',
     description: 'Кыргызстандагы акыркы видео жаңылыктар',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: `${siteUrl}/video`,

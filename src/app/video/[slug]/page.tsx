@@ -143,7 +143,7 @@ export async function generateMetadata({ params }: Props) {
   const videoUrl = `${siteUrl}/video/${slug}`;
 
   // YouTube thumbnail
-  let thumbnailUrl = `${siteUrl}/og-image.jpg`;
+  let thumbnailUrl = `${siteUrl}/og-image.png`;
   if (video.youtubeUrl) {
     const youtubeId = extractYouTubeId(video.youtubeUrl);
     if (youtubeId) {

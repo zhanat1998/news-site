@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p>© 2024 Сокол.Медиа. Бардык укуктар корголгон.</p>
+          <p>© 2025 Сокол.Медиа. Бардык укуктар корголгон.</p>
         </div>
       </footer>
     </div>
