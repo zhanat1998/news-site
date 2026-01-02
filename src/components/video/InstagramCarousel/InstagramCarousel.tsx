@@ -139,10 +139,10 @@ export default function InstagramCarousel({ title, videos }: InstagramCarouselPr
                 <div className={styles.instaBadge}>
                   <InstagramIcon />
                 </div>
-              </div>
-
-              <div className={styles.info}>
-                <h3 className={styles.videoTitle}>{video.title}</h3>
+                {/* Title overlay */}
+                <div className={styles.titleOverlay}>
+                  <h3 className={styles.videoTitle}>{video.title}</h3>
+                </div>
               </div>
             </div>
           ))}

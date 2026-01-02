@@ -18,12 +18,18 @@ function revalidateAll() {
   revalidateTag('categories');
   revalidateTag('authors');
   revalidateTag('videos');
+  revalidateTag('instagram');
+  revalidateTag('tiktok');
+  revalidateTag('hero');
 
-  // Бардык негизги жолдорду revalidate
+  // Бардык негизги жолдорду revalidate (page типи менен)
+  revalidatePath('/', 'page');
+  revalidatePath('/news', 'page');
+  revalidatePath('/category', 'page');
+  revalidatePath('/video', 'page');
+
+  // Layout да revalidate
   revalidatePath('/', 'layout');
-  revalidatePath('/news', 'layout');
-  revalidatePath('/category', 'layout');
-  revalidatePath('/video', 'layout');
 }
 
 export async function POST(request: NextRequest) {
