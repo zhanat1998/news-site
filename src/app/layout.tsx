@@ -6,7 +6,6 @@ import ScrollToTop from "@/components/layout/ScrollToTop";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Script from 'next/script';
 import { Noto_Sans } from 'next/font/google';
 
 const notoSans = Noto_Sans({
@@ -78,35 +77,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const oneSignalAppId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
-
   return (
     <html lang="ky" className={notoSans.variable}>
-    <head>
-      {oneSignalAppId && (
-        <Script
-          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-          defer
-          strategy="afterInteractive"
-        />
-      )}
-      {oneSignalAppId && (
-        <Script id="onesignal-init" strategy="afterInteractive">
-          {`
-            window.OneSignalDeferred = window.OneSignalDeferred || [];
-            OneSignalDeferred.push(async function(OneSignal) {
-              await OneSignal.init({
-                appId: "${oneSignalAppId}",
-                safari_web_id: "${process.env.NEXT_PUBLIC_ONESIGNAL_SAFARI_WEB_ID || ''}",
-                notifyButton: {
-                  enable: false,
-                },
-              });
-            });
-          `}
-        </Script>
-      )}
-    </head>
     <body>
     <LanguageProvider>
       <ScrollToTop />
