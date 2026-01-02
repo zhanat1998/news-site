@@ -42,11 +42,6 @@ export default function Header() {
               <SocialIcons/>
               <SubscribeButton />
               <LanguageSwitcher />
-              {process.env.NEXT_PUBLIC_SHOW_ADMIN === 'true' && (
-                <Link href="/studio" className={styles.adminButton}>
-                  Админ
-                </Link>
-              )}
             </div>
 
             <div className={styles.searchDesktop}>

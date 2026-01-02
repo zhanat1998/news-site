@@ -186,26 +186,3 @@
   }
 }
 
-.adminButton {
-  display: flex;
-  align-items: center;
-  padding: 8px 14px;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
