@@ -11,7 +11,12 @@ const RightSmallImageCard = ({ item }: ItemProps) => {
           className={styles.item}>
       <p className={styles.title}>{item.title}</p>
       <div className={styles.image}>
-        <Image src={getImage(item?.mainImage, 150, 100)} alt={item.title} fill />
+        <Image
+          src={getImage(item?.mainImage, 120, 80, 70)}
+          alt={item.title}
+          fill
+          sizes="80px"
+        />
       </div>
     </Link>
   )

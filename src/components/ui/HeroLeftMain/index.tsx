@@ -18,9 +18,10 @@ const HeroLeftMain = ({ item, height, has_excerpt }: HeroLeftMainProps) => {
           className={styles.heroMainCard}>
       <div className={styles.heroMainImage} style={imageStyle}>
         <Image
-          src={getImage(item?.mainImage, 800, 500)}
+          src={getImage(item?.mainImage, 600, 375, 75)}
           alt={item.title}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className={styles.heroMainAccent}></div>

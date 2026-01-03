@@ -25,3 +25,55 @@ export const urlForHQ = (
     .auto('format')  // WebP/AVIF автоматтык тандоо
     .url()
 }
+
+// Мобилка үчүн оптималдаштырылган сүрөт (2x жок, quality төмөн)
+export const urlForMobile = (
+  source: SanityImageSource,
+  width: number,
+  height: number,
+  quality: number = 70
+) => {
+  return builder
+    .image(source)
+    .width(width)
+    .height(height)
+    .quality(quality)
+    .auto('format')
+    .url()
+}
+
+// Responsive сүрөт - srcSet үчүн бир нече өлчөм
+export const getResponsiveImageUrls = (
+  source: SanityImageSource,
+  baseWidth: number,
+  baseHeight: number
+) => {
+  const aspectRatio = baseHeight / baseWidth;
+
+  return {
+    // Мобилка үчүн (640px)
+    small: builder
+      .image(source)
+      .width(640)
+      .height(Math.round(640 * aspectRatio))
+      .quality(70)
+      .auto('format')
+      .url(),
+    // Планшет үчүн (1024px)
+    medium: builder
+      .image(source)
+      .width(1024)
+      .height(Math.round(1024 * aspectRatio))
+      .quality(80)
+      .auto('format')
+      .url(),
+    // Десктоп үчүн (1600px)
+    large: builder
+      .image(source)
+      .width(1600)
+      .height(Math.round(1600 * aspectRatio))
+      .quality(85)
+      .auto('format')
+      .url(),
+  }
+}

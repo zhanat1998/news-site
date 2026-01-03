@@ -107,10 +107,11 @@ export default function InteractiveHeroBanner({ items }: Posts) {
           >
             {mainPost.mainImage?.asset?.url && (
               <Image
-                src={urlFor(mainPost.mainImage).width(1600).height(900).quality(90).auto('format').url()}
+                src={urlFor(mainPost.mainImage).width(1200).height(675).quality(80).auto('format').url()}
                 alt={mainPost.mainImage.alt || mainPost.title}
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 60vw"
               />
             )}
           </Link>
@@ -127,9 +128,10 @@ export default function InteractiveHeroBanner({ items }: Posts) {
           >
             {post.mainImage?.asset?.url && (
               <Image
-                src={urlFor(post.mainImage).width(300).height(200).quality(80).auto('format').url()}
+                src={urlFor(post.mainImage).width(200).height(130).quality(70).auto('format').url()}
                 alt={post.mainImage.alt || post.title}
                 fill
+                sizes="100px"
               />
             )}
           </button>

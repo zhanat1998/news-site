@@ -45,10 +45,11 @@ const InteractiveHeroBannerMobile = (
       >
         {mainPost.mainImage?.asset?.url && (
           <Image
-            src={urlFor(mainPost.mainImage).width(800).height(400).quality(85).auto('format').url()}
+            src={urlFor(mainPost.mainImage).width(640).height(360).quality(70).auto('format').url()}
             alt={mainPost.mainImage.alt || mainPost.title}
             fill
             priority
+            sizes="100vw"
           />
         )}
       </Link>

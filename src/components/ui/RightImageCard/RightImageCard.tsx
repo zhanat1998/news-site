@@ -24,9 +24,10 @@ const RightImageCard = (props: RightImageCardProps) => {
       </div>
       <div className={styles.image} style={{ height, width }}>
         <Image
-          src={getImage(item.mainImage, 800, 500)}
+          src={getImage(item.mainImage, 400, 250, 75)}
           alt={item.title}
           fill
+          sizes="(max-width: 768px) 100vw, 200px"
         />
       </div>
     </Link>

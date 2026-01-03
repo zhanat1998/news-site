@@ -179,10 +179,11 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.hero.mainImage?.asset?.url && (
                   <div className={styles.heroImage}>
                     <Image
-                      src={urlFor(news.hero.mainImage).width(1400).height(1000).quality(85).auto('format').url()}
+                      src={urlFor(news.hero.mainImage).width(1000).height(700).quality(75).auto('format').url()}
                       alt={news.hero.mainImage.alt || news.hero.title}
                       fill
                       priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                 )}
@@ -204,9 +205,10 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.centerTop.mainImage?.asset?.url && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.centerTop.mainImage).width(800).height(500).quality(85).auto('format').url()}
+                      src={urlFor(news.centerTop.mainImage).width(600).height(375).quality(75).auto('format').url()}
                       alt={news.centerTop.mainImage.alt || news.centerTop.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     />
                   </div>
                 )}
@@ -230,9 +232,10 @@ async function CategoryContent({ slug }: { slug: string }) {
                     {item.mainImage?.asset?.url && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(300).height(200).quality(85).auto('format').url()}
+                          src={urlFor(item.mainImage).width(200).height(133).quality(70).auto('format').url()}
                           alt={item.mainImage.alt || item.title}
                           fill
+                          sizes="(max-width: 768px) 80px, 100px"
                         />
                       </div>
                     )}
@@ -252,9 +255,10 @@ async function CategoryContent({ slug }: { slug: string }) {
                 {news.rightTop.mainImage?.asset?.url && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.rightTop.mainImage).width(800).height(500).quality(85).auto('format').url()}
+                      src={urlFor(news.rightTop.mainImage).width(600).height(375).quality(75).auto('format').url()}
                       alt={news.rightTop.mainImage.alt || news.rightTop.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     />
                   </div>
                 )}
@@ -278,9 +282,10 @@ async function CategoryContent({ slug }: { slug: string }) {
                     {item.mainImage?.asset?.url && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(300).height(200).quality(85).auto('format').url()}
+                          src={urlFor(item.mainImage).width(200).height(133).quality(70).auto('format').url()}
                           alt={item.mainImage.alt || item.title}
                           fill
+                          sizes="(max-width: 768px) 80px, 100px"
                         />
                       </div>
                     )}
@@ -332,9 +337,10 @@ async function CategoryContent({ slug }: { slug: string }) {
                   {item.mainImage?.asset?.url && (
                     <div className={styles.moreImage}>
                       <Image
-                        src={urlFor(item.mainImage).width(800).height(560).quality(85).auto('format').url()}
+                        src={urlFor(item.mainImage).width(500).height(350).quality(75).auto('format').url()}
                         alt={item.mainImage.alt || item.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
                   )}

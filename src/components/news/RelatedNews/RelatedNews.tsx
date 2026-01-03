@@ -21,7 +21,12 @@ export default function RelatedNews({ items }: Posts) {
               <time className={styles.date}>{formatDateForUrl(item?.publishedAt)}</time>
             </div>
             <div className={styles.imageWrapper}>
-              <Image src={getImage(item?.mainImage, 400, 250)} alt={item.title} fill />
+              <Image
+                src={getImage(item?.mainImage, 300, 188, 75)}
+                alt={item.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 200px"
+              />
             </div>
           </DetailRoute>
         ))}

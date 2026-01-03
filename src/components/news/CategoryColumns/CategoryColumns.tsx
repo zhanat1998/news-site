@@ -69,9 +69,10 @@ export default function CategoryColumns({ categories }: Props) {
                 {category.mainNews.mainImage?.asset?.url && (
                   <div className={styles.mainImage}>
                     <Image
-                      src={urlFor(category.mainNews.mainImage).width(800).height(500).quality(85).auto('format').url()}
+                      src={urlFor(category.mainNews.mainImage).width(500).height(313).quality(75).auto('format').url()}
                       alt={category.mainNews.mainImage.alt || category.mainNews.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     />
                   </div>
                 )}

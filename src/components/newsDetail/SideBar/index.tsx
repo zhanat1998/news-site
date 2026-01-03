@@ -9,7 +9,12 @@ const SideBar = ({ items }: Posts) => {
     {items?.map((item: any) => (
       <DetailRoute className={styles.sidebarCard} item={item} key={item._id}>
         <div className={styles.sidebarImage}>
-          <Image src={getImage(item?.mainImage, 300, 180)} alt={item.title} fill />
+          <Image
+            src={getImage(item?.mainImage, 250, 150, 70)}
+            alt={item.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 250px"
+          />
           <div className={styles.sidebarLogo}>С</div>
         </div>
         <p className={styles.sidebarTitle}>{item.title}</p>

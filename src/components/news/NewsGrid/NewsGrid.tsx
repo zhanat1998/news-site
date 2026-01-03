@@ -17,7 +17,12 @@ export default function NewsGrid({ title, items }: ToDetailRouteProps) {
           <DetailRoute className={styles.card} item={item} key={item.slug?.current}>
             <h3 className={styles.title}>{item.title}</h3>
             <div className={styles.imageWrapper}>
-              <Image src={getImage(item?.mainImage, 400, 250)} alt={item.title} fill />
+              <Image
+                src={getImage(item?.mainImage, 300, 188, 75)}
+                alt={item.title}
+                fill
+                sizes="(max-width: 768px) 50vw, 200px"
+              />
             </div>
           </DetailRoute>
         ))}
