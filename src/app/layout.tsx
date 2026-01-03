@@ -144,9 +144,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Image
           src="/new-year.png"
           alt="Жаңы жыл"
-          width={1200}
-          height={200}
-          style={{ width: '100%', height: '70px' }}
+          width={2400}
+          height={140}
+          priority
+          style={{ width: '100%', height: 'auto' }}
         />
       </div>
       <main>{children}</main>
