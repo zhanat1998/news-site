@@ -10,7 +10,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // CDN иштетилди - тезирээк окуу
+  useCdn: false, // CDN өчүрүлдү - дайыма жаңы маалымат
 });
 
 // Write client (жазуу үчүн, token менен)
