@@ -140,16 +140,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <ScrollToTop />
       <Header />
       <MainNavigation/>
-      <div className="mobile-decoration">
-        <Image
-          src="/new-year.png"
-          alt="Жаңы жыл"
-          width={2400}
-          height={140}
-          priority
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
       <main>{children}</main>
       <Footer />
     </LanguageProvider>
