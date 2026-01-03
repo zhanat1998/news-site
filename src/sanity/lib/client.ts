@@ -10,9 +10,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  useCdn: true, // CDN иштетилди - тезирээк окуу
 });
-//TODO: CDN колдонуу керекпи?
 
 // Write client (жазуу үчүн, token менен)
 export const writeClient = createClient({
@@ -35,11 +34,11 @@ export async function sanityFetch<T>({
  query,
  params = {},
  tags = [],
- revalidate = 0,
+ revalidate = 60, // default 60 секунд кэш (tags жок учурда)
 }: SanityFetchOptions): Promise<T> {
   return client.fetch<T>(query, params, {
     next: {
-      revalidate: tags.length ? false : revalidate,
+      revalidate: tags.length ? false : revalidate, // tags бар болсо - webhook менен тазаланат
       tags,
     },
   });
