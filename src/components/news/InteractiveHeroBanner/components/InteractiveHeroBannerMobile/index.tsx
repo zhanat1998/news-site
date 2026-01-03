@@ -49,6 +49,8 @@ const InteractiveHeroBannerMobile = (
             alt={mainPost.mainImage.alt || mainPost.title}
             fill
             priority
+            placeholder="blur"
+            blurDataURL={urlFor(mainPost.mainImage).width(20).height(11).blur(50).quality(10).auto('format').url()}
             sizes="100vw"
           />
         )}
