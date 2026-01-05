@@ -59,7 +59,7 @@ async function getAd(placement: string): Promise<Ad | null> {
       isActive
     }`,
     { placement, now },
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 0 } }
   );
 
   return ad;
