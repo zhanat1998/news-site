@@ -2,8 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { client } from '@/sanity/lib/client';
 
-// Секреттүү ачкыч - .env файлына кошуңуз
-const ANALYTICS_SECRET = process.env.ANALYTICS_SECRET || 'sokol-analytics-2024';
+// Секреттүү ачкыч - .env файлынан алынат
+const ANALYTICS_SECRET = process.env.NEXT_PUBLIC_ANALYTICS_SECRET || '';
 
 export async function GET(request: NextRequest) {
   // Секреттүү ачкычты текшерүү

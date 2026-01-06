@@ -31,16 +31,47 @@ interface AnalyticsData {
   countryStats: CountryStats[];
 }
 
-// Секреттүү ачкыч
-const SECRET_KEY = 'sokol-analytics-2024';
+// Environment variables аркылуу алынат
+const SECRET_KEY = process.env.NEXT_PUBLIC_ANALYTICS_SECRET || '';
+const DASHBOARD_PASSWORD = process.env.NEXT_PUBLIC_ANALYTICS_PASSWORD || '';
 
 export default function AnalyticsDashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [period, setPeriod] = useState('week');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Браузер эстеп калсын (localStorage)
   useEffect(() => {
+    const savedAuth = localStorage.getItem('analytics_auth');
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === DASHBOARD_PASSWORD) {
+      setIsAuthenticated(true);
+      localStorage.setItem('analytics_auth', 'true');
+      setPasswordError('');
+    } else {
+      setPasswordError('Туура эмес пароль');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('analytics_auth');
+  };
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
     async function fetchData() {
       setLoading(true);
       try {
@@ -64,7 +95,33 @@ export default function AnalyticsDashboard() {
     }
 
     fetchData();
-  }, [period]);
+  }, [period, isAuthenticated]);
+
+  // Пароль формасы
+  if (!isAuthenticated) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loginBox}>
+          <h1>Аналитика</h1>
+          <p>Кирүү үчүн паролду киргизиңиз</p>
+          <form onSubmit={handleLogin}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Пароль"
+              className={styles.passwordInput}
+              autoFocus
+            />
+            {passwordError && <div className={styles.passwordError}>{passwordError}</div>}
+            <button type="submit" className={styles.loginButton}>
+              Кирүү
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -83,7 +140,11 @@ export default function AnalyticsDashboard() {
   }
 
   if (!data) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Жүктөлүүдө...</div>
+      </div>
+    );
   }
 
   const formatDate = (dateStr: string) => {
@@ -111,24 +172,29 @@ export default function AnalyticsDashboard() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1>Аналитика</h1>
-        <div className={styles.periodSelector}>
-          <button
-            className={period === 'today' ? styles.active : ''}
-            onClick={() => setPeriod('today')}
-          >
-            Бүгүн
-          </button>
-          <button
-            className={period === 'week' ? styles.active : ''}
-            onClick={() => setPeriod('week')}
-          >
-            Жума
-          </button>
-          <button
-            className={period === 'month' ? styles.active : ''}
-            onClick={() => setPeriod('month')}
-          >
-            Ай
+        <div className={styles.headerRight}>
+          <div className={styles.periodSelector}>
+            <button
+              className={period === 'today' ? styles.active : ''}
+              onClick={() => setPeriod('today')}
+            >
+              Бүгүн
+            </button>
+            <button
+              className={period === 'week' ? styles.active : ''}
+              onClick={() => setPeriod('week')}
+            >
+              Жума
+            </button>
+            <button
+              className={period === 'month' ? styles.active : ''}
+              onClick={() => setPeriod('month')}
+            >
+              Ай
+            </button>
+          </div>
+          <button onClick={handleLogout} className={styles.logoutButton}>
+            Чыгуу
           </button>
         </div>
       </header>
