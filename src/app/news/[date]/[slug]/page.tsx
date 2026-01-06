@@ -13,6 +13,7 @@ import SideBar from "@/components/newsDetail/SideBar";
 import {postQuery, relatedPostsQuery} from "@/sanity/lib/queries";
 import AdBanner from "@/components/ads/AdBanner";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
+import PageViewTracker from "@/components/analytics/PageViewTracker";
 
 type Props = {
   params: Promise<{ date: string; slug: string }>;
@@ -124,6 +125,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
   return (
     <MainContainer>
+      <PageViewTracker postId={post._id} slug={slug} />
       <div className={styles.page}>
         <div className="container">
           <div className={styles.layout}>
