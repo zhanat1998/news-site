@@ -1,20 +1,8 @@
 // app/api/analytics/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { client } from '@/sanity/lib/client';
 
-// Токен текшерүү
-const VALID_TOKEN_PREFIX = 'sokol_analytics_';
-
 export async function GET(request: NextRequest) {
-  // Cookie менен аутентификация текшерүү
-  const cookieStore = await cookies();
-  const token = cookieStore.get('analytics_token')?.value;
-
-  if (!token || !token.startsWith(VALID_TOKEN_PREFIX)) {
-    return NextResponse.json({ error: 'Уруксат жок' }, { status: 401 });
-  }
-
   const period = request.nextUrl.searchParams.get('period') || 'week';
 
   // Убакыт аралыгын эсептөө

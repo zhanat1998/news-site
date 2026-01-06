@@ -10,7 +10,6 @@ interface PostStats {
   publishedAt: string;
   category: string;
   views: number;
-  mainImage?: { asset?: { url?: string } };
 }
 
 interface DailyStats {
@@ -32,86 +31,17 @@ interface AnalyticsData {
 }
 
 export default function AnalyticsDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [period, setPeriod] = useState('week');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Аутентификация текшерүү
   useEffect(() => {
-    async function checkAuth() {
-      try {
-        const response = await fetch('/api/analytics-auth');
-        const result = await response.json();
-        setIsAuthenticated(result.authenticated);
-      } catch {
-        setIsAuthenticated(false);
-      }
-    }
-    checkAuth();
-  }, []);
-
-  // Login - серверде текшерилет
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginLoading(true);
-    setPasswordError('');
-
-    try {
-      const response = await fetch('/api/analytics-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setPassword('');
-      } else {
-        const result = await response.json();
-        setPasswordError(result.error || 'Ката чыкты');
-      }
-    } catch {
-      setPasswordError('Байланыш катасы');
-    } finally {
-      setLoginLoading(false);
-    }
-  };
-
-  // Logout
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/analytics-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'logout' }),
-      });
-      setIsAuthenticated(false);
-      setData(null);
-    } catch {
-      // ignore
-    }
-  };
-
-  // Маалыматтарды жүктөө
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
     async function fetchData() {
       setLoading(true);
       try {
         const response = await fetch(`/api/analytics?period=${period}`);
         if (!response.ok) {
-          if (response.status === 401) {
-            setIsAuthenticated(false);
-            return;
-          }
           setError('Маалымат жүктөөдө ката чыкты');
           return;
         }
@@ -126,63 +56,7 @@ export default function AnalyticsDashboard() {
     }
 
     fetchData();
-  }, [period, isAuthenticated]);
-
-  // Жүктөлүүдө
-  if (isAuthenticated === null) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Текшерилүүдө...</div>
-      </div>
-    );
-  }
-
-  // Пароль формасы
-  if (!isAuthenticated) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loginBox}>
-          <h1>Аналитика</h1>
-          <p>Кирүү үчүн паролду киргизиңиз</p>
-          <form onSubmit={handleLogin}>
-            <div className={styles.passwordWrapper}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Пароль"
-                className={styles.passwordInput}
-                autoFocus
-                disabled={loginLoading}
-              />
-              <button
-                type="button"
-                className={styles.eyeButton}
-                onClick={() => setShowPassword(!showPassword)}
-                tabIndex={-1}
-              >
-                {showPassword ? (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </svg>
-                ) : (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            {passwordError && <div className={styles.passwordError}>{passwordError}</div>}
-            <button type="submit" className={styles.loginButton} disabled={loginLoading}>
-              {loginLoading ? 'Текшерилүүдө...' : 'Кирүү'}
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  }, [period]);
 
   if (error) {
     return (
@@ -225,29 +99,24 @@ export default function AnalyticsDashboard() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1>Аналитика</h1>
-        <div className={styles.headerRight}>
-          <div className={styles.periodSelector}>
-            <button
-              className={period === 'today' ? styles.active : ''}
-              onClick={() => setPeriod('today')}
-            >
-              Бүгүн
-            </button>
-            <button
-              className={period === 'week' ? styles.active : ''}
-              onClick={() => setPeriod('week')}
-            >
-              Жума
-            </button>
-            <button
-              className={period === 'month' ? styles.active : ''}
-              onClick={() => setPeriod('month')}
-            >
-              Ай
-            </button>
-          </div>
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            Чыгуу
+        <div className={styles.periodSelector}>
+          <button
+            className={period === 'today' ? styles.active : ''}
+            onClick={() => setPeriod('today')}
+          >
+            Бүгүн
+          </button>
+          <button
+            className={period === 'week' ? styles.active : ''}
+            onClick={() => setPeriod('week')}
+          >
+            Жума
+          </button>
+          <button
+            className={period === 'month' ? styles.active : ''}
+            onClick={() => setPeriod('month')}
+          >
+            Ай
           </button>
         </div>
       </header>
@@ -345,10 +214,6 @@ export default function AnalyticsDashboard() {
           </div>
         </section>
       )}
-
-      <footer className={styles.footer}>
-        <p>Бул барак сизге гана көрүнөт.</p>
-      </footer>
     </div>
   );
 }
