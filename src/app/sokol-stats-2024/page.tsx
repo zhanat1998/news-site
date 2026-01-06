@@ -31,57 +31,87 @@ interface AnalyticsData {
   countryStats: CountryStats[];
 }
 
-// Environment variables аркылуу алынат
-const SECRET_KEY = process.env.NEXT_PUBLIC_ANALYTICS_SECRET || '';
-const DASHBOARD_PASSWORD = process.env.NEXT_PUBLIC_ANALYTICS_PASSWORD || '';
-
 export default function AnalyticsDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [period, setPeriod] = useState('week');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Браузер эстеп калсын (localStorage)
+  // Аутентификация текшерүү
   useEffect(() => {
-    const savedAuth = localStorage.getItem('analytics_auth');
-    if (savedAuth === 'true') {
-      setIsAuthenticated(true);
+    async function checkAuth() {
+      try {
+        const response = await fetch('/api/analytics-auth');
+        const result = await response.json();
+        setIsAuthenticated(result.authenticated);
+      } catch {
+        setIsAuthenticated(false);
+      }
     }
+    checkAuth();
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Login - серверде текшерилет
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === DASHBOARD_PASSWORD) {
-      setIsAuthenticated(true);
-      localStorage.setItem('analytics_auth', 'true');
-      setPasswordError('');
-    } else {
-      setPasswordError('Туура эмес пароль');
+    setLoginLoading(true);
+    setPasswordError('');
+
+    try {
+      const response = await fetch('/api/analytics-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setPassword('');
+      } else {
+        const result = await response.json();
+        setPasswordError(result.error || 'Ката чыкты');
+      }
+    } catch {
+      setPasswordError('Байланыш катасы');
+    } finally {
+      setLoginLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('analytics_auth');
+  // Logout
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/analytics-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'logout' }),
+      });
+      setIsAuthenticated(false);
+      setData(null);
+    } catch {
+      // ignore
+    }
   };
 
+  // Маалыматтарды жүктөө
   useEffect(() => {
     if (!isAuthenticated) return;
 
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/analytics?secret=${SECRET_KEY}&period=${period}`);
+        const response = await fetch(`/api/analytics?period=${period}`);
         if (!response.ok) {
           if (response.status === 401) {
-            setError('Уруксат жок. Туура эмес ачкыч.');
-          } else {
-            setError('Маалымат жүктөөдө ката чыкты');
+            setIsAuthenticated(false);
+            return;
           }
+          setError('Маалымат жүктөөдө ката чыкты');
           return;
         }
         const result = await response.json();
@@ -96,6 +126,15 @@ export default function AnalyticsDashboard() {
 
     fetchData();
   }, [period, isAuthenticated]);
+
+  // Жүктөлүүдө
+  if (isAuthenticated === null) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Текшерилүүдө...</div>
+      </div>
+    );
+  }
 
   // Пароль формасы
   if (!isAuthenticated) {
@@ -112,10 +151,11 @@ export default function AnalyticsDashboard() {
               placeholder="Пароль"
               className={styles.passwordInput}
               autoFocus
+              disabled={loginLoading}
             />
             {passwordError && <div className={styles.passwordError}>{passwordError}</div>}
-            <button type="submit" className={styles.loginButton}>
-              Кирүү
+            <button type="submit" className={styles.loginButton} disabled={loginLoading}>
+              {loginLoading ? 'Текшерилүүдө...' : 'Кирүү'}
             </button>
           </form>
         </div>
@@ -131,15 +171,7 @@ export default function AnalyticsDashboard() {
     );
   }
 
-  if (loading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Жүктөлүүдө...</div>
-      </div>
-    );
-  }
-
-  if (!data) {
+  if (loading || !data) {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Жүктөлүүдө...</div>
@@ -294,7 +326,7 @@ export default function AnalyticsDashboard() {
       )}
 
       <footer className={styles.footer}>
-        <p>Бул барак сизге гана көрүнөт. Шилтемени башкаларга бербеңиз.</p>
+        <p>Бул барак сизге гана көрүнөт.</p>
       </footer>
     </div>
   );

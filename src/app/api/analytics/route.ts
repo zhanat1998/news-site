@@ -1,14 +1,17 @@
 // app/api/analytics/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { client } from '@/sanity/lib/client';
 
-// Секреттүү ачкыч - .env файлынан алынат
-const ANALYTICS_SECRET = process.env.NEXT_PUBLIC_ANALYTICS_SECRET || '';
+// Токен текшерүү
+const VALID_TOKEN_PREFIX = 'sokol_analytics_';
 
 export async function GET(request: NextRequest) {
-  // Секреттүү ачкычты текшерүү
-  const secret = request.nextUrl.searchParams.get('secret');
-  if (secret !== ANALYTICS_SECRET) {
+  // Cookie менен аутентификация текшерүү
+  const cookieStore = await cookies();
+  const token = cookieStore.get('analytics_token')?.value;
+
+  if (!token || !token.startsWith(VALID_TOKEN_PREFIX)) {
     return NextResponse.json({ error: 'Уруксат жок' }, { status: 401 });
   }
 
