@@ -130,10 +130,10 @@ export default async function NewsDetailPage({ params }: Props) {
           {/* Main Content */}
           <article className={styles.article}>
             <h1 className={styles.title}>{post.title}</h1>
+            <MainImage item={post} />
             {post.excerpt && (
               <p className={styles.subtitle}>{post.excerpt}</p>
             )}
-            <MainImage item={post} />
             <div className={styles.content}>
               {post.body && (
                 <PortableText
