@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { categories } from '@/constants';
+import AdminButton from '../AdminButton';
 import styles from './MainNavigation.module.scss';
 
 export default function MainNavigation() {
@@ -25,6 +26,7 @@ export default function MainNavigation() {
               </Link>
             );
           })}
+          <AdminButton />
         </div>
       </div>
     </nav>
