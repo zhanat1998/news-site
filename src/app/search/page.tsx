@@ -24,7 +24,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       query: searchPostsQuery,
       params: { searchQuery: `*${query}*` },
       tags: ['posts'],
-      revalidate: 0,
     })
     : [];
 

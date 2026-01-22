@@ -10,7 +10,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // CDN өчүрүлдү - дайыма жаңы маалымат
+  useCdn: true, // CDN күйүк - API сурамдарды 80% азайтат
 });
 
 // Write client (жазуу үчүн, token менен)
@@ -34,11 +34,11 @@ export async function sanityFetch<T>({
  query,
  params = {},
  tags = [],
- revalidate = 60, // default 60 секунд кэш (tags жок учурда)
+ revalidate = 3600, // default 1 саат кэш - API сурамдарды азайтат
 }: SanityFetchOptions): Promise<T> {
   return client.fetch<T>(query, params, {
     next: {
-      revalidate: tags.length ? false : revalidate, // tags бар болсо - webhook менен тазаланат
+      revalidate, // Кэш убактысы + webhook тазалоо бирге иштейт
       tags,
     },
   });

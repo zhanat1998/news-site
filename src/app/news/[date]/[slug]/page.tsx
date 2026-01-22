@@ -26,7 +26,6 @@ export default async function NewsDetailPage({ params }: Props) {
     query: postQuery,
     params: { slug },
     tags: ['posts'],
-    revalidate: 0,
   });
 
   if (!post) {
@@ -38,7 +37,6 @@ export default async function NewsDetailPage({ params }: Props) {
     query: relatedPostsQuery,
     params: { slug, categorySlug: post.category?.slug?.current || '' },
     tags: ['posts'],
-    revalidate: 0,
   });
 
   const relatedIds = relatedPosts.map((p: any) => p._id);
@@ -58,7 +56,6 @@ export default async function NewsDetailPage({ params }: Props) {
     query: popularNewsQuery,
     params: { slug, relatedIds },
     tags: ['posts'],
-    revalidate: 0,
   });
 
   const popularIds = popularNews.map((p: any) => p._id);
@@ -79,7 +76,6 @@ export default async function NewsDetailPage({ params }: Props) {
     query: moreNewsQuery2,
     params: { slug, excludeIds: allPreviousIds },
     tags: ['posts'],
-    revalidate: 0,
   });
 
 // Эгер бош же 2ден аз болсо — башка посттордон ал
@@ -120,7 +116,6 @@ export default async function NewsDetailPage({ params }: Props) {
     query: sidebarQuery,
     params: { slug, excludeIds: allExcludeIds },
     tags: ['posts'],
-    revalidate: 0,
   });
 
   return (
@@ -177,7 +172,6 @@ export async function generateMetadata({ params }: Props) {
     query: postQuery,
     params: { slug },
     tags: ['posts'],
-    revalidate: 0,
   });
 
   if (!post) {

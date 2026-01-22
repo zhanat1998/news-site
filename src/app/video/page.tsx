@@ -44,16 +44,8 @@ export const metadata: Metadata = {
 
 export default async function VideoPage() {
   const [videos, instagramVideos] = await Promise.all([
-    sanityFetch<any[]>({
-      query: videosQuery,
-      tags: ['videos'],
-      revalidate: 0,
-    }),
-    sanityFetch<any[]>({
-      query: instagramVideosQuery,
-      tags: ['videos'],
-      revalidate: 0,
-    }),
+    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
+    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos'] }),
   ]);
 
   return (

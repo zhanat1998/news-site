@@ -49,7 +49,6 @@ export default async function VideoDetailPage({ params }: Props) {
     query: videoBySlugQuery,
     params: { slug },
     tags: ['videos'],
-    revalidate: 0,
   });
 
   if (!video) {
@@ -61,7 +60,6 @@ export default async function VideoDetailPage({ params }: Props) {
     query: relatedVideosQuery,
     params: { slug, categoryId: video.categoryId || '' },
     tags: ['videos'],
-    revalidate: 0,
   });
 
   return (
@@ -132,7 +130,6 @@ export async function generateMetadata({ params }: Props) {
     query: videoBySlugQuery,
     params: { slug },
     tags: ['videos'],
-    revalidate: 0,
   });
 
   if (!video) {

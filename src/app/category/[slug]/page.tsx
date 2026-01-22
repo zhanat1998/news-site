@@ -125,7 +125,6 @@ async function getCategoryPosts(categorySlug: string) {
     query,
     params: { categorySlug },
     tags: ['posts', 'videos', 'categories'],
-    revalidate: 0,
   });
   return data;
 }
@@ -382,7 +381,6 @@ export async function generateMetadata({ params }: Props) {
     query: `*[_type == "category" && slug.current == $slug][0] { title, description }`,
     params: { slug },
     tags: ['categories'],
-    revalidate: 0,
   });
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
