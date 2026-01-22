@@ -10,6 +10,7 @@ export const categories = [
   { id: 6, title: 'СПОРТ', href: paths.SPORT },
   { id: 7, title: 'ВИДЕО', href: paths.VIDEO },
   { id: 8, title: 'КЫЛМЫШ-КЫРСЫК', href: paths.CRIME },
+  { id: 9, title: 'БИЗ ЖӨНҮНДӨ', href: paths.ABOUT },
 ];
 
 export const CATEGORY_TITLES = {

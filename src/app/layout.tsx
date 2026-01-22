@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { Noto_Sans } from 'next/font/google';
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
@@ -88,6 +89,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ky" className={notoSans.variable}>
     <body>
+      {/* Navigation Progress Bar */}
+      <NextTopLoader
+        color="#ff6b00"
+        initialPosition={0.08}
+        crawlSpeed={200}
+        height={3}
+        crawl={true}
+        showSpinner={false}
+        easing="ease"
+        speed={200}
+        shadow="0 0 10px #ff6b00,0 0 5px #ff6b00"
+      />
+
       {/* Google Analytics */}
       {GA_MEASUREMENT_ID && (
         <>
