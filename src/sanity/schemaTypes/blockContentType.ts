@@ -1,6 +1,6 @@
 // sanity/schemaTypes/blockContentType.ts
 import {defineType, defineArrayMember} from 'sanity'
-import {ImageIcon, LinkIcon, DocumentIcon} from '@sanity/icons'
+import {ImageIcon, LinkIcon, DocumentIcon, PlayIcon} from '@sanity/icons'
 
 export const blockContentType = defineType({
   title: 'Block Content',
@@ -100,6 +100,42 @@ export const blockContentType = defineType({
             title: title || 'Макала тандалган жок',
             subtitle: 'Дагы караңыз',
             media,
+          }
+        },
+      },
+    }),
+
+    // YouTube видео блогу
+    defineArrayMember({
+      type: 'object',
+      name: 'youtube',
+      title: 'YouTube видео',
+      icon: PlayIcon,
+      fields: [
+        {
+          name: 'url',
+          type: 'url',
+          title: 'YouTube URL',
+          description: 'YouTube видеосунун шилтемесин кошуңуз (мис: https://www.youtube.com/watch?v=xxxxx)',
+          validation: (rule) => rule.required().uri({
+            scheme: ['http', 'https'],
+          }),
+        },
+        {
+          name: 'caption',
+          type: 'string',
+          title: 'Видео сүрөттөмөсү (милдеттүү эмес)',
+        },
+      ],
+      preview: {
+        select: {
+          url: 'url',
+          caption: 'caption',
+        },
+        prepare({url, caption}) {
+          return {
+            title: caption || 'YouTube видео',
+            subtitle: url || 'URL кошулган жок',
           }
         },
       },
