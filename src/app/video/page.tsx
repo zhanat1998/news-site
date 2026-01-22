@@ -15,6 +15,14 @@ export const metadata: Metadata = {
   title: 'Видео жаңылыктар',
   description: 'Кыргызстандагы акыркы видео жаңылыктар, репортаждар, интервьюлар жана документалдык тасмалар - Сокол.Медиа',
   keywords: ['видео', 'жаңылыктар', 'репортаж', 'интервью', 'Кыргызстан', 'Сокол.Медиа'],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'ky_KG',

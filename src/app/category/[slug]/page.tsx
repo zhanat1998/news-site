@@ -391,6 +391,14 @@ export async function generateMetadata({ params }: Props) {
     title: `${categoryTitle} жаңылыктары`,
     description: category?.description || `${categoryTitle} боюнча акыркы жаңылыктар, макалалар жана маалыматтар - Сокол.Медиа`,
     keywords: [categoryTitle, 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     openGraph: {
       type: 'website',
       locale: 'ky_KG',

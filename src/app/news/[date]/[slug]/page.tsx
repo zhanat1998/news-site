@@ -187,6 +187,14 @@ export async function generateMetadata({ params }: Props) {
     description: post.excerpt || `${post.title} - Сокол.Медиа жаңылыктар порталы`,
     keywords: [post.category?.title, 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'].filter(Boolean),
     authors: post.author?.name ? [{ name: post.author.name }] : undefined,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     openGraph: {
       type: 'article',
       locale: 'ky_KG',

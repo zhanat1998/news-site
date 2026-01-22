@@ -152,6 +152,14 @@ export async function generateMetadata({ params }: Props) {
     title: video.title,
     description: video.description || `${video.title} - Сокол.Медиа видео`,
     keywords: [video.category?.title, 'видео', 'жаңылыктар', 'Кыргызстан', 'Сокол.Медиа'].filter(Boolean),
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     openGraph: {
       type: 'video.other',
       locale: 'ky_KG',

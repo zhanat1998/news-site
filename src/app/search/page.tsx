@@ -83,7 +83,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 }
 
 export async function generateMetadata({ searchParams }: SearchPageProps) {
-  const params = await searchParams; // ← await кошулду
+  const params = await searchParams;
   const query = params.q || '';
   const page = params.page || '1';
 
@@ -91,5 +91,14 @@ export async function generateMetadata({ searchParams }: SearchPageProps) {
     title: query
       ? `Издөө: ${decodeURIComponent(query)} - Бет ${page} - Сокол.Медиа`
       : 'Издөө - Сокол.Медиа',
+    // Search барактарын индекстебөө - SEO спам коргоо
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
   };
 }
