@@ -1,80 +1,192 @@
 // src/app/video/[slug]/page.module.scss
 .videoPage {
-  background: #000;
+  background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
   min-height: 100vh;
-  padding: 40px 0;
+  padding: 30px 0 60px;
 
-  @media (max-width: 1024px) {
-    padding: 20px 0;
+  @media (max-width: 768px) {
+    padding: 0 0 40px;
   }
 }
 
 .layout {
-  max-width: 1600px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 30px;
   display: grid;
-  grid-template-columns: 1fr 450px;
+  grid-template-columns: 1fr 400px;
   gap: 40px;
   align-items: start;
 
   @media (max-width: 1200px) {
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr 350px;
     gap: 30px;
+    padding: 0 20px;
   }
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    padding: 0 20px;
-    gap: 40px; // ← gap кошобуз
+    gap: 0;
+    padding: 0;
   }
 }
 
 .mainContent {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+
+  @media (max-width: 1024px) {
+    gap: 0;
+  }
 }
 
 .playerWrapper {
   position: relative;
   aspect-ratio: 16/9;
-  background: #1a1a1a;
-  border-radius: 0;
+  background: #000;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 1024px) {
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 
 .info {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 24px 0;
+
+  @media (max-width: 1024px) {
+    padding: 20px 16px;
+  }
 }
 
 .category {
-  font-size: 13px;
-  color: #999;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ff6b00;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background: rgba(255, 107, 0, 0.1);
+  padding: 6px 12px;
+  border-radius: 4px;
+  width: fit-content;
 }
 
 .title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: white;
-  line-height: 1.3;
+  line-height: 1.35;
   margin: 0;
+  letter-spacing: -0.5px;
 
   @media (max-width: 768px) {
-    font-size: 24px;
+    font-size: 22px;
+    line-height: 1.4;
   }
 }
 
 .description {
   font-size: 16px;
-  color: #ccc;
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
 
   p {
     margin: 0 0 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+
+  time {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+    }
+  }
+}
+
+.sidebar {
+  position: sticky;
+  top: 20px;
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (max-width: 1024px) {
+    position: relative;
+    top: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 24px 16px;
+    margin-top: 0;
+  }
+}
+
+// Action buttons (share, like etc)
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.actionBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
   }
 }
 
@@ -86,53 +198,8 @@
   font-weight: 600;
   cursor: pointer;
   padding: 0;
-  text-decoration: underline;
 
   &:hover {
-    color: #ff8533;
+    text-decoration: underline;
   }
-}
-
-.meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-
-  time {
-    font-size: 14px;
-    color: #999;
-  }
-}
-
-.actions {
-  display: flex;
-  gap: 16px;
-}
-
-.actionBtn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s;
-
-  &:hover {
-    color: #ff6b00;
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-.sidebar {
-  min-height: 0;
 }

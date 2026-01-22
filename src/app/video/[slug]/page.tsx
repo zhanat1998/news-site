@@ -42,6 +42,19 @@ const relatedVideosQuery = groq`
   }
 `;
 
+// Рандом видеолор (категория боюнча аз болсо толуктоо үчүн)
+const randomVideosQuery = groq`
+  *[_type == "video" && slug.current != $slug && !(_id in $excludeIds) && videoSource == "youtube"]
+  | order(publishedAt desc) [0...$limit] {
+    _id,
+    title,
+    slug,
+    duration,
+    thumbnail,
+    category->{ title }
+  }
+`;
+
 export default async function VideoDetailPage({ params }: Props) {
   const { slug } = await params;
 
@@ -56,11 +69,25 @@ export default async function VideoDetailPage({ params }: Props) {
   }
 
   // Ошол эле категориядагы видеолорду алабыз
-  const relatedVideos = await sanityFetch<any[]>({
+  let relatedVideos = await sanityFetch<any[]>({
     query: relatedVideosQuery,
     params: { slug, categoryId: video.categoryId || '' },
     tags: ['videos'],
   });
+
+  // Эгер 10дон аз болсо, рандом видеолор менен толуктайбыз
+  if (relatedVideos.length < 10) {
+    const excludeIds = relatedVideos.map(v => v._id);
+    const needed = 10 - relatedVideos.length;
+
+    const randomVideos = await sanityFetch<any[]>({
+      query: randomVideosQuery,
+      params: { slug, excludeIds, limit: needed },
+      tags: ['videos'],
+    });
+
+    relatedVideos = [...relatedVideos, ...randomVideos];
+  }
 
   return (
     <MainContainer>

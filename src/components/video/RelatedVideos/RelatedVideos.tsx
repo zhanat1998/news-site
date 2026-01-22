@@ -21,13 +21,13 @@ interface RelatedVideosProps {
 }
 
 export default function RelatedVideos({ videos, title }: RelatedVideosProps) {
+  if (!videos.length) {
+    return null;
+  }
+
   return (
     <div className={styles.related}>
       <h2 className={styles.title}>{title}</h2>
-
-      {!videos.length && (
-        <p className={styles.noVideos}>Бул категориядан видео табылган жок</p>
-      )}
 
       <div className={styles.list}>
         {videos.map((video) => (
@@ -39,19 +39,22 @@ export default function RelatedVideos({ videos, title }: RelatedVideosProps) {
             {/* Текст сол жакта */}
             <div className={styles.content}>
               <h3 className={styles.videoTitle}>{video.title}</h3>
+              {video.category && (
+                <span className={styles.categoryTag}>{video.category.title}</span>
+              )}
             </div>
 
             {/* Сүрөт оң жакта */}
             <div className={styles.thumbnail}>
               <Image
-                src={getImage(video.thumbnail, 150, 85)}
+                src={getImage(video.thumbnail, 280, 158)}
                 alt={video.title}
-                width={150}
-                height={85}
+                width={140}
+                height={79}
                 className={styles.image}
               />
               {video.duration && (
-                <span className={styles.duration}>▶ {video.duration}</span>
+                <span className={styles.duration}>{video.duration}</span>
               )}
             </div>
           </Link>
