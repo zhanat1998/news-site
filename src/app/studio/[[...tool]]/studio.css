@@ -1,0 +1,174 @@
+/* Sanity Studio Custom Styles - Ак фон жана чоң тамгалар */
+
+/* ===== АК ФОН ===== */
+html, body {
+  background-color: #ffffff !important;
+}
+
+/* Негизги контейнерлер */
+[data-ui="Card"],
+[data-ui="Container"],
+[data-ui="Box"],
+[data-ui="Dialog"],
+[data-ui="Layer"],
+[data-ui="Popover"],
+[data-ui="Menu"] {
+  background-color: #ffffff !important;
+}
+
+/* Sidebar жана панелдер */
+[data-ui="PaneLayout"],
+[data-testid="pane"],
+[data-testid="document-pane"],
+[data-testid="desk-tool"] {
+  background-color: #ffffff !important;
+}
+
+/* Navbar */
+[data-ui="Navbar"],
+[data-testid="studio-navbar"] {
+  background-color: #f8f9fa !important;
+}
+
+/* ===== ЧОҢ ТАМГАЛАР ===== */
+
+/* Input талаалары */
+[data-ui="TextInput"] input,
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  padding: 10px 12px !important;
+}
+
+/* Textarea */
+[data-ui="TextArea"] textarea,
+textarea {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  padding: 12px !important;
+}
+
+/* Label жана аталыштар - ЧОҢОЙТУЛДУ */
+[data-ui="Label"],
+label {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+/* Title талаасы өзгөчө чоң */
+[data-testid="field-title"] input,
+[data-testid="string-input"] input {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+/* Сүрөттөмө текст (description) - ЧОҢОЙТУЛДУ */
+[data-ui="Text"][data-muted="true"],
+[data-ui="Tooltip"] {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+/* Rich Text Editor (Portable Text) */
+[data-ui="PortableTextEditor"],
+[data-slate-editor="true"],
+[data-testid="pt-editor"] {
+  font-size: 17px !important;
+  line-height: 1.8 !important;
+}
+
+[data-slate-editor="true"] p,
+[data-slate-editor="true"] span {
+  font-size: 17px !important;
+  line-height: 1.8 !important;
+}
+
+/* Editor Toolbar - ЧОҢОЙТУЛДУ */
+[data-testid="pt-editor"] [data-ui="Flex"] button,
+[data-testid="pt-editor"] [data-ui="MenuButton"],
+[data-testid="pt-editor"] [data-ui="Button"] {
+  font-size: 15px !important;
+}
+
+/* Toolbar "Кадимки" dropdown */
+[data-testid="block-style-select"],
+[data-testid="pt-editor"] select,
+[data-testid="pt-editor"] [data-ui="Select"] {
+  font-size: 15px !important;
+  padding: 6px 10px !important;
+}
+
+/* Toolbar icons чоңураак */
+[data-testid="pt-editor"] svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Dropdown/Select */
+[data-ui="MenuButton"] button,
+[data-ui="Select"] select,
+select {
+  font-size: 15px !important;
+  padding: 8px 12px !important;
+}
+
+/* Menu items */
+[data-ui="MenuItem"],
+[data-ui="MenuGroup"] {
+  font-size: 15px !important;
+}
+
+/* Document list */
+[data-ui="PreviewCard"] {
+  background-color: #ffffff !important;
+}
+
+[data-ui="PreviewCard"] [data-ui="Text"] {
+  font-size: 15px !important;
+}
+
+/* Validation messages */
+[data-ui="AlertDescription"],
+[data-ui="FormFieldValidationStatus"] {
+  font-size: 14px !important;
+}
+
+/* Buttons */
+[data-ui="Button"] {
+  font-size: 14px !important;
+}
+
+/* Tab bar */
+[data-ui="TabList"] button {
+  font-size: 14px !important;
+}
+
+/* Scrollable areas ак фон */
+[data-ui="ScrollContainer"] {
+  background-color: #ffffff !important;
+}
+
+/* ===== FIELD HEADER (Label + Description) ===== */
+/* Field аталышы */
+[data-testid="field-body"] > div:first-child,
+[data-ui="FormFieldHeader"] {
+  font-size: 18px !important;
+}
+
+/* Field аталышындагы текст */
+[data-ui="FormFieldHeaderTitle"],
+[data-ui="FormFieldHeader"] [data-ui="Text"] {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+/* Field description - H2 = Subtitle... текст */
+[data-ui="FormFieldHeaderDescription"],
+[data-ui="FormFieldDescription"],
+[data-ui="FormFieldHeader"] [data-muted="true"] {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  margin-top: 6px !important;
+}
