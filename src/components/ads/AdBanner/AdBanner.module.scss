@@ -100,6 +100,18 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.home_bottom {
+  margin: $spacing-2xl auto $spacing-lg;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, #e8f4f8 0%, #d1e8e2 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: $radius-lg;
+
+  &::before {
+    background: linear-gradient(90deg, $main 0%, $primary 100%);
+  }
+}
+
 .sidebar {
   margin: $spacing-md 0;
   padding: $spacing-sm;

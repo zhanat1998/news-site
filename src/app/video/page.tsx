@@ -64,7 +64,7 @@ export default async function VideoPage() {
             <h1 className={styles.title}>Видео</h1>
           </div>
 
-          <AdBanner placement="video_section" />
+          {/* AdBanner placement="video_section" - азырынча өчүрүлгөн */}
 
           {/* YouTube видеолор - grid менен */}
           <VideoSection
@@ -73,7 +73,7 @@ export default async function VideoPage() {
             initialCount={6}
           />
 
-          <AdBanner placement="above_footer" />
+          {/* AdBanner placement="above_footer" - азырынча өчүрүлгөн */}
 
           {/* Instagram видеолор - Instagram стилинде */}
           <InstagramSection

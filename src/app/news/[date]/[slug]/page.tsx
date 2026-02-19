@@ -145,7 +145,7 @@ export default async function NewsDetailPage({ params }: Props) {
               url={`/news/${date}/${slug}`}
               image={post.mainImage?.asset?.url}
             />
-            <AdBanner placement="in_article" />
+            {/* AdBanner placement="in_article" - азырынча өчүрүлгөн */}
             <RelatedNews items={relatedPosts} />
 
             <NewsGrid title="ЭҢ ПОПУЛЯРДУУ" items={popularNews} />
@@ -155,7 +155,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
           {/* Sidebar */}
           <aside className={styles.sidebar}>
-            <AdBanner placement="sidebar" />
+            {/* AdBanner placement="sidebar" - азырынча өчүрүлгөн */}
             <SideBar items={sidebarPosts}/>
           </aside>
           </div>

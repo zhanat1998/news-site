@@ -18,6 +18,22 @@ export const adType = defineType({
     }),
 
     defineField({
+      name: 'placement',
+      title: 'Жайгашкан жери',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Башкы бет - үстү', value: 'home_top' },
+          { title: 'Башкы бет - ортосу', value: 'home_middle' },
+          { title: 'Башкы бет - аягы', value: 'home_bottom' },
+          { title: 'Категория барактары', value: 'category_page' },
+        ],
+        layout: 'dropdown',
+      },
+      validation: (rule) => rule.required().error('Жайгашкан жерин тандаңыз'),
+    }),
+
+    defineField({
       name: 'image',
       title: 'Сүрөт',
       type: 'image',
@@ -46,7 +62,21 @@ export const adType = defineType({
   preview: {
     select: {
       title: 'title',
+      placement: 'placement',
       media: 'image',
+    },
+    prepare(selection) {
+      const { title, placement } = selection
+      const placementLabels: Record<string, string> = {
+        home_top: 'Башкы бет - үстү',
+        home_middle: 'Башкы бет - ортосу',
+        home_bottom: 'Башкы бет - аягы',
+        category_page: 'Категория барактары',
+      }
+      return {
+        ...selection,
+        subtitle: placementLabels[placement] || placement,
+      }
     },
   },
 })

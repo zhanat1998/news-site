@@ -86,7 +86,7 @@ export default async function Home() {
       <AdBanner placement="home_middle" />
       <CategoryColumns categories={categoryColumns} />
       <CategoryNewsGrid categories={categoryNewsGrid} />
-      <AdBanner placement="above_footer" />
+      <AdBanner placement="home_bottom" />
     </MainContainer>
   );
 }
