@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { NextStudio } from 'next-sanity/studio';
 import type { Config } from 'sanity';
-import './studio.css';
+// import './studio.css';
 
 interface StudioWrapperProps {
   config: Config;
