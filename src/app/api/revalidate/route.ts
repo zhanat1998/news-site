@@ -21,6 +21,7 @@ function revalidateAll() {
   revalidateTag('instagram');
   revalidateTag('tiktok');
   revalidateTag('hero');
+  revalidateTag('ads');  // Жарнамалар
 
   // Бардык негизги жолдорду revalidate (page типи менен)
   revalidatePath('/', 'page');
@@ -79,6 +80,13 @@ export async function POST(request: NextRequest) {
         revalidateTag('posts');
         revalidatePath('/', 'layout');
         console.log('Revalidated: authors, posts');
+        break;
+
+      case 'ad':
+        revalidateTag('ads');
+        revalidatePath('/', 'page');
+        revalidatePath('/category', 'page');
+        console.log('Revalidated: ads');
         break;
 
       default:
