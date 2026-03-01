@@ -10,68 +10,76 @@ import TrendingBar from "@/components/news/TrendingBar";
 import HeroLeft from "@/components/news/Hero/HeroLeft";
 import HeroCenter from "@/components/news/Hero/HeroCenter";
 import HeroRight from "@/components/news/Hero/HeroRight";
-import { sanityFetch } from '@/sanity/lib/client';
-import {breakingNewsQuery, latestPostsQuery, videosQuery, instagramVideosQuery, tiktokVideosQuery,
-  categoryColumnsQuery, categoryNewsGridQuery, interactiveHeroQuery} from "@/sanity/lib/queries";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
 import AdBanner from "@/components/ads/AdBanner";
 
+// Strapi imports
+import {
+  getLatestPosts,
+  getYouTubeVideos,
+  getInstagramVideos,
+  getTikTokVideos,
+  getPostsByCategory,
+} from '@/lib/strapi/api';
+import {
+  adaptPosts,
+  adaptVideos,
+  formatVideosForCarousel,
+  fetchCategoryColumnsData,
+  fetchCategoryNewsGridData,
+} from '@/lib/strapi/adapters';
+
 export default async function Home() {
   const [
-    posts,
-    breakingNews,
-    videos,
-    instagramVideos,
-    tiktokVideos,
+    latestPostsRaw,
+    youtubeVideosRaw,
+    instagramVideosRaw,
+    tiktokVideosRaw,
     categoryColumns,
     categoryNewsGrid,
-    heroPosts
   ] = await Promise.all([
-    sanityFetch<any[]>({ query: latestPostsQuery, tags: ['posts'] }),
-    sanityFetch<any[]>({ query: breakingNewsQuery, tags: ['posts', 'breaking'] }),
-    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
-    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos', 'instagram'] }),
-    sanityFetch<any[]>({ query: tiktokVideosQuery, tags: ['videos', 'tiktok'] }),
-    sanityFetch<any>({ query: categoryColumnsQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any>({ query: categoryNewsGridQuery, tags: ['posts', 'categories'] }),
-    sanityFetch<any[]>({ query: interactiveHeroQuery, tags: ['posts', 'hero'] }),
+    getLatestPosts(20),
+    getYouTubeVideos(20),
+    getInstagramVideos(20),
+    getTikTokVideos(20),
+    fetchCategoryColumnsData(getPostsByCategory),
+    fetchCategoryNewsGridData(getPostsByCategory),
   ]);
 
+  // Adapt data to match existing component props
+  const posts = adaptPosts(latestPostsRaw);
+  const videos = adaptVideos(youtubeVideosRaw);
+  const instagramVideos = adaptVideos(instagramVideosRaw);
+  const tiktokVideos = adaptVideos(tiktokVideosRaw);
+  const heroPosts = posts.slice(0, 12);
 
-  const formattedVideos = videos.map(video => ({
-    _id: video._id,
-    title: video.title,
-    slug: video.slug,
-    image: video.thumbnail?.asset?.url || '/og-image.png',
-    excerpt: video.description,
-    category: video.category?.title,
-    duration: video.duration,
-    thumbnail: video.thumbnail,
-  }));
+  const formattedVideos = formatVideosForCarousel(youtubeVideosRaw);
 
-  const trending = breakingNews.length > 0 ? breakingNews : posts.slice(0, 5);
+  // Use latest posts for trending if no breaking news
+  const trending = posts.slice(0, 5);
+
   return (
     <MainContainer>
-      <TrendingBar items={trending}/>
+      <TrendingBar items={trending as any}/>
       <AdBanner placement="home_top" />
       <DateDisplay/>
-      <InteractiveHeroBanner items={heroPosts} />
+      <InteractiveHeroBanner items={heroPosts as any} />
       <section className={styles.heroSection}>
-        <HeroLeft items={posts}/>
-        <HeroCenter items={posts}/>
-        <HeroRight items={posts}/>
+        <HeroLeft items={posts as any}/>
+        <HeroCenter items={posts as any}/>
+        <HeroRight items={posts as any}/>
       </section>
       <VideoCarousel
         title="Акыркы видеолор"
-        videos={formattedVideos}
+        videos={formattedVideos as any}
         link="/video"
       />
       {instagramVideos && instagramVideos.length > 0 && (
         <Suspense fallback={null}>
           <InstagramCarousel
             title="Instagram"
-            videos={instagramVideos}
+            videos={instagramVideos as any}
           />
         </Suspense>
       )}
@@ -79,13 +87,13 @@ export default async function Home() {
         <Suspense fallback={null}>
           <TikTokCarousel
             title="TikTok"
-            videos={tiktokVideos}
+            videos={tiktokVideos as any}
           />
         </Suspense>
       )}
       <AdBanner placement="home_middle" />
-      <CategoryColumns categories={categoryColumns} />
-      <CategoryNewsGrid categories={categoryNewsGrid} />
+      <CategoryColumns categories={categoryColumns as any} />
+      <CategoryNewsGrid categories={categoryNewsGrid as any} />
       <AdBanner placement="home_bottom" />
     </MainContainer>
   );
