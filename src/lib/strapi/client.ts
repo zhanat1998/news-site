@@ -79,7 +79,7 @@ export interface StrapiAd {
   documentId: string;
   title: string;
   placement?: 'header' | 'sidebar' | 'footer' | 'article';
-  image?: StrapiImage;
+  image?: StrapiImage[];
   imageAlt?: string;
   link?: string;
 }

@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'vz-0a81affa-d72.b-cdn.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
     ],
     // Sanity CDN өзү оптимизациялайт, Next.js оптимизациясын өчүрөбүз
     unoptimized: true,

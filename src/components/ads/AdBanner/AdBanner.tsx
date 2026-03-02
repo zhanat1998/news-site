@@ -26,7 +26,7 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
   }
 
   const ad = ads[0];
-  const imageUrl = getStrapiImageUrl(ad.image);
+  const imageUrl = getStrapiImageUrl(ad.image?.[0]);
 
   if (imageUrl === '/placeholder.jpg') {
     return null;

@@ -115,15 +115,12 @@ export async function getCategoryBySlug(slug: string): Promise<StrapiCategory | 
 export async function getYouTubeVideos(limit = 10): Promise<StrapiVideo[]> {
   const response = await strapiFetch<StrapiVideo[]>('videos', {
     filters: {
-      $or: [
-        { videoSource: { $eq: 'youtube' } },
-        { youtubeUrl: { $notNull: true, $ne: '' } },
-      ],
+      videoSource: { $eq: 'youtube' },
     },
     sort: ['publishedat:desc', 'createdAt:desc'],
     pagination: { limit },
     populate: ['thumbnail', 'category'],
-  }, { tags: ['videos'] });
+  }, { tags: ['videos'], revalidate: 60 });
 
   return response.data || [];
 }
@@ -131,15 +128,12 @@ export async function getYouTubeVideos(limit = 10): Promise<StrapiVideo[]> {
 export async function getInstagramVideos(limit = 10): Promise<StrapiVideo[]> {
   const response = await strapiFetch<StrapiVideo[]>('videos', {
     filters: {
-      $or: [
-        { videoSource: { $eq: 'instagram' } },
-        { instagramUrl: { $notNull: true, $ne: '' } },
-      ],
+      videoSource: { $eq: 'instagram' },
     },
     sort: ['publishedat:desc', 'createdAt:desc'],
     pagination: { limit },
     populate: ['thumbnail', 'category'],
-  }, { tags: ['videos'] });
+  }, { tags: ['videos'], revalidate: 60 });
 
   return response.data || [];
 }
