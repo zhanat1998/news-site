@@ -45,6 +45,7 @@ export interface StrapiPost {
   mainImageCaption?: string;
   category?: StrapiCategory;
   publish?: string;
+  youtubeUrl?: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

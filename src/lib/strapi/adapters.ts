@@ -78,6 +78,7 @@ export function adaptPost(post: StrapiPost) {
     } : undefined,
     // Format body: convert line breaks to paragraphs, markdown to HTML
     body: formatBody(post.body),
+    youtubeUrl: post.youtubeUrl || null,
   };
 }
 

@@ -17,6 +17,21 @@ import {
 } from '@/lib/strapi/api';
 import { adaptPost, adaptPosts } from '@/lib/strapi/adapters';
 
+// Extract YouTube video ID from various URL formats
+function extractYouTubeId(url: string): string {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/shorts\/([^&\n?#]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+
+  return url; // Return as-is if no pattern matches
+}
+
 type Props = {
   params: Promise<{ date: string; slug: string }>;
 };
@@ -76,6 +91,16 @@ export default async function NewsDetailPage({ params }: Props) {
           <article className={styles.article}>
             <h1 className={styles.title}>{post.title}</h1>
             <MainImage item={post as any} />
+            {post.youtubeUrl && (
+              <div className={styles.videoEmbed}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${extractYouTubeId(post.youtubeUrl)}`}
+                  title={post.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            )}
             {post.excerpt && (
               <p className={styles.subtitle}>{post.excerpt}</p>
             )}
