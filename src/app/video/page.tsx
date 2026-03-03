@@ -1,8 +1,7 @@
 // src/app/video/page.tsx
-import { sanityFetch } from '@/sanity/lib/client';
-import { videosQuery, instagramVideosQuery } from '@/sanity/lib/queries';
+import { getYouTubeVideos, getInstagramVideos } from '@/lib/strapi/api';
+import { adaptVideos } from '@/lib/strapi/adapters';
 import styles from './page.module.scss';
-import AdBanner from "@/components/ads/AdBanner";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import VideoSection from "@/components/video/VideoSection/VideoSection";
 import InstagramSection from "@/components/video/InstagramSection/InstagramSection";
@@ -51,10 +50,13 @@ export const metadata: Metadata = {
 };
 
 export default async function VideoPage() {
-  const [videos, instagramVideos] = await Promise.all([
-    sanityFetch<any[]>({ query: videosQuery, tags: ['videos'] }),
-    sanityFetch<any[]>({ query: instagramVideosQuery, tags: ['videos'] }),
+  const [youtubeVideosRaw, instagramVideosRaw] = await Promise.all([
+    getYouTubeVideos(20),
+    getInstagramVideos(20),
   ]);
+
+  const videos = adaptVideos(youtubeVideosRaw);
+  const instagramVideos = adaptVideos(instagramVideosRaw);
 
   return (
     <MainContainer>
@@ -64,21 +66,17 @@ export default async function VideoPage() {
             <h1 className={styles.title}>Видео</h1>
           </div>
 
-          {/* AdBanner placement="video_section" - азырынча өчүрүлгөн */}
-
           {/* YouTube видеолор - grid менен */}
           <VideoSection
             title="YouTube"
-            videos={videos}
+            videos={videos as any}
             initialCount={6}
           />
-
-          {/* AdBanner placement="above_footer" - азырынча өчүрүлгөн */}
 
           {/* Instagram видеолор - Instagram стилинде */}
           <InstagramSection
             title="Instagram"
-            videos={instagramVideos}
+            videos={instagramVideos as any}
             initialCount={8}
           />
         </div>

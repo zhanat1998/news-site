@@ -1,6 +1,6 @@
 // src/app/search/page.tsx
-import { sanityFetch } from '@/sanity/lib/client';
-import { searchPostsQuery } from '@/sanity/lib/queries';
+import { searchPosts } from '@/lib/strapi/api';
+import { adaptPosts } from '@/lib/strapi/adapters';
 import SearchResults from "@/components/search/SearchResults/SearchResults";
 import Pagination from "@/components/search/Pagination/Pagination";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
@@ -15,17 +15,12 @@ interface SearchPageProps {
 const ITEMS_PER_PAGE = 12;
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const params = await searchParams; // ← await кошулду
+  const params = await searchParams;
   const query = params.q || '';
   const currentPage = parseInt(params.page || '1', 10);
 
-  const allResults = query
-    ? await sanityFetch<any[]>({
-      query: searchPostsQuery,
-      params: { searchQuery: `*${query}*` },
-      tags: ['posts'],
-    })
-    : [];
+  const postsRaw = query ? await searchPosts(query, 100) : [];
+  const allResults = adaptPosts(postsRaw);
 
   // Pagination логикасы
   const totalResults = allResults.length;
@@ -66,7 +61,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
         {paginatedResults.length > 0 && (
           <>
-            <SearchResults items={paginatedResults} />
+            <SearchResults items={paginatedResults as any} />
 
             {totalPages > 1 && (
               <Pagination

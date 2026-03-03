@@ -1,35 +1,10 @@
 import { MetadataRoute } from 'next';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
+import { getSitemapData } from '@/lib/strapi/api';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
 
-  // Бардык посттор
-  const posts = await client.fetch<{ slug: string; publishedAt: string; _updatedAt: string }[]>(groq`
-    *[_type == "post"] | order(publishedAt desc) {
-      "slug": slug.current,
-      publishedAt,
-      _updatedAt
-    }
-  `);
-
-  // Бардык видеолор
-  const videos = await client.fetch<{ slug: string; publishedAt: string; _updatedAt: string }[]>(groq`
-    *[_type == "video"] | order(publishedAt desc) {
-      "slug": slug.current,
-      publishedAt,
-      _updatedAt
-    }
-  `);
-
-  // Бардык категориялар
-  const categories = await client.fetch<{ slug: string; _updatedAt: string }[]>(groq`
-    *[_type == "category"] {
-      "slug": slug.current,
-      _updatedAt
-    }
-  `);
+  const { posts, videos, categories } = await getSitemapData();
 
   // Статикалык беттер
   const staticPages: MetadataRoute.Sitemap = [
@@ -55,10 +30,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Жаңылыктар беттери
   const postPages: MetadataRoute.Sitemap = posts.map((post) => {
-    const date = post.publishedAt ? new Date(post.publishedAt).toISOString().split('T')[0] : '';
+    const publishDate = (post as any).publish || (post as any).publishedAt || new Date();
+    const date = publishDate ? new Date(publishDate).toISOString().split('T')[0] : '';
     return {
       url: `${siteUrl}/news/${date}/${post.slug}`,
-      lastModified: new Date(post._updatedAt || post.publishedAt),
+      lastModified: new Date((post as any).updatedAt || publishDate),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     };
@@ -67,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Видео беттери
   const videoPages: MetadataRoute.Sitemap = videos.map((video) => ({
     url: `${siteUrl}/video/${video.slug}`,
-    lastModified: new Date(video._updatedAt || video.publishedAt),
+    lastModified: new Date((video as any).publishedat || new Date()),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
@@ -75,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Категория беттери
   const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
     url: `${siteUrl}/category/${category.slug}`,
-    lastModified: new Date(category._updatedAt),
+    lastModified: new Date((category as any).updatedAt || new Date()),
     changeFrequency: 'daily' as const,
     priority: 0.7,
   }));

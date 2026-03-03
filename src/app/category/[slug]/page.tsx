@@ -3,8 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import styles from './page.module.scss';
-import { sanityFetch } from '@/sanity/lib/client';
-import { urlFor } from '@/sanity/lib/image';
 import CategorySkeleton from "@/components/category/CategorySkeleton";
 import ShowMoreButton from "@/components/ui/ShowMoreButton/ShowMoreButton";
 import AdBanner from "@/components/ads/AdBanner";
@@ -12,121 +10,56 @@ import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import InstagramCarousel from "@/components/video/InstagramCarousel/InstagramCarousel";
 
+// Strapi imports
+import {
+  getCategoryBySlug,
+  getPostsByCategory,
+  getVideosByCategory,
+} from '@/lib/strapi/api';
+import { getStrapiImageUrl } from '@/lib/strapi/client';
+import { adaptPosts, adaptVideos, formatVideosForCarousel } from '@/lib/strapi/adapters';
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-async function getCategoryPosts(categorySlug: string) {
-  const query = `{
-    "category": *[_type == "category" && slug.current == $categorySlug][0] {
-      _id,
-      title,
-      slug
+async function getCategoryPageData(categorySlug: string) {
+  const [category, postsRaw, videosRaw] = await Promise.all([
+    getCategoryBySlug(categorySlug),
+    getPostsByCategory(categorySlug, 15),
+    getVideosByCategory(categorySlug, 10),
+  ]);
+
+  if (!category) {
+    return null;
+  }
+
+  const posts = adaptPosts(postsRaw);
+  const videos = adaptVideos(videosRaw);
+
+  // Split videos by type
+  const youtubeVideos = videosRaw.filter(v =>
+    v.videoSource === 'youtube' || (v.youtubeUrl && v.youtubeUrl.length > 0)
+  );
+  const instagramVideos = videosRaw.filter(v =>
+    v.videoSource === 'instagram' || (v.instagramUrl && v.instagramUrl.length > 0)
+  );
+
+  return {
+    category: {
+      _id: category.documentId,
+      title: category.title,
+      slug: category.slug,
     },
-
-    "hero": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [0] {
-      title,
-      excerpt,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "centerTop": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [1] {
-      title,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "centerList": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [2...5] {
-      title,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "rightTop": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [5] {
-      title,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "rightList": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [6...9] {
-      title,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "moreNews": *[_type == "post" && $categorySlug in categories[]->slug.current]
-      | order(publishedAt desc) [9...15] {
-      title,
-      excerpt,
-      slug,
-      mainImage {
-        asset -> { url },
-        alt
-      },
-      publishedAt
-    },
-
-    "youtubeVideos": *[_type == "video" && videoSource == "youtube" && category->slug.current == $categorySlug]
-      | order(publishedAt desc) [0...10] {
-      _id,
-      title,
-      "slug": slug.current,
-      description,
-      youtubeUrl,
-      duration,
-      thumbnail {
-        asset -> { url }
-      },
-      "category": category->title
-    },
-
-    "instagramVideos": *[_type == "video" && videoSource == "instagram" && category->slug.current == $categorySlug]
-      | order(publishedAt desc) [0...10] {
-      _id,
-      title,
-      "slug": slug.current,
-      description,
-      instagramUrl,
-      duration,
-      thumbnail {
-        asset -> { url }
-      },
-      "category": category->title
-    }
-  }`;
-
-  const data = await sanityFetch<any>({
-    query,
-    params: { categorySlug },
-    tags: ['posts', 'videos', 'categories'],
-  });
-  return data;
+    hero: posts[0] || null,
+    centerTop: posts[1] || null,
+    centerList: posts.slice(2, 5),
+    rightTop: posts[5] || null,
+    rightList: posts.slice(6, 9),
+    moreNews: posts.slice(9, 15),
+    youtubeVideos: formatVideosForCarousel(youtubeVideos),
+    instagramVideos: adaptVideos(instagramVideos),
+  };
 }
 
 function formatDate(dateString: string) {
@@ -144,11 +77,22 @@ function getDateSlug(dateString: string) {
   return date.toISOString().split('T')[0];
 }
 
+function getImageUrl(item: any): string {
+  if (item.mainImage?.asset?.url) {
+    return item.mainImage.asset.url;
+  }
+  return '/og-image.png';
+}
+
+function getSlug(item: any): string {
+  return typeof item.slug === 'string' ? item.slug : item.slug?.current || '';
+}
+
 // Main Content Component
 async function CategoryContent({ slug }: { slug: string }) {
-  const news = await getCategoryPosts(slug);
+  const news = await getCategoryPageData(slug);
 
-  if (!news.category) {
+  if (!news) {
     return (
       <MainContainer>
         <div className={styles.page}>
@@ -172,14 +116,14 @@ async function CategoryContent({ slug }: { slug: string }) {
           {news.hero && (
             <div className={styles.heroColumn}>
               <Link
-                href={`/news/${getDateSlug(news.hero.publishedAt)}/${news.hero.slug.current}`}
+                href={`/news/${getDateSlug(news.hero.publishedAt)}/${getSlug(news.hero)}`}
                 className={styles.heroCard}
               >
-                {news.hero.mainImage?.asset?.url && (
+                {getImageUrl(news.hero) !== '/og-image.png' && (
                   <div className={styles.heroImage}>
                     <Image
-                      src={urlFor(news.hero.mainImage).width(1000).height(700).quality(75).auto('format').url()}
-                      alt={news.hero.mainImage.alt || news.hero.title}
+                      src={getImageUrl(news.hero)}
+                      alt={news.hero.mainImage?.alt || news.hero.title}
                       fill
                       priority
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -198,14 +142,14 @@ async function CategoryContent({ slug }: { slug: string }) {
           <div className={styles.centerColumn}>
             {news.centerTop && (
               <Link
-                href={`/news/${getDateSlug(news.centerTop.publishedAt)}/${news.centerTop.slug.current}`}
+                href={`/news/${getDateSlug(news.centerTop.publishedAt)}/${getSlug(news.centerTop)}`}
                 className={styles.topCard}
               >
-                {news.centerTop.mainImage?.asset?.url && (
+                {getImageUrl(news.centerTop) !== '/og-image.png' && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.centerTop.mainImage).width(600).height(375).quality(75).auto('format').url()}
-                      alt={news.centerTop.mainImage.alt || news.centerTop.title}
+                      src={getImageUrl(news.centerTop)}
+                      alt={news.centerTop.mainImage?.alt || news.centerTop.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     />
@@ -220,19 +164,19 @@ async function CategoryContent({ slug }: { slug: string }) {
               <div className={styles.newsList}>
                 {news.centerList.map((item: any) => (
                   <Link
-                    key={item.slug.current}
-                    href={`/news/${getDateSlug(item.publishedAt)}/${item.slug.current}`}
+                    key={getSlug(item)}
+                    href={`/news/${getDateSlug(item.publishedAt)}/${getSlug(item)}`}
                     className={styles.listCard}
                   >
                     <div className={styles.listContent}>
                       <h4 className={styles.listTitle}>{item.title}</h4>
                       <time className={styles.listDate}>{formatDate(item.publishedAt)}</time>
                     </div>
-                    {item.mainImage?.asset?.url && (
+                    {getImageUrl(item) !== '/og-image.png' && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(200).height(133).quality(70).auto('format').url()}
-                          alt={item.mainImage.alt || item.title}
+                          src={getImageUrl(item)}
+                          alt={item.mainImage?.alt || item.title}
                           fill
                           sizes="(max-width: 768px) 80px, 100px"
                         />
@@ -248,14 +192,14 @@ async function CategoryContent({ slug }: { slug: string }) {
           <div className={styles.rightColumn}>
             {news.rightTop && (
               <Link
-                href={`/news/${getDateSlug(news.rightTop.publishedAt)}/${news.rightTop.slug.current}`}
+                href={`/news/${getDateSlug(news.rightTop.publishedAt)}/${getSlug(news.rightTop)}`}
                 className={styles.topCard}
               >
-                {news.rightTop.mainImage?.asset?.url && (
+                {getImageUrl(news.rightTop) !== '/og-image.png' && (
                   <div className={styles.topImage}>
                     <Image
-                      src={urlFor(news.rightTop.mainImage).width(600).height(375).quality(75).auto('format').url()}
-                      alt={news.rightTop.mainImage.alt || news.rightTop.title}
+                      src={getImageUrl(news.rightTop)}
+                      alt={news.rightTop.mainImage?.alt || news.rightTop.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     />
@@ -270,19 +214,19 @@ async function CategoryContent({ slug }: { slug: string }) {
               <div className={styles.newsList}>
                 {news.rightList.map((item: any) => (
                   <Link
-                    key={item.slug.current}
-                    href={`/news/${getDateSlug(item.publishedAt)}/${item.slug.current}`}
+                    key={getSlug(item)}
+                    href={`/news/${getDateSlug(item.publishedAt)}/${getSlug(item)}`}
                     className={styles.listCard}
                   >
                     <div className={styles.listContent}>
                       <h4 className={styles.listTitle}>{item.title}</h4>
                       <time className={styles.listDate}>{formatDate(item.publishedAt)}</time>
                     </div>
-                    {item.mainImage?.asset?.url && (
+                    {getImageUrl(item) !== '/og-image.png' && (
                       <div className={styles.listImage}>
                         <Image
-                          src={urlFor(item.mainImage).width(200).height(133).quality(70).auto('format').url()}
-                          alt={item.mainImage.alt || item.title}
+                          src={getImageUrl(item)}
+                          alt={item.mainImage?.alt || item.title}
                           fill
                           sizes="(max-width: 768px) 80px, 100px"
                         />
@@ -298,16 +242,7 @@ async function CategoryContent({ slug }: { slug: string }) {
         {news.youtubeVideos && news.youtubeVideos.length > 0 && (
           <VideoCarousel
             title="YouTube видеолор"
-            videos={news.youtubeVideos.map((video: any) => ({
-              _id: video._id,
-              title: video.title,
-              slug: video.slug,
-              image: video.thumbnail?.asset?.url || '/og-image.png',
-              excerpt: video.description,
-              category: video.category,
-              duration: video.duration,
-              thumbnail: video.thumbnail,
-            }))}
+            videos={news.youtubeVideos}
             link="/video"
           />
         )}
@@ -329,15 +264,15 @@ async function CategoryContent({ slug }: { slug: string }) {
             <div className={styles.moreGrid}>
               {news.moreNews.map((item: any) => (
                 <Link
-                  key={item.slug.current}
-                  href={`/news/${getDateSlug(item.publishedAt)}/${item.slug.current}`}
+                  key={getSlug(item)}
+                  href={`/news/${getDateSlug(item.publishedAt)}/${getSlug(item)}`}
                   className={styles.moreCard}
                 >
-                  {item.mainImage?.asset?.url && (
+                  {getImageUrl(item) !== '/og-image.png' && (
                     <div className={styles.moreImage}>
                       <Image
-                        src={urlFor(item.mainImage).width(500).height(350).quality(75).auto('format').url()}
-                        alt={item.mainImage.alt || item.title}
+                        src={getImageUrl(item)}
+                        alt={item.mainImage?.alt || item.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
@@ -377,11 +312,7 @@ export default async function CategoryPage({ params }: Props) {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
-  const category = await sanityFetch<any>({
-    query: `*[_type == "category" && slug.current == $slug][0] { title, description }`,
-    params: { slug },
-    tags: ['categories'],
-  });
+  const category = await getCategoryBySlug(slug);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
   const categoryUrl = `${siteUrl}/category/${slug}`;

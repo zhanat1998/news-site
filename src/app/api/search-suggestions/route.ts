@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sanityFetch } from '@/sanity/lib/client';
-
-const suggestionsQuery = `
-  *[_type == "post" && title match $searchQuery] | order(publishedAt desc) [0...8] {
-    _id,
-    title,
-    "slug": slug.current,
-    publishedAt
-  }
-`;
+import { searchPosts } from '@/lib/strapi/api';
+import { adaptPosts } from '@/lib/strapi/adapters';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -19,12 +11,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const results = await sanityFetch<any[]>({
-      query: suggestionsQuery,
-      params: { searchQuery: `${query}*` },
-      tags: ['posts'],
-      revalidate: 60,
-    });
+    const postsRaw = await searchPosts(query, 8);
+    const results = adaptPosts(postsRaw).map(post => ({
+      _id: post._id,
+      title: post.title,
+      slug: post.slug,
+      publishedAt: post.publishedAt,
+    }));
 
     return NextResponse.json({ suggestions: results });
   } catch (error) {

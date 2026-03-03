@@ -1,71 +1,39 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
-import { urlFor } from '@/sanity/lib/image';
+import { getAdsByPlacement } from '@/lib/strapi/api';
+import { getStrapiImageUrl } from '@/lib/strapi/client';
 import styles from './AdBanner.module.scss';
-
-interface Ad {
-  _id: string;
-  title: string;
-  placement: string;
-  image: {
-    asset: {
-      _ref: string;
-    };
-    alt?: string;
-  };
-  link: string;
-}
 
 interface AdBannerProps {
   placement: 'home_top' | 'home_middle' | 'home_bottom' | 'category_page';
   className?: string;
 }
 
-async function getAd(placement: string): Promise<Ad | null> {
-  const ad = await client.fetch<Ad | null>(
-    groq`*[_type == "ad" && placement == $placement][0] {
-      _id,
-      title,
-      placement,
-      image,
-      link
-    }`,
-    { placement },
-    { next: { revalidate: 60, tags: ['ads'] } }
-  );
-
-  return ad;
-}
-
-async function getAds(placement: string, limit: number = 3): Promise<Ad[]> {
-  const ads = await client.fetch<Ad[]>(
-    groq`*[_type == "ad" && placement == $placement][0...$limit] {
-      _id,
-      title,
-      placement,
-      image,
-      link
-    }`,
-    { placement, limit: limit - 1 },
-    { next: { revalidate: 60, tags: ['ads'] } }
-  );
-
-  return ads || [];
-}
+// Map frontend placement names to Strapi placement values
+const placementMap: Record<string, string> = {
+  'home_top': 'header',
+  'home_middle': 'sidebar',
+  'home_bottom': 'footer',
+  'category_page': 'article',
+};
 
 export default async function AdBanner({ placement, className = '' }: AdBannerProps) {
+  const strapiPlacement = placementMap[placement] || placement;
+  const ads = await getAdsByPlacement(strapiPlacement);
+
+  if (!ads || ads.length === 0) {
+    return null;
+  }
+
+  const ad = ads[0];
+  const imageUrl = getStrapiImageUrl(ad.image?.[0]);
+
+  if (imageUrl === '/placeholder.jpg') {
+    return null;
+  }
+
   // home_top үчүн бир эле жарнаманы 3 жолу көрсөт (desktop)
   if (placement === 'home_top') {
-    const ad = await getAd(placement);
-
-    if (!ad || !ad.image) {
-      return null;
-    }
-
-    const imageUrl = urlFor(ad.image).width(600).quality(85).auto('format').url();
-
     return (
       <div className={`${styles.adBannerRow} ${className}`} data-ad-placement={placement}>
         <span className={styles.adLabel}>Жарнама</span>
@@ -73,14 +41,14 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
           {[1, 2, 3].map((i) => (
             <Link
               key={i}
-              href={ad.link}
+              href={ad.link || '#'}
               target="_blank"
               rel="noopener noreferrer sponsored"
               className={styles.adGridItem}
             >
               <Image
                 src={imageUrl}
-                alt={ad.image.alt || ad.title}
+                alt={ad.imageAlt || ad.title}
                 width={600}
                 height={400}
                 className={styles.adGridImage}
@@ -93,13 +61,6 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
   }
 
   // Башка placement үчүн 1 жарнама
-  const ad = await getAd(placement);
-
-  if (!ad || !ad.image) {
-    return null;
-  }
-
-  const imageUrl = urlFor(ad.image).width(1600).quality(90).auto('format').url();
   const placementClass = styles[placement] || '';
 
   return (
@@ -109,7 +70,7 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
     >
       <span className={styles.adLabel}>Жарнама</span>
       <Link
-        href={ad.link}
+        href={ad.link || '#'}
         target="_blank"
         rel="noopener noreferrer sponsored"
         className={styles.adLink}
@@ -117,7 +78,7 @@ export default async function AdBanner({ placement, className = '' }: AdBannerPr
         <div className={styles.imageContainer}>
           <Image
             src={imageUrl}
-            alt={ad.image.alt || ad.title}
+            alt={ad.imageAlt || ad.title}
             width={1600}
             height={600}
             className={styles.adImage}
