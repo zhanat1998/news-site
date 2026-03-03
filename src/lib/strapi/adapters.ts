@@ -6,6 +6,53 @@
 
 import { StrapiPost, StrapiVideo, StrapiCategory, getStrapiImageUrl } from './client';
 
+/**
+ * Format body content from Strapi richtext
+ * Converts plain text with line breaks to proper HTML
+ */
+function formatBody(body: string | undefined): string {
+  if (!body) return '';
+
+  // If already contains HTML tags, return as is
+  if (body.includes('<p>') || body.includes('<h1>') || body.includes('<h2>') || body.includes('<div>')) {
+    return body;
+  }
+
+  // Split by double line breaks (paragraphs)
+  const paragraphs = body.split(/\n\n+/);
+
+  const formatted = paragraphs.map(p => {
+    // Trim whitespace
+    let text = p.trim();
+    if (!text) return '';
+
+    // Convert markdown headings
+    // ## Heading -> <h2>
+    if (text.startsWith('## ')) {
+      return `<h3>${text.slice(3)}</h3>`;
+    }
+    // # Heading -> <h2>
+    if (text.startsWith('# ')) {
+      return `<h2>${text.slice(2)}</h2>`;
+    }
+    // #Heading (no space) -> <h2>
+    if (text.startsWith('#') && !text.startsWith('##')) {
+      const headingText = text.slice(1).trim();
+      if (headingText) {
+        return `<h2>${headingText}</h2>`;
+      }
+    }
+
+    // Convert single line breaks to <br> within paragraphs
+    text = text.replace(/\n/g, '<br>');
+
+    // Wrap in paragraph tag
+    return `<p>${text}</p>`;
+  }).filter(Boolean);
+
+  return formatted.join('\n');
+}
+
 // Post adapter - converts Strapi post to Sanity-like format
 export function adaptPost(post: StrapiPost) {
   const imageUrl = getStrapiImageUrl(post.mainImage);
@@ -29,8 +76,8 @@ export function adaptPost(post: StrapiPost) {
       title: post.category.title,
       slug: { current: post.category.slug },
     } : undefined,
-    // Body is already HTML from migration
-    body: post.body,
+    // Format body: convert line breaks to paragraphs, markdown to HTML
+    body: formatBody(post.body),
   };
 }
 
