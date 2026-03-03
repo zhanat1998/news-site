@@ -7,27 +7,65 @@
 import { StrapiPost, StrapiVideo, StrapiCategory, getStrapiImageUrl } from './client';
 
 /**
+ * Convert markdown images to HTML img tags
+ * ![alt text](url) -> <figure><img src="url" alt="alt text" /></figure>
+ */
+function convertMarkdownImages(text: string): string {
+  // Match markdown image syntax: ![alt](url)
+  const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+
+  return text.replace(imageRegex, (_match, alt, url) => {
+    return `<figure class="body-image"><img src="${url}" alt="${alt || ''}" loading="lazy" />${alt ? `<figcaption>${alt}</figcaption>` : ''}</figure>`;
+  });
+}
+
+/**
+ * Convert markdown links to HTML anchor tags
+ * [text](url) -> <a href="url">text</a>
+ */
+function convertMarkdownLinks(text: string): string {
+  // Match markdown link syntax: [text](url) but not images
+  const linkRegex = /(?<!!)\[([^\]]+)\]\(([^)]+)\)/g;
+
+  return text.replace(linkRegex, (_match, linkText, url) => {
+    const isExternal = url.startsWith('http');
+    return `<a href="${url}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>${linkText}</a>`;
+  });
+}
+
+/**
  * Format body content from Strapi richtext
  * Converts plain text with line breaks to proper HTML
  */
 function formatBody(body: string | undefined): string {
   if (!body) return '';
 
-  // If already contains HTML tags, return as is
-  if (body.includes('<p>') || body.includes('<h1>') || body.includes('<h2>') || body.includes('<div>')) {
-    return body;
+  // First, convert markdown images throughout the entire body
+  let processedBody = convertMarkdownImages(body);
+
+  // Convert markdown links
+  processedBody = convertMarkdownLinks(processedBody);
+
+  // If already contains HTML tags (like <p>, <h1>, etc.), just return with image conversion
+  if (processedBody.includes('<p>') || processedBody.includes('<h1>') || processedBody.includes('<h2>') || processedBody.includes('<div>')) {
+    return processedBody;
   }
 
   // Split by double line breaks (paragraphs)
-  const paragraphs = body.split(/\n\n+/);
+  const paragraphs = processedBody.split(/\n\n+/);
 
   const formatted = paragraphs.map(p => {
     // Trim whitespace
     let text = p.trim();
     if (!text) return '';
 
+    // If this paragraph is just a figure (image), return as-is
+    if (text.startsWith('<figure')) {
+      return text;
+    }
+
     // Convert markdown headings
-    // ## Heading -> <h2>
+    // ## Heading -> <h3>
     if (text.startsWith('## ')) {
       return `<h3>${text.slice(3)}</h3>`;
     }
