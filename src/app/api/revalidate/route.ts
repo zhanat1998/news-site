@@ -2,12 +2,11 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Sanity webhook body type
-interface SanityWebhookBody {
-  _type: string;
-  _id: string;
-  slug?: { current: string };
-  category?: { slug: { current: string } };
+// Strapi webhook body type
+interface StrapiWebhookBody {
+  event?: string;
+  model?: string;
+  entry?: Record<string, unknown>;
 }
 
 // Бардык кэшти тазалоо функциясы
@@ -21,7 +20,7 @@ function revalidateAll() {
   revalidateTag('instagram');
   revalidateTag('tiktok');
   revalidateTag('hero');
-  revalidateTag('ads');  // Жарнамалар
+  revalidateTag('ads');
 
   // Бардык негизги жолдорду revalidate (page типи менен)
   revalidatePath('/', 'page');
@@ -39,77 +38,73 @@ export async function POST(request: NextRequest) {
     const secret = request.headers.get('x-sanity-webhook-secret');
 
     if (secret !== process.env.SANITY_WEBHOOK_SECRET) {
-      console.log('Invalid webhook secret');
+      console.log('Invalid webhook secret, received:', secret);
       return NextResponse.json(
         { message: 'Invalid secret' },
         { status: 401 }
       );
     }
 
-    const body: SanityWebhookBody = await request.json();
-    console.log('Webhook received:', body);
-
-    if (!body?._type) {
-      // Эгер _type жок болсо - баарын revalidate кыл (delete учурунда)
-      revalidateAll();
-      return NextResponse.json({
-        revalidated: true,
-        type: 'all',
-        now: Date.now(),
-      });
+    // Strapi webhook body
+    let body: StrapiWebhookBody = {};
+    try {
+      body = await request.json();
+    } catch {
+      // Body жок болсо да иштейт
     }
 
-    // Тип боюнча revalidation
-    switch (body._type) {
-      case 'post':
-      case 'video':
-        // Бардыгын revalidate кыл - delete/create/update баары үчүн
-        revalidateAll();
-        console.log('Revalidated: ALL (post/video change)');
-        break;
+    console.log('Webhook received:', body);
 
-      case 'category':
-        revalidateTag('categories');
-        revalidatePath('/', 'layout');
-        revalidatePath('/category', 'layout');
-        console.log('Revalidated: categories');
-        break;
+    // Strapi event же model бар болсо
+    const model = body?.model;
 
-      case 'author':
-        revalidateTag('authors');
-        revalidateTag('posts');
-        revalidatePath('/', 'layout');
-        console.log('Revalidated: authors, posts');
-        break;
-
-      case 'ad':
-        revalidateTag('ads');
-        revalidatePath('/', 'page');
-        revalidatePath('/category', 'page');
-        console.log('Revalidated: ads');
-        break;
-
-      default:
-        // Башка типтер үчүн баарын revalidate
-        revalidateAll();
-        console.log('Revalidated: ALL (unknown type)');
+    if (model) {
+      switch (model) {
+        case 'post':
+        case 'video':
+          revalidateAll();
+          console.log(`Revalidated: ALL (${model} change)`);
+          break;
+        case 'category':
+          revalidateTag('categories');
+          revalidatePath('/', 'layout');
+          revalidatePath('/category', 'layout');
+          console.log('Revalidated: categories');
+          break;
+        case 'ad':
+          revalidateTag('ads');
+          revalidatePath('/', 'page');
+          console.log('Revalidated: ads');
+          break;
+        default:
+          revalidateAll();
+          console.log('Revalidated: ALL (unknown model)');
+      }
+    } else {
+      // Model жок болсо баарын revalidate
+      revalidateAll();
+      console.log('Revalidated: ALL');
     }
 
     return NextResponse.json({
       revalidated: true,
-      type: body._type,
+      model: model || 'all',
+      event: body?.event || 'manual',
       now: Date.now(),
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Revalidation error:', error);
     // Ката болсо да баарын revalidate кылып кой
     try {
       revalidateAll();
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { message: error.message },
-      { status: 500 }
+      { message, revalidated: true },
+      { status: 200 } // 200 кайтар, ката болсо да
     );
   }
 }
