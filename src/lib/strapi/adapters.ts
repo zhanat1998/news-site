@@ -34,6 +34,63 @@ function convertMarkdownLinks(text: string): string {
 }
 
 /**
+ * Convert markdown formatting to HTML
+ * **bold** -> <strong>bold</strong>
+ * *italic* -> <em>italic</em>
+ * ~~strikethrough~~ -> <del>strikethrough</del>
+ */
+function convertMarkdownFormatting(text: string): string {
+  // Bold: **text** or __text__
+  let result = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  result = result.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+
+  // Italic: *text* or _text_ (but not inside words)
+  result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+  result = result.replace(/(?<!_)_([^_]+)_(?!_)/g, '<em>$1</em>');
+
+  // Strikethrough: ~~text~~
+  result = result.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+  return result;
+}
+
+/**
+ * Convert markdown headings to HTML
+ * # -> h1, ## -> h2, ### -> h3, #### -> h4, ##### -> h5
+ */
+function convertMarkdownHeadings(text: string): string {
+  // Process line by line for headings
+  const lines = text.split('\n');
+
+  return lines.map(line => {
+    const trimmed = line.trim();
+
+    // ##### Heading 5
+    if (trimmed.startsWith('##### ')) {
+      return `<h5>${trimmed.slice(6)}</h5>`;
+    }
+    // #### Heading 4
+    if (trimmed.startsWith('#### ')) {
+      return `<h4>${trimmed.slice(5)}</h4>`;
+    }
+    // ### Heading 3
+    if (trimmed.startsWith('### ')) {
+      return `<h3>${trimmed.slice(4)}</h3>`;
+    }
+    // ## Heading 2
+    if (trimmed.startsWith('## ')) {
+      return `<h2>${trimmed.slice(3)}</h2>`;
+    }
+    // # Heading 1
+    if (trimmed.startsWith('# ')) {
+      return `<h1>${trimmed.slice(2)}</h1>`;
+    }
+
+    return line;
+  }).join('\n');
+}
+
+/**
  * Format body content from Strapi richtext
  * Converts plain text with line breaks to proper HTML
  */
@@ -45,6 +102,12 @@ function formatBody(body: string | undefined): string {
 
   // Convert markdown links
   processedBody = convertMarkdownLinks(processedBody);
+
+  // Convert markdown formatting (bold, italic, strikethrough)
+  processedBody = convertMarkdownFormatting(processedBody);
+
+  // Convert markdown headings (# h1, ## h2, ### h3, etc.)
+  processedBody = convertMarkdownHeadings(processedBody);
 
   // If already contains HTML tags (like <p>, <h1>, etc.), just return with image conversion
   if (processedBody.includes('<p>') || processedBody.includes('<h1>') || processedBody.includes('<h2>') || processedBody.includes('<div>')) {
@@ -59,26 +122,9 @@ function formatBody(body: string | undefined): string {
     let text = p.trim();
     if (!text) return '';
 
-    // If this paragraph is just a figure (image), return as-is
-    if (text.startsWith('<figure')) {
+    // If this paragraph is just a figure (image) or heading, return as-is
+    if (text.startsWith('<figure') || text.startsWith('<h1') || text.startsWith('<h2') || text.startsWith('<h3') || text.startsWith('<h4') || text.startsWith('<h5')) {
       return text;
-    }
-
-    // Convert markdown headings
-    // ## Heading -> <h3>
-    if (text.startsWith('## ')) {
-      return `<h3>${text.slice(3)}</h3>`;
-    }
-    // # Heading -> <h2>
-    if (text.startsWith('# ')) {
-      return `<h2>${text.slice(2)}</h2>`;
-    }
-    // #Heading (no space) -> <h2>
-    if (text.startsWith('#') && !text.startsWith('##')) {
-      const headingText = text.slice(1).trim();
-      if (headingText) {
-        return `<h2>${headingText}</h2>`;
-      }
     }
 
     // Convert single line breaks to <br> within paragraphs
