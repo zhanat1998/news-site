@@ -40,13 +40,11 @@ function convertMarkdownLinks(text: string): string {
  * ~~strikethrough~~ -> <del>strikethrough</del>
  */
 function convertMarkdownFormatting(text: string): string {
-  // Bold: **text** or __text__
+  // Bold: **text** only (not __text__ - underscores break URLs)
   let result = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  result = result.replace(/__([^_]+)__/g, '<strong>$1</strong>');
 
-  // Italic: *text* or _text_ (but not inside words)
+  // Italic: *text* only (not _text_ - underscores break URLs)
   result = result.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
-  result = result.replace(/(?<!_)_([^_]+)_(?!_)/g, '<em>$1</em>');
 
   // Strikethrough: ~~text~~
   result = result.replace(/~~([^~]+)~~/g, '<del>$1</del>');
