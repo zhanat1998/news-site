@@ -55,6 +55,15 @@ function convertMarkdownFormatting(text: string): string {
 }
 
 /**
+ * Convert markdown lists to HTML
+ * - item -> • item
+ */
+function convertMarkdownLists(text: string): string {
+  // Convert lines starting with "- " to bullet points
+  return text.replace(/^- /gm, '• ').replace(/\n- /g, '\n• ');
+}
+
+/**
  * Convert markdown headings to HTML
  * # -> h1, ## -> h2, ### -> h3, #### -> h4, ##### -> h5
  */
@@ -108,6 +117,9 @@ function formatBody(body: string | undefined): string {
 
   // Convert markdown headings (# h1, ## h2, ### h3, etc.)
   processedBody = convertMarkdownHeadings(processedBody);
+
+  // Convert markdown lists (- item -> • item)
+  processedBody = convertMarkdownLists(processedBody);
 
   // If already contains HTML tags (like <p>, <h1>, etc.), just return with image conversion
   if (processedBody.includes('<p>') || processedBody.includes('<h1>') || processedBody.includes('<h2>') || processedBody.includes('<div>')) {
