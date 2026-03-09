@@ -268,6 +268,47 @@
     }
   }
 
+  // Body list from markdown (bigger bullet, more indentation)
+  :global(.body-list) {
+    list-style: none;
+    padding-left: 32px;
+    margin: 24px 0;
+
+    @media (max-width: 768px) {
+      padding-left: 24px;
+      margin: 18px 0;
+    }
+
+    li {
+      position: relative;
+      margin-bottom: 14px;
+      line-height: 1.75;
+      padding-left: 8px;
+
+      @media (max-width: 768px) {
+        margin-bottom: 12px;
+      }
+
+      &::before {
+        content: "•";
+        position: absolute;
+        left: -24px;
+        font-size: 24px;
+        line-height: 1.2;
+        color: #0066cc;
+
+        @media (max-width: 768px) {
+          left: -20px;
+          font-size: 20px;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
   ol {
     list-style-type: decimal;
 

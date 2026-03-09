@@ -54,11 +54,40 @@ function convertMarkdownFormatting(text: string): string {
 
 /**
  * Convert markdown lists to HTML
- * - item -> • item
+ * - item -> <ul><li>item</li></ul>
  */
 function convertMarkdownLists(text: string): string {
-  // Convert lines starting with "- " to bullet points
-  return text.replace(/^- /gm, '• ').replace(/\n- /g, '\n• ');
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inList = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const isListItem = line.trimStart().startsWith('- ');
+
+    if (isListItem) {
+      if (!inList) {
+        result.push('<ul class="body-list">');
+        inList = true;
+      }
+      // Remove the "- " prefix and wrap in <li>
+      const content = line.replace(/^\s*- /, '');
+      result.push(`<li>${content}</li>`);
+    } else {
+      if (inList) {
+        result.push('</ul>');
+        inList = false;
+      }
+      result.push(line);
+    }
+  }
+
+  // Close list if still open at end
+  if (inList) {
+    result.push('</ul>');
+  }
+
+  return result.join('\n');
 }
 
 /**
