@@ -272,21 +272,21 @@
   :global(.body-list) {
     list-style: none;
     padding-left: 32px;
-    margin: 24px 0;
+    margin: 16px 0;
 
     @media (max-width: 768px) {
       padding-left: 24px;
-      margin: 18px 0;
+      margin: 12px 0;
     }
 
     li {
       position: relative;
-      margin-bottom: 14px;
+      margin-bottom: 6px;
       line-height: 1.75;
       padding-left: 8px;
 
       @media (max-width: 768px) {
-        margin-bottom: 12px;
+        margin-bottom: 4px;
       }
 
       &::before {
