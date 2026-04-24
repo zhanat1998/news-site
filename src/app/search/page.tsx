@@ -1,6 +1,6 @@
 // src/app/search/page.tsx
-import { searchPosts } from '@/lib/strapi/api';
-import { adaptPosts } from '@/lib/strapi/adapters';
+import { searchPosts } from '@/lib/sanity/api';
+import { adaptPosts } from '@/lib/sanity/adapters';
 import SearchResults from "@/components/search/SearchResults/SearchResults";
 import Pagination from "@/components/search/Pagination/Pagination";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";

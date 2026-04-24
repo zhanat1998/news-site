@@ -9,13 +9,13 @@ import SideBar from "@/components/newsDetail/SideBar";
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
 
-// Strapi imports
+// Sanity imports
 import {
   getPostBySlug,
   getRelatedPosts,
   getLatestPosts,
-} from '@/lib/strapi/api';
-import { adaptPost, adaptPosts } from '@/lib/strapi/adapters';
+} from '@/lib/sanity/api';
+import { adaptPost, adaptPosts } from '@/lib/sanity/adapters';
 
 // Extract YouTube video ID from various URL formats
 function extractYouTubeId(url: string): string {
@@ -45,7 +45,7 @@ export default async function NewsDetailPage({ params }: Props) {
     notFound();
   }
 
-  const post = adaptPost(postRaw);
+  const post = adaptPost(postRaw)!;
   const categorySlug = post.category?.slug?.current || '';
 
   // Related posts by category
@@ -145,7 +145,7 @@ export async function generateMetadata({ params }: Props) {
     return { title: 'Табылган жок' };
   }
 
-  const post = adaptPost(postRaw);
+  const post = adaptPost(postRaw)!;
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
   const postUrl = `${siteUrl}/news/${date}/${slug}`;

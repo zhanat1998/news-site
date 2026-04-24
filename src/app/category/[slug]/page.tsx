@@ -10,14 +10,13 @@ import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import VideoCarousel from "@/components/video/VideoCarousel/VideoCarousel";
 import InstagramCarousel from "@/components/video/InstagramCarousel/InstagramCarousel";
 
-// Strapi imports
+// Sanity imports
 import {
   getCategoryBySlug,
   getPostsByCategory,
   getVideosByCategory,
-} from '@/lib/strapi/api';
-import { getStrapiImageUrl } from '@/lib/strapi/client';
-import { adaptPosts, adaptVideos, formatVideosForCarousel } from '@/lib/strapi/adapters';
+} from '@/lib/sanity/api';
+import { adaptPosts, adaptVideos, formatVideosForCarousel } from '@/lib/sanity/adapters';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -252,7 +251,7 @@ async function CategoryContent({ slug }: { slug: string }) {
           <Suspense fallback={null}>
             <InstagramCarousel
               title="Instagram видеолор"
-              videos={news.instagramVideos}
+              videos={news.instagramVideos as any}
             />
           </Suspense>
         )}

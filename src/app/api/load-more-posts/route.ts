@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getPostsByCategory } from '@/lib/strapi/api';
-import { adaptPosts } from '@/lib/strapi/adapters';
+import { getPostsByCategory } from '@/lib/sanity/api';
+import { adaptPosts } from '@/lib/sanity/adapters';
 
 export async function POST(request: Request) {
   try {

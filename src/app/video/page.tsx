@@ -1,6 +1,6 @@
 // src/app/video/page.tsx
-import { getYouTubeVideos, getInstagramVideos } from '@/lib/strapi/api';
-import { adaptVideos } from '@/lib/strapi/adapters';
+import { getYouTubeVideos, getInstagramVideos } from '@/lib/sanity/api';
+import { adaptVideos } from '@/lib/sanity/adapters';
 import styles from './page.module.scss';
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import VideoSection from "@/components/video/VideoSection/VideoSection";

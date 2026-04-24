@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAdsByPlacement } from '@/lib/strapi/api';
-import { getStrapiImageUrl } from '@/lib/strapi/client';
+import { getAdsByPlacement } from '@/lib/sanity/api';
 import styles from './AdBanner.module.scss';
 
 interface AdBannerProps {
@@ -9,24 +8,15 @@ interface AdBannerProps {
   className?: string;
 }
 
-// Map frontend placement names to Strapi placement values
-const placementMap: Record<string, string> = {
-  'home_top': 'header',
-  'home_middle': 'sidebar',
-  'home_bottom': 'footer',
-  'category_page': 'article',
-};
-
 export default async function AdBanner({ placement, className = '' }: AdBannerProps) {
-  const strapiPlacement = placementMap[placement] || placement;
-  const ads = await getAdsByPlacement(strapiPlacement);
+  const ads = await getAdsByPlacement(placement);
 
   if (!ads || ads.length === 0) {
     return null;
   }
 
   const ad = ads[0];
-  const imageUrl = getStrapiImageUrl(ad.image?.[0]);
+  const imageUrl = ad?.image?.asset?.url || '/placeholder.jpg';
 
   if (imageUrl === '/placeholder.jpg') {
     return null;

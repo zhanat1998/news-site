@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchPosts } from '@/lib/strapi/api';
-import { adaptPosts } from '@/lib/strapi/adapters';
+import { searchPosts } from '@/lib/sanity/api';
+import { adaptPosts } from '@/lib/sanity/adapters';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -12,11 +12,11 @@ export async function GET(request: NextRequest) {
 
   try {
     const postsRaw = await searchPosts(query, 8);
-    const results = adaptPosts(postsRaw).map(post => ({
-      _id: post._id,
-      title: post.title,
-      slug: post.slug,
-      publishedAt: post.publishedAt,
+    const results = adaptPosts(postsRaw).filter(Boolean).map(post => ({
+      _id: post!._id,
+      title: post!.title,
+      slug: post!.slug,
+      publishedAt: post!.publishedAt,
     }));
 
     return NextResponse.json({ suggestions: results });

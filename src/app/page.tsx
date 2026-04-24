@@ -14,21 +14,21 @@ import MainContainer from "@/components/ui/MainContainer/MainContainer";
 import InteractiveHeroBanner from "@/components/news/InteractiveHeroBanner/InteractiveHeroBanner";
 import AdBanner from "@/components/ads/AdBanner";
 
-// Strapi imports
+// Sanity imports
 import {
   getLatestPosts,
   getYouTubeVideos,
   getInstagramVideos,
   getTikTokVideos,
   getPostsByCategory,
-} from '@/lib/strapi/api';
+  fetchCategoryColumnsData,
+  fetchCategoryNewsGridData,
+} from '@/lib/sanity/api';
 import {
   adaptPosts,
   adaptVideos,
   formatVideosForCarousel,
-  fetchCategoryColumnsData,
-  fetchCategoryNewsGridData,
-} from '@/lib/strapi/adapters';
+} from '@/lib/sanity/adapters';
 
 export default async function Home() {
   const [
