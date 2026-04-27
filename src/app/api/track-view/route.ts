@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'postId же slug керек' }, { status: 400 });
     }
 
-    // Пост табуу (slug же id менен)
+    // Пост табуу
     let resolvedPostId = postId;
     if (!postId && slug) {
       const post = await writeClient.fetch(
@@ -23,27 +23,40 @@ export async function POST(request: NextRequest) {
       resolvedPostId = post._id;
     }
 
-    // User маалыматтары
-    const userAgent = request.headers.get('user-agent') || '';
-    const referer = request.headers.get('referer') || '';
+    const country = (
+      request.headers.get('x-vercel-ip-country') ||
+      request.headers.get('cf-ipcountry') ||
+      'Unknown'
+    ).replace(/[^A-Za-z_]/g, '_'); // объект ачкычы коопсуз болсун
 
-    // Геолокация (Vercel headers)
-    const country = request.headers.get('x-vercel-ip-country') ||
-                    request.headers.get('cf-ipcountry') ||
-                    'Unknown';
+    const dateKey = new Date().toISOString().split('T')[0]; // "2026-04-27"
+    const dailyStatId = `dailyStat-${dateKey}`;
 
-    // Жаңы pageView түзүү
-    await writeClient.create({
-      _type: 'pageView',
-      post: {
-        _type: 'reference',
-        _ref: resolvedPostId,
-      },
-      viewedAt: new Date().toISOString(),
-      userAgent: userAgent.substring(0, 500), // Узундугун чектөө
-      referer: referer.substring(0, 500),
-      country,
-    });
+    await Promise.all([
+      // 1. Посттун viewCount'ун +1 кыл
+      writeClient
+        .patch(resolvedPostId)
+        .setIfMissing({ viewCount: 0 })
+        .inc({ viewCount: 1 })
+        .commit({ autoGenerateArrayKeys: true }),
+
+      // 2. Бүгүнкү күндүк статистиканы жаңырт (бир документ/күн)
+      writeClient
+        .createIfNotExists({
+          _id: dailyStatId,
+          _type: 'dailyStat',
+          date: dateKey,
+          totalViews: 0,
+          countryViews: {},
+        })
+        .then(() =>
+          writeClient
+            .patch(dailyStatId)
+            .setIfMissing({ countryViews: {} })
+            .inc({ totalViews: 1, [`countryViews.${country}`]: 1 })
+            .commit()
+        ),
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (error) {

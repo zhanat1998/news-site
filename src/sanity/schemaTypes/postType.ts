@@ -126,6 +126,15 @@ export const postType = defineType({
     }),
 
     defineField({
+      name: 'viewCount',
+      title: 'Көрүүлөр',
+      type: 'number',
+      initialValue: 0,
+      readOnly: true,
+      description: 'Авто эсептелет — колдон өзгөртпөңүз',
+    }),
+
+    defineField({
       name: 'body',
       title: 'Негизги текст (Макаланын мазмуну)',
       type: 'blockContent',
