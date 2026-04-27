@@ -11,7 +11,7 @@ import { formatDateForUrl } from '@/utils/date';
 interface Suggestion {
   _id: string;
   title: string;
-  slug: string;
+  slug: { current: string };
   publishedAt: string;
 }
 
@@ -103,7 +103,7 @@ function SearchToggleContent() {
     } else if (e.key === 'Enter' && selectedIndex >= 0) {
       e.preventDefault();
       const selected = suggestions[selectedIndex];
-      window.location.href = `/news/${formatDateForUrl(selected.publishedAt)}/${selected.slug}`;
+      window.location.href = `/news/${formatDateForUrl(selected.publishedAt)}/${selected.slug?.current}`;
     } else if (e.key === 'Escape') {
       setShowSuggestions(false);
     }
@@ -148,7 +148,7 @@ function SearchToggleContent() {
             suggestions.map((item, index) => (
               <Link
                 key={item._id}
-                href={`/news/${formatDateForUrl(item.publishedAt)}/${item.slug}`}
+                href={`/news/${formatDateForUrl(item.publishedAt)}/${item.slug?.current}`}
                 className={`${styles.suggestionItem} ${index === selectedIndex ? styles.selected : ''}`}
                 onClick={handleSuggestionClick}
               >

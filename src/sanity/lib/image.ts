@@ -70,10 +70,22 @@ export const urlFor = (source: SanityImageSource) => {
     return new CloudinaryUrlBuilder('/placeholder.jpg');
   }
 
-  // Cloudinary/Strapi URL текшерүү
+  // Cloudinary/Strapi URL текшерүү (http/https)
   const cloudinaryUrl = isCloudinaryUrl(source);
   if (cloudinaryUrl) {
     return new CloudinaryUrlBuilder(cloudinaryUrl);
+  }
+
+  // Эгер asset.url бар болсо (local path же башка URL), түздөн-түз колдон
+  const assetUrl = (source as any)?.asset?.url;
+  if (assetUrl) {
+    return new CloudinaryUrlBuilder(assetUrl);
+  }
+
+  // Sanity _ref форматын текшерүү мурун builder.image() чакырбай
+  const ref = (source as any)?.asset?._ref ?? (typeof source === 'string' ? source : null);
+  if (ref && !/^image-[a-zA-Z0-9]+-\d+x\d+-\w+$/.test(ref)) {
+    return new CloudinaryUrlBuilder('/placeholder.jpg');
   }
 
   // Sanity URL builder колдонуу
