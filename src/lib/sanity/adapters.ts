@@ -5,6 +5,7 @@
  */
 
 import { toHTML } from '@portabletext/to-html';
+import { urlFor } from '@/sanity/lib/image';
 
 // Convert Sanity Portable Text body to HTML string
 function formatBody(body: any): string {
@@ -16,7 +17,7 @@ function formatBody(body: any): string {
       components: {
         types: {
           image: ({ value }: any) => {
-            const url = value?.asset?.url || '';
+            const url = value ? urlFor(value).url() : '';
             const alt = value?.alt || '';
             const caption = value?.caption || '';
             return `<figure class="body-image">

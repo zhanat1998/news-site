@@ -135,6 +135,14 @@ export const postType = defineType({
     }),
 
     defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube видео URL',
+      type: 'url',
+      description: 'YouTube шилтемесин кошуңуз (мис: https://www.youtube.com/watch?v=xxxxx)',
+      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+
+    defineField({
       name: 'body',
       title: 'Негизги текст (Макаланын мазмуну)',
       type: 'blockContent',
