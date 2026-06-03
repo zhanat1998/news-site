@@ -1,60 +1,50 @@
 import { NextResponse } from 'next/server';
 import { urlForHQ } from '@/sanity/lib/image';
+import { publishToInstagram } from '@/utils/services/instagramServices';
 
 export async function POST(request: Request) {
     try {
         // 1. Получаем данные новости, которые прислал Sanity Webhook
         const newsData = await request.json();
 
-        // 2. Валидация базовых полей (если нет заголовка, дальше не идем)
+        // 2. Валидация базовых полей
         if (!newsData || !newsData.title) {
-            return NextResponse.json({ success: false, error: 'Данные новости не получены или пустые' }, { status: 400 });
+            return NextResponse.json(
+                { success: false, error: 'Данные новости не получены или пустые' },
+                { status: 400 }
+            );
         }
 
         // 3. Формируем полноценную ссылку на саму новость на сайте "Сокол медиа"
-        // Замени 'https://sokol.media' на реальный рабочий домен сайта, когда он будет на хостинге
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
         const fullNewsUrl = `${siteUrl}/news/${newsData.slug?.current || ''}`;
 
-        // 4. Генерируем прямую ссылку на картинку высокого качества (например, 1200x630 — стандарт для соцсетей)
-        let imageUrl = '';
+        // 4. Генерируем прямую ссылку на картинку высокого качества
+        let imageUrl: string = '';
         if (newsData.mainImage) {
             try {
-                imageUrl = urlForHQ(newsData.mainImage, 1200, 630).url();
+                imageUrl = urlForHQ(newsData.mainImage, 1200, 630);
             } catch (imgError) {
                 console.error('Не удалось сгенерировать URL картинки:', imgError);
             }
         }
 
-        // 5. Собираем чистый объект, оптимизированный для отправки в Facebook и Instagram
-        const payloadForSocials = {
-            title: newsData.title,                      // Заголовок (Башкы аталыш)
-            text: newsData.excerpt || newsData.title,   // Краткое описание (Кыскача сүрөттөмө)
-            link: fullNewsUrl,                         // Ссылка на новость на сайте
-            image: imageUrl                            // Прямая ссылка на картинку для поста
-        };
+        console.log('--- Пакет подготовлен, вызываем сервис интеграции ---');
 
-        console.log('--- Подготовлен пакет для автопостинга ---', payloadForSocials);
+        // 5. Передаем структурированные данные в наш независимый сервис интеграции
+        const isSent = await publishToInstagram({
+            title: newsData.title,
+            text: newsData.excerpt || newsData.title,
+            link: fullNewsUrl,
+            image: imageUrl || undefined // Если картинки нет, сервис подставит дефолтную
+        });
 
-        // 6. Отправляем данные на платформу автоматизации (Make.com)
-        const makeWebhookUrl = process.env.MAKE_AUTOPOSTING_WEBHOOK_URL;
-
-        if (makeWebhookUrl) {
-            const response = await fetch(makeWebhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payloadForSocials),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Ошибка Make.com API: ${response.statusText}`);
-            }
-        } else {
-            console.warn('Внимание: Переменная MAKE_AUTOPOSTING_WEBHOOK_URL не настроена в .env.local. Запрос не отправлен.');
+        if (!isSent) {
+            throw new Error('Сервис интеграции вернул ошибку при отправке в Make.com');
         }
 
         return NextResponse.json(
-            { success: true, message: 'Данные успешно обработаны и отправлены на репост!' },
+            { success: true, message: 'Данные успешно обработаны и отправлены на репост через сервис!' },
             { status: 200 }
         );
 
