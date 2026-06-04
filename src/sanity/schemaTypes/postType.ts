@@ -126,6 +126,14 @@ export const postType = defineType({
     }),
 
     defineField({
+      name: 'sendPushNotification',
+      title: 'Instagram\'га жарыялоо',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Белгилесеңиз, жаңылык Instagram\'га автоматтык жиберилет',
+    }),
+
+    defineField({
       name: 'viewCount',
       title: 'Көрүүлөр',
       type: 'number',
