@@ -1,6 +1,24 @@
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
 import { urlForHQ } from '@/sanity/lib/image';
 import { publishToInstagram, deleteFromInstagram } from '@/utils/services/instagramServices';
+
+function revalidateAll() {
+    revalidateTag('posts');
+    revalidateTag('breaking');
+    revalidateTag('categories');
+    revalidateTag('authors');
+    revalidateTag('videos');
+    revalidateTag('instagram');
+    revalidateTag('tiktok');
+    revalidateTag('hero');
+    revalidateTag('ads');
+    revalidatePath('/', 'page');
+    revalidatePath('/news', 'page');
+    revalidatePath('/category', 'page');
+    revalidatePath('/video', 'page');
+    revalidatePath('/', 'layout');
+}
 
 export async function POST(request: Request) {
     try {
@@ -9,6 +27,9 @@ export async function POST(request: Request) {
         if (!newsData) {
             return NextResponse.json({ success: false, error: 'Маалымат жок' }, { status: 400 });
         }
+
+        // Сайттын кэшин дайыма тазалайт
+        revalidateAll();
 
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
         const fullNewsUrl = `${siteUrl}/news/${newsData.slug?.current || ''}`;
