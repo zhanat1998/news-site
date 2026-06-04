@@ -16,7 +16,7 @@
 .title {
   font-size: 32px;
   font-weight: 700;
-  color: $yellow;
+  color: #00a2e8; // 🔵 МЕНЯЕМ ТУТ: Сделали текст заголовка голубым вместо $yellow
   margin: 0;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@
 .accent {
   width: 4px;
   height: 32px;
-  background: #ff6b00;
+  background: #00a2e8; // 🔵 МЕНЯЕМ ТУТ: Сделали вертикальную палочку голубой вместо #ff6b00
   border-radius: 2px;
 
   @include mobile {
@@ -193,6 +193,6 @@
   transition: color 0.2s;
 
   &:hover {
-    color: #ff6b00;
+    color: #00a2e8; // 🔵 МЕНЯЕМ ТУТ: При наведении на ссылку "Баарын көрүү" она тоже подсветится голубым
   }
 }
