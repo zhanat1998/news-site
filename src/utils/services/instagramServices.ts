@@ -1,14 +1,15 @@
-// Описываем интерфейс для данных публикации
 interface InstagramPostData {
     title?: string;
-    text: string;      // Текст новости/поста обязателен
+    text: string;
     link?: string;
-    image?: string;    // Ссылка на картинку
+    image?: string;
 }
 
-/**
- * Сервис для автоматической публикации постов в Instagram через вебхук Make.com
- */
+interface InstagramDeleteData {
+    title: string;
+    link: string;
+}
+
 export const publishToInstagram = async (noteData: InstagramPostData): Promise<boolean> => {
     const WEBHOOK_URL: string = 'https://hook.eu1.make.com/cb5ib9mhv510joiqgr6u7ze44hm10bc6';
 
@@ -41,6 +42,33 @@ export const publishToInstagram = async (noteData: InstagramPostData): Promise<b
         } else {
             console.error('Неизвестная ошибка при отправке в Instagram:', error);
         }
+        return false;
+    }
+};
+
+// Instagram'дан жок кылуу — Make.com'го "delete" сигналы жиберет
+export const deleteFromInstagram = async (data: InstagramDeleteData): Promise<boolean> => {
+    const WEBHOOK_URL: string = 'https://hook.eu1.make.com/cb5ib9mhv510joiqgr6u7ze44hm10bc6';
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'delete',
+                title: data.title,
+                link: data.link,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Make.com статус: ${response.status}`);
+        }
+
+        console.log("Delete сигналы Make.com'го жиберилди");
+        return true;
+    } catch (error) {
+        console.error('Instagram delete катасы:', error instanceof Error ? error.message : error);
         return false;
     }
 };

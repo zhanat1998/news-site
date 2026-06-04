@@ -1,57 +1,67 @@
 import { NextResponse } from 'next/server';
 import { urlForHQ } from '@/sanity/lib/image';
-import { publishToInstagram } from '@/utils/services/instagramServices';
+import { publishToInstagram, deleteFromInstagram } from '@/utils/services/instagramServices';
 
 export async function POST(request: Request) {
     try {
-        // 1. Получаем данные новости, которые прислал Sanity Webhook
         const newsData = await request.json();
 
-        // 2. Валидация базовых полей
-        if (!newsData || !newsData.title) {
-            return NextResponse.json(
-                { success: false, error: 'Данные новости не получены или пустые' },
-                { status: 400 }
-            );
+        if (!newsData) {
+            return NextResponse.json({ success: false, error: 'Маалымат жок' }, { status: 400 });
         }
 
-        // 3. Формируем полноценную ссылку на саму новость на сайте "Сокол медиа"
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sokol.media';
         const fullNewsUrl = `${siteUrl}/news/${newsData.slug?.current || ''}`;
 
-        // 4. Генерируем прямую ссылку на картинку высокого качества
+        // Delete операциясы — Instagram'дан жок кылуу
+        if (newsData.operation === 'delete') {
+            const isDeleted = await deleteFromInstagram({
+                title: newsData.title || '',
+                link: fullNewsUrl,
+            });
+            return NextResponse.json(
+                { success: isDeleted, operation: 'delete' },
+                { status: 200 }
+            );
+        }
+
+        // Create / Update — Instagram'га жарыялоо
+        if (!newsData.title) {
+            return NextResponse.json({ success: false, error: 'Title жок' }, { status: 400 });
+        }
+
         let imageUrl: string = '';
         if (newsData.mainImage) {
             try {
-                imageUrl = urlForHQ(newsData.mainImage, 1200, 630);
-            } catch (imgError) {
-                console.error('Не удалось сгенерировать URL картинки:', imgError);
+                const directUrl = newsData.mainImage?.asset?.url;
+                if (directUrl && directUrl.startsWith('http')) {
+                    imageUrl = directUrl;
+                } else {
+                    const built = urlForHQ(newsData.mainImage, 1200, 630);
+                    if (built && !built.startsWith('/')) imageUrl = built;
+                }
+            } catch {
+                // сүрөт болбосо Make.com дефолт сүрөт колдонот
             }
         }
 
-        console.log('--- Пакет подготовлен, вызываем сервис интеграции ---');
-
-        // 5. Передаем структурированные данные в наш независимый сервис интеграции
         const isSent = await publishToInstagram({
             title: newsData.title,
             text: newsData.excerpt || newsData.title,
             link: fullNewsUrl,
-            image: imageUrl || undefined // Если картинки нет, сервис подставит дефолтную
+            image: imageUrl || undefined,
         });
 
         if (!isSent) {
-            throw new Error('Сервис интеграции вернул ошибку при отправке в Make.com');
+            throw new Error('Make.com webhook катасы');
         }
 
-        return NextResponse.json(
-            { success: true, message: 'Данные успешно обработаны и отправлены на репост через сервис!' },
-            { status: 200 }
-        );
+        return NextResponse.json({ success: true, operation: 'publish' }, { status: 200 });
 
     } catch (error: any) {
-        console.error('Ошибка в обработчике автопостинга:', error);
+        console.error('Repost handler error:', error);
         return NextResponse.json(
-            { success: false, error: error.message || 'Внутренняя ошибка сервера' },
+            { success: false, error: error.message || 'Server error' },
             { status: 500 }
         );
     }
