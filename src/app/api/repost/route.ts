@@ -22,6 +22,18 @@ function revalidateAll() {
 
 export async function POST(request: Request) {
     try {
+        // --- НАШ ОТЛАДОЧНЫЙ ЛОГ ---
+        // Клонируем запрос, чтобы прочитать body для лога и не сломать request.json() ниже
+        const cloneForLog = request.clone();
+        try {
+            const rawBody = await cloneForLog.json();
+            console.log('=== WEBHOOK TRIGGERED AT:', new Date().toISOString());
+            console.log('=== WEBHOOK BODY ===', JSON.stringify(rawBody, null, 2));
+        } catch (e) {
+            console.log('=== WEBHOOK TRIGGERED, BUT BODY IS EMPTY OR NOT JSON ===');
+        }
+        // ---------------------------
+
         const newsData = await request.json();
 
         if (!newsData) {
