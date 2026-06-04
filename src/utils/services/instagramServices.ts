@@ -18,7 +18,7 @@ export const publishToInstagram = async (noteData: InstagramPostData): Promise<b
         title: noteData.title || 'Новая публикация',
         text: noteData.text,
         link: noteData.link || 'https://sokol.media',
-        image_url: noteData.image || 'https://picsum.photos/1080/1080',
+        image: noteData.image || 'https://picsum.photos/1080/1080',
     };
 
     try {
