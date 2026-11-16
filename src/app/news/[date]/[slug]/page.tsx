@@ -32,6 +32,12 @@ function extractYouTubeId(url: string): string {
   return url; // Return as-is if no pattern matches
 }
 
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = {
   params: Promise<{ date: string; slug: string }>;
 };

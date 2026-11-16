@@ -33,12 +33,20 @@ export async function POST(request: NextRequest) {
     const dailyStatId = `dailyStat-${dateKey}`;
 
     await Promise.all([
-      // 1. Посттун viewCount'ун +1 кыл
+      // 1. Посттун көрүүлөрүн өзүнчө postViews документинде +1 кыл
       writeClient
-        .patch(resolvedPostId)
-        .setIfMissing({ viewCount: 0 })
-        .inc({ viewCount: 1 })
-        .commit({ autoGenerateArrayKeys: true }),
+        .createIfNotExists({
+          _id: `postViews-${resolvedPostId}`,
+          _type: 'postViews',
+          post: { _type: 'reference', _ref: resolvedPostId, _weak: true },
+          viewCount: 0,
+        })
+        .then(() =>
+          writeClient
+            .patch(`postViews-${resolvedPostId}`)
+            .inc({ viewCount: 1 })
+            .commit()
+        ),
 
       // 2. Бүгүнкү күндүк статистиканы жаңырт (бир документ/күн)
       writeClient

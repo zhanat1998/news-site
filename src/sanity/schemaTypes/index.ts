@@ -8,7 +8,8 @@ import {videoType} from "@/sanity/schemaTypes/videoType";
 import {adType} from './adType'
 import {dailyStatType} from './dailyStatType'
 import {bannerStatType} from './bannerStatType'
+import {postViewsType} from './postViewsType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType, postType, authorType, videoType, adType, dailyStatType, bannerStatType],
+  types: [blockContentType, categoryType, postType, authorType, videoType, adType, dailyStatType, bannerStatType, postViewsType],
 }

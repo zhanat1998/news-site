@@ -33,11 +33,11 @@ export async function GET(request: NextRequest) {
       ),
       // Топ посттор
       client.fetch(
-        `*[_type == "post"] | order(viewCount desc)[0...20] {
+        `*[_type == "post"] {
           _id, title, slug, publishedAt,
-          "viewCount": coalesce(viewCount, 0),
+          "viewCount": coalesce(viewCount, 0) + coalesce(*[_id == "postViews-" + ^._id][0].viewCount, 0),
           "category": categories[0]->title
-        }`
+        } | order(viewCount desc)[0...20]`
       ),
     ]);
 

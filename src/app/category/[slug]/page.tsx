@@ -18,6 +18,12 @@ import {
 } from '@/lib/sanity/api';
 import { adaptPosts, adaptVideos, formatVideosForCarousel } from '@/lib/sanity/adapters';
 
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

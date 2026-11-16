@@ -2,12 +2,16 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Strapi webhook body type
-interface StrapiWebhookBody {
+interface WebhookBody {
+  _type?: string;
+  _id?: string;
   event?: string;
   model?: string;
   entry?: Record<string, unknown>;
 }
+
+// Статистика документтери сайттын мазмунуна таасир этпейт
+const IGNORED_TYPES = new Set(['dailyStat', 'bannerStat', 'postViews', 'pageView']);
 
 // Бардык кэшти тазалоо функциясы
 function revalidateAll() {
@@ -45,18 +49,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Strapi webhook body
-    let body: StrapiWebhookBody = {};
+    let body: WebhookBody = {};
     try {
       body = await request.json();
     } catch {
       // Body жок болсо да иштейт
     }
 
-    console.log('Webhook received:', body);
+    const model = body?._type || body?.model;
 
-    // Strapi event же model бар болсо
-    const model = body?.model;
+    const isStatId = /^(dailyStat|bannerStat|postViews)-/.test(body?._id || '');
+
+    if ((model && IGNORED_TYPES.has(model)) || isStatId) {
+      return NextResponse.json({ revalidated: false, model, skipped: true });
+    }
+
+    console.log('Webhook received:', { _type: model, _id: body?._id });
 
     if (model) {
       switch (model) {

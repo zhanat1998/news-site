@@ -7,6 +7,12 @@ import RelatedVideos from '@/components/video/RelatedVideos/RelatedVideos';
 import styles from './page.module.scss';
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return [];
+}
+
 type Props = {
   params: Promise<{ slug: string }>;
 };

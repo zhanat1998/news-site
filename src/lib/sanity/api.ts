@@ -167,7 +167,6 @@ export async function getYouTubeVideos(limit = 10) {
     }`,
     params: { limit: limit - 1 },
     tags: ['videos'],
-    revalidate: 60,
   });
 }
 
@@ -179,7 +178,6 @@ export async function getInstagramVideos(limit = 10) {
     }`,
     params: { limit: limit - 1 },
     tags: ['videos'],
-    revalidate: 60,
   });
 }
 
@@ -228,7 +226,6 @@ export async function getAdsByPlacement(placement: string) {
     }`,
     params: { placement: sanityPlacement },
     tags: ['ads'],
-    revalidate: 60,
   });
 }
 
