@@ -1,7 +1,17 @@
 // app/api/track-view/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { writeClient } from '@/sanity/lib/client';
-import { isPlainSanityId, recordView, sanitizeCountry } from '@/lib/stats/counterMutations';
+import {
+  isPlainSanityId,
+  recordView,
+  sanitizeCountry,
+  type Mutation,
+} from '@/lib/stats/counterMutations';
+
+// ONE writeClient.mutate call = ONE Sanity request
+const sanityMutator = {
+  mutate: (m: Mutation[]) => writeClient.mutate(m as unknown as Parameters<typeof writeClient.mutate>[0]),
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +29,7 @@ export async function POST(request: NextRequest) {
     const dateKey = new Date().toISOString().split('T')[0]; // "2026-04-27"
 
     // Бир Sanity суроо: postViews + dailyStat бир транзакцияда
-    await recordView(writeClient, postId, country, dateKey);
+    await recordView(sanityMutator, postId, country, dateKey);
 
     return NextResponse.json({ success: true });
   } catch (error) {
