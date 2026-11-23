@@ -1,6 +1,6 @@
 // app/api/revalidate/route.ts
 import { revalidatePath, revalidateTag } from 'next/cache';
-import { after, NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { client } from '@/sanity/lib/client';
 import {
   isSkipped,
@@ -13,28 +13,25 @@ import {
   type WebhookBody,
 } from '@/lib/revalidation/plan';
 
-// The delayed second purge runs after the response; allow the function to live that long.
-export const maxDuration = 60;
+// The webhook answers after a short wait (well inside Sanity's webhook timeout).
+export const maxDuration = 30;
 
 // Sanity API CDN may still serve the old result for a few seconds after a publish.
 // With a 12 h ISR window a stale re-render would stick, so purge again after this delay.
-const SECOND_PURGE_DELAY_MS = 15_000;
+// after() was tried first: on Next 15.5.7 revalidateTag/revalidatePath called inside after()
+// logged but did not invalidate (checked on `next start`: x-nextjs-cache stayed HIT), so the
+// second purge is awaited in the request instead.
+const SECOND_PURGE_DELAY_MS = 10_000;
 
 function purge(plan: RevalidationPlan) {
   for (const tag of plan.tags) revalidateTag(tag);
   for (const { path, type } of plan.paths) revalidatePath(path, type);
 }
 
-function purgeAgainLater(plan: RevalidationPlan) {
-  after(async () => {
-    await new Promise((resolve) => setTimeout(resolve, SECOND_PURGE_DELAY_MS));
-    try {
-      purge(plan);
-      console.log('Revalidated (second purge):', plan.tags.join(','));
-    } catch (error) {
-      console.error('Second purge failed:', error);
-    }
-  });
+async function purgeAgainAfterDelay(plan: RevalidationPlan) {
+  await new Promise((resolve) => setTimeout(resolve, SECOND_PURGE_DELAY_MS));
+  purge(plan);
+  console.log('Revalidated (second purge):', plan.tags.join(','));
 }
 
 // One read to find the slug when the webhook body has none. Failure = "slug unknown".
@@ -90,8 +87,8 @@ export async function POST(request: NextRequest) {
 
     const plan = planRevalidation(body, slug);
     purge(plan);
-    purgeAgainLater(plan);
     console.log('Revalidated:', { model: model || 'all', slug: slug || null, slugFrom, tags: plan.tags, paths: plan.paths });
+    await purgeAgainAfterDelay(plan);
 
     return NextResponse.json({
       revalidated: true,
