@@ -7,7 +7,7 @@ import RelatedVideos from '@/components/video/RelatedVideos/RelatedVideos';
 import styles from './page.module.scss';
 import MainContainer from "@/components/ui/MainContainer/MainContainer";
 
-export const revalidate = 3600;
+export const revalidate = 43200;
 
 export async function generateStaticParams() {
   return [];

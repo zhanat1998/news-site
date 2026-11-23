@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { client } from '@/sanity/lib/client';
 
+// Бардык үч Sanity окуу 300 сек кэштелет (бир суроо бир мезгилге 5 мүнөттө бир гана жолу)
+const CACHE = { next: { revalidate: 300, tags: ['analytics'] } };
+
 export async function GET(request: NextRequest) {
   const period = request.nextUrl.searchParams.get('period') || 'week';
 
@@ -24,12 +27,14 @@ export async function GET(request: NextRequest) {
       // Пост көрүүлөр
       client.fetch(
         `*[_type == "dailyStat" && date >= $startDate] | order(date asc)`,
-        { startDate: startDateStr }
+        { startDate: startDateStr },
+        CACHE
       ),
       // Баннер статистика
       client.fetch(
         `*[_type == "bannerStat" && date >= $startDate] | order(date asc)`,
-        { startDate: startDateStr }
+        { startDate: startDateStr },
+        CACHE
       ),
       // Топ посттор
       client.fetch(
@@ -37,7 +42,9 @@ export async function GET(request: NextRequest) {
           _id, title, slug, publishedAt,
           "viewCount": coalesce(viewCount, 0) + coalesce(*[_id == "postViews-" + ^._id][0].viewCount, 0),
           "category": categories[0]->title
-        } | order(viewCount desc)[0...20]`
+        } | order(viewCount desc)[0...20]`,
+        {},
+        CACHE
       ),
     ]);
 

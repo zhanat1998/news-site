@@ -10,7 +10,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  // CDN: live API quota is spent; a publish shows within the 3600 s revalidate window
+  // CDN: live API quota is spent; /api/revalidate purges what a publish touches; the rest refreshes within the 12 h revalidate window
   useCdn: true,
 });
 
@@ -35,7 +35,7 @@ export async function sanityFetch<T>({
  query,
  params = {},
  tags = [],
- revalidate = 3600, // default 1 саат кэш - API сурамдарды азайтат
+ revalidate = 43200, // default 12 саат кэш - API сурамдарды азайтат; webhook керектүү тегдерди тазалайт
 }: SanityFetchOptions): Promise<T> {
   return client.fetch<T>(query, params, {
     next: {
