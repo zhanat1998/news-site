@@ -32,7 +32,7 @@ function extractYouTubeId(url: string): string {
   return url; // Return as-is if no pattern matches
 }
 
-export const revalidate = 3600;
+export const revalidate = 43200;
 
 export async function generateStaticParams() {
   return [];
@@ -61,14 +61,14 @@ export default async function NewsDetailPage({ params }: Props) {
 
   // If not enough related posts, get latest posts
   if (relatedPostsRaw.length < 2) {
-    const latestPosts = await getLatestPosts(4);
+    const latestPosts = await getLatestPosts(4, ['post-pages']);
     relatedPostsRaw = latestPosts.filter(p => p.slug !== slug);
   }
 
   const relatedPosts = adaptPosts(relatedPostsRaw);
 
   // Get all posts for additional sections
-  const allPostsRaw = await getLatestPosts(20);
+  const allPostsRaw = await getLatestPosts(20, ['post-pages']);
 
   // Track used slugs (using raw slug strings)
   const usedSlugs = new Set([slug, ...relatedPostsRaw.map(p => p.slug)]);

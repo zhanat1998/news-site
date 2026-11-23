@@ -60,13 +60,15 @@ const VIDEO_FIELDS = groq`
 
 // ===== POSTS =====
 
-export async function getLatestPosts(limit = 20) {
+// `tags` defaults to ['posts'] (refreshed on every post publish). Article pages pass
+// ['post-pages'] so a publish does not re-render every article.
+export async function getLatestPosts(limit = 20, tags: string[] = ['posts']) {
   return sanityFetch<any[]>({
     query: groq`*[_type == "post"] | order(coalesce(publishedAt, _createdAt) desc) [0...$limit] {
       ${POST_LIST_FIELDS}
     }`,
     params: { limit: limit - 1 },
-    tags: ['posts'],
+    tags,
   });
 }
 
@@ -76,7 +78,7 @@ export async function getPostBySlug(slug: string) {
       ${POST_FIELDS}
     }`,
     params: { slug },
-    tags: ['posts'],
+    tags: [`post:${slug}`, 'post-pages'],
   });
 }
 
@@ -106,7 +108,7 @@ export async function getRelatedPosts(
       ${POST_LIST_FIELDS}
     }`,
     params: { categorySlug, excludeSlug, limit: limit - 1 },
-    tags: ['posts'],
+    tags: ['post-pages'],
   });
 }
 

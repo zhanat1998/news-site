@@ -1,70 +1,35 @@
 // app/api/track-view/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { writeClient } from '@/sanity/lib/client';
+import {
+  isPlainSanityId,
+  recordView,
+  sanitizeCountry,
+  type Mutation,
+} from '@/lib/stats/counterMutations';
+
+// ONE writeClient.mutate call = ONE Sanity request
+const sanityMutator = {
+  mutate: (m: Mutation[]) => writeClient.mutate(m as unknown as Parameters<typeof writeClient.mutate>[0]),
+};
 
 export async function POST(request: NextRequest) {
   try {
-    const { postId, slug } = await request.json();
+    const { postId } = await request.json();
 
-    if (!postId && !slug) {
-      return NextResponse.json({ error: 'postId же slug керек' }, { status: 400 });
+    // postId керек (slug боюнча издөө алынды: ал экинчи Sanity суроо эле)
+    if (!isPlainSanityId(postId)) {
+      return NextResponse.json({ error: 'postId керек' }, { status: 400 });
     }
 
-    // Пост табуу
-    let resolvedPostId = postId;
-    if (!postId && slug) {
-      const post = await writeClient.fetch(
-        `*[_type == "post" && slug.current == $slug][0]{ _id }`,
-        { slug }
-      );
-      if (!post) {
-        return NextResponse.json({ error: 'Пост табылган жок' }, { status: 404 });
-      }
-      resolvedPostId = post._id;
-    }
-
-    const country = (
-      request.headers.get('x-vercel-ip-country') ||
-      request.headers.get('cf-ipcountry') ||
-      'Unknown'
-    ).replace(/[^A-Za-z_]/g, '_'); // объект ачкычы коопсуз болсун
+    const country = sanitizeCountry(
+      request.headers.get('x-vercel-ip-country') || request.headers.get('cf-ipcountry')
+    ); // объект ачкычы коопсуз болсун
 
     const dateKey = new Date().toISOString().split('T')[0]; // "2026-04-27"
-    const dailyStatId = `dailyStat-${dateKey}`;
 
-    await Promise.all([
-      // 1. Посттун көрүүлөрүн өзүнчө postViews документинде +1 кыл
-      writeClient
-        .createIfNotExists({
-          _id: `postViews-${resolvedPostId}`,
-          _type: 'postViews',
-          post: { _type: 'reference', _ref: resolvedPostId, _weak: true },
-          viewCount: 0,
-        })
-        .then(() =>
-          writeClient
-            .patch(`postViews-${resolvedPostId}`)
-            .inc({ viewCount: 1 })
-            .commit()
-        ),
-
-      // 2. Бүгүнкү күндүк статистиканы жаңырт (бир документ/күн)
-      writeClient
-        .createIfNotExists({
-          _id: dailyStatId,
-          _type: 'dailyStat',
-          date: dateKey,
-          totalViews: 0,
-          countryViews: {},
-        })
-        .then(() =>
-          writeClient
-            .patch(dailyStatId)
-            .setIfMissing({ countryViews: {} })
-            .inc({ totalViews: 1, [`countryViews.${country}`]: 1 })
-            .commit()
-        ),
-    ]);
+    // Бир Sanity суроо: postViews + dailyStat бир транзакцияда
+    await recordView(sanityMutator, postId, country, dateKey);
 
     return NextResponse.json({ success: true });
   } catch (error) {

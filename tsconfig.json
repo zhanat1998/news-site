@@ -39,6 +39,7 @@
   "exclude": [
     "node_modules",
     "strapi-backend",
-    "wp-migration"
+    "wp-migration",
+    "tests"
   ]
 }
