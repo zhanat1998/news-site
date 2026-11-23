@@ -10,7 +10,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  // CDN: live API quota is spent; a publish shows within the 3600 s revalidate window
+  useCdn: true,
 });
 
 // Write client (жазуу үчүн, token менен)
